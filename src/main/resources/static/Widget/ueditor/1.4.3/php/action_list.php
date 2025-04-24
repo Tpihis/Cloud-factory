@@ -34,7 +34,7 @@ $path = $_SERVER['DOCUMENT_ROOT'] . (substr($path, 0, 1) == "/" ? "":"/") . $pat
 $files = getfiles($path, $allowFiles);
 if (!count($files)) {
     return json_encode(array(
-        "state" => "no match file",
+        "status" => "no match file",
         "list" => array(),
         "start" => $start,
         "total" => count($files)
@@ -53,7 +53,7 @@ for ($i = min($end, $len) - 1, $list = array(); $i < $len && $i >= 0 && $i >= $s
 
 /* 返回数据 */
 $result = json_encode(array(
-    "state" => "SUCCESS",
+    "status" => "SUCCESS",
     "list" => $list,
     "start" => $start,
     "total" => count($files)

@@ -21,7 +21,7 @@
     With json.data
         .Add "url", up.FilePath
         .Add "original", up.OriginalFileName
-        .Add "state", up.State
+        .Add "status", up.State
         .Add "title", up.OriginalFileName
     End With
     

@@ -19,7 +19,7 @@
 
     Set fso = Server.CreateObject("Scripting.FileSystemObject")
     If fso.FolderExists(Server.MapPath(path)) = False Then
-        state = "找不到目录：" + path
+        status = "找不到目录：" + path
     Else
         Set all = ListAllFilesInFolder( fso, path )
         total = all.Count
@@ -33,12 +33,12 @@
             End If
             index = index + 1
         Next
-        state = "SUCCESS"
+        status = "SUCCESS"
     End If
     
     Set json = new ASPJson
     With json.data
-        .Add "state", state
+        .Add "status", status
         .Add "list", list
         .Add "start", start
         .Add "size", size

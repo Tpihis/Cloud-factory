@@ -15,7 +15,7 @@
     	up.UploadRemote( urls(i) )
         Dim instance
         Set instance = new ASPJson.Collection
-        instance.Add "state", up.State
+        instance.Add "status", up.State
         instance.Add "url", up.FilePath
         instance.Add "source", urls(i)
         list.Add i, instance
@@ -24,7 +24,7 @@
     Set json = new ASPJson
 
     With json.data
-        .Add "state", "SUCCESS"
+        .Add "status", "SUCCESS"
         .Add "list", list
     End With
 

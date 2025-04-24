@@ -64,4 +64,11 @@
         <property name="basePackage" value="com.ls.springmvc.dao"/>
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
     </bean>
+    <mvc:resources mapping="/static/css/**" location="classpath:static/css/"></mvc:resources>
+    <mvc:resources mapping="/static/js/**" location="classpath:static/js/"></mvc:resources>
+    <mvc:resources mapping="/static/images/**" location="classpath:static/images/"></mvc:resources>
+    <mvc:resources mapping="/static/assets/**" location="classpath:static/assets/"></mvc:resources>
+    <mvc:resources mapping="/static/font/**" location="classpath:static/font/"></mvc:resources>
+    <mvc:resources mapping="/static/products/**" location="classpath:static/products/"></mvc:resources>
+    <mvc:resources mapping="/static/Widget/**" location="classpath:static/Widget/"></mvc:resources>
 </beans>

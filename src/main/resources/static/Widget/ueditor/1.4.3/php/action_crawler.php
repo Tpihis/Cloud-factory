@@ -28,7 +28,7 @@ foreach ($source as $imgUrl) {
     $item = new Uploader($imgUrl, $config, "remote");
     $info = $item->getFileInfo();
     array_push($list, array(
-        "state" => $info["state"],
+        "status" => $info["status"],
         "url" => $info["url"],
         "size" => $info["size"],
         "title" => htmlspecialchars($info["title"]),
@@ -39,6 +39,6 @@ foreach ($source as $imgUrl) {
 
 /* 返回抓取数据 */
 return json_encode(array(
-    'state'=> count($list) ? 'SUCCESS':'ERROR',
+    'status'=> count($list) ? 'SUCCESS':'ERROR',
     'list'=> $list
 ));

@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope(value = "prototype")
-public class ControllerResponse {
+public class AjaxResponse {
     private Integer code;
     private String msg;
     private Object obj;

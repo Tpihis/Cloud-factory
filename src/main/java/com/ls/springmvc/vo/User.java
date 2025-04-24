@@ -1,13 +1,17 @@
 package com.ls.springmvc.vo;
 
 public class User {
-    private Integer uesrid;
+    private Integer userid;
     private String username;
     private String password;
     private String phone;
     private String email;
     private int role;
     private int age;
+    private String time;
+    private int gender;
+    private String address;
+    private int status;
 
     public int getRole() {
         return role;
@@ -25,12 +29,12 @@ public class User {
         this.age = age;
     }
 
-    public Integer getUesrid() {
-        return uesrid;
+    public Integer getUserid() {
+        return userid;
     }
 
-    public void setUesrid(Integer uesrid) {
-        this.uesrid = uesrid;
+    public void setUserid(Integer userid) {
+        this.userid = userid;
     }
 
     public String getUsername() {
@@ -65,16 +69,53 @@ public class User {
         this.email = email;
     }
 
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public int getGender() {
+        return gender;
+    }
+
+    public void setGender(int gender) {
+        this.gender = gender;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
     @Override
     public String toString() {
         return "User{" +
-                "uesrid=" + uesrid +
+                "userid=" + userid +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", phone='" + phone + '\'' +
                 ", email='" + email + '\'' +
                 ", role=" + role +
                 ", age=" + age +
+                ", time='" + time + '\'' +
+                ", gender=" + gender +
+                ", address='" + address + '\'' +
+                ", status=" + status +
                 '}';
     }
 }

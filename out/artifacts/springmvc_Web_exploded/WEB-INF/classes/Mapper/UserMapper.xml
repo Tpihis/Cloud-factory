@@ -10,6 +10,9 @@
     <select id="findUserByUsername" parameterType="String" resultType="com.ls.springmvc.vo.User">
         select * from user where username = #{username}
     </select>
+    <select id="pageSearch"  resultType="com.ls.springmvc.vo.User">
+        select * from user
+    </select>
 <!--    &lt;!&ndash; 查询所有用户 &ndash;&gt;-->
 <!--    <select id="findAllUser" resultType="com.ls.springmvc.vo.User">-->
 <!--        select * from user-->
@@ -17,7 +20,8 @@
 
     <!-- 添加用户 -->
     <insert id="addUser" parameterType="com.ls.springmvc.vo.User">
-        insert into user(username,password,phone,email,age,role) values(#{username}, #{password},#{phone},#{email},#{age},#{role})
+        insert into user(username,password,phone,email,age,role,address,time,status,gender)
+        values(#{username}, #{password},#{phone},#{email},#{age},#{role},#{address},#{time},#{status},#{gender})
     </insert>
 
 <!--    &lt;!&ndash; 修改用户 &ndash;&gt;-->

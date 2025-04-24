@@ -65,6 +65,10 @@ public class UserServiceImpl implements UserService {
         return userDao.findUserByUsername(username);
     }
     @Override
+    public List<User> pageSearch() {
+        return userDao.pageSearch();
+    }
+    @Override
     public UserDetails loadUserByUsername(String username) {
         UserDetails user = null;
         try {

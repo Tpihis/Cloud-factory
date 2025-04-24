@@ -81,7 +81,7 @@
         </member>
         <member name="M:Newtonsoft.Json.JsonReader.SetStateBasedOnCurrent">
             <summary>
-            Sets the state based on current token type.
+            Sets the status based on current token type.
             </summary>
         </member>
         <member name="M:Newtonsoft.Json.JsonReader.System#IDisposable#Dispose">
@@ -102,9 +102,9 @@
         </member>
         <member name="P:Newtonsoft.Json.JsonReader.CurrentState">
             <summary>
-            Gets the current reader state.
+            Gets the current reader status.
             </summary>
-            <value>The current reader state.</value>
+            <value>The current reader status.</value>
         </member>
         <member name="P:Newtonsoft.Json.JsonReader.CloseInput">
             <summary>
@@ -183,7 +183,7 @@
         </member>
         <member name="T:Newtonsoft.Json.JsonReader.State">
             <summary>
-            Specifies the state of the reader.
+            Specifies the status of the reader.
             </summary>
         </member>
         <member name="F:Newtonsoft.Json.JsonReader.State.Start">
@@ -474,13 +474,13 @@
         </member>
         <member name="M:Newtonsoft.Json.JsonWriter.WriteRaw(System.String)">
             <summary>
-            Writes raw JSON without changing the writer's state.
+            Writes raw JSON without changing the writer's status.
             </summary>
             <param name="json">The raw JSON to write.</param>
         </member>
         <member name="M:Newtonsoft.Json.JsonWriter.WriteRawValue(System.String)">
             <summary>
-            Writes raw JSON where a value is expected and updates the writer's state.
+            Writes raw JSON where a value is expected and updates the writer's status.
             </summary>
             <param name="json">The raw JSON to write.</param>
         </member>
@@ -727,7 +727,7 @@
         </member>
         <member name="M:Newtonsoft.Json.JsonWriter.SetWriteState(Newtonsoft.Json.JsonToken,System.Object)">
             <summary>
-            Sets the state of the JsonWriter,
+            Sets the status of the JsonWriter,
             </summary>
             <param name="token">The JsonToken being written.</param>
             <param name="value">The value being written.</param>
@@ -750,7 +750,7 @@
         </member>
         <member name="P:Newtonsoft.Json.JsonWriter.WriteState">
             <summary>
-            Gets the state of the writer.
+            Gets the status of the writer.
             </summary>
         </member>
         <member name="P:Newtonsoft.Json.JsonWriter.Path">
@@ -838,7 +838,7 @@
         </member>
         <member name="M:Newtonsoft.Json.Bson.BsonWriter.WriteRawValue(System.String)">
             <summary>
-            Writes raw JSON where a value is expected and updates the writer's state.
+            Writes raw JSON where a value is expected and updates the writer's status.
             </summary>
             <param name="json">The raw JSON to write.</param>
         </member>
@@ -3207,7 +3207,7 @@
         </member>
         <member name="F:Newtonsoft.Json.Required.Default">
             <summary>
-            The property is not required. The default state.
+            The property is not required. The default status.
             </summary>
         </member>
         <member name="F:Newtonsoft.Json.Required.AllowNull">
@@ -4130,7 +4130,7 @@
         </member>
         <member name="M:Newtonsoft.Json.JsonTextReader.Close">
             <summary>
-            Changes the state to closed. 
+            Changes the status to closed.
             </summary>
         </member>
         <member name="M:Newtonsoft.Json.JsonTextReader.HasLineInfo">
@@ -8428,13 +8428,13 @@
         </member>
         <member name="T:Newtonsoft.Json.WriteState">
             <summary>
-            Specifies the state of the <see cref="T:Newtonsoft.Json.JsonWriter"/>.
+            Specifies the status of the <see cref="T:Newtonsoft.Json.JsonWriter"/>.
             </summary>
         </member>
         <member name="F:Newtonsoft.Json.WriteState.Error">
             <summary>
-            An exception has been thrown, which has left the <see cref="T:Newtonsoft.Json.JsonWriter"/> in an invalid state.
-            You may call the <see cref="M:Newtonsoft.Json.JsonWriter.Close"/> method to put the <see cref="T:Newtonsoft.Json.JsonWriter"/> in the <c>Closed</c> state.
+            An exception has been thrown, which has left the <see cref="T:Newtonsoft.Json.JsonWriter"/> in an invalid status.
+            You may call the <see cref="M:Newtonsoft.Json.JsonWriter.Close"/> method to put the <see cref="T:Newtonsoft.Json.JsonWriter"/> in the <c>Closed</c> status.
             Any other <see cref="T:Newtonsoft.Json.JsonWriter"/> method calls results in an <see cref="T:System.InvalidOperationException"/> being thrown. 
             </summary>
         </member>

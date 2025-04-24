@@ -21,6 +21,7 @@ public interface UserDao {
 
     // 添加用户
     boolean addUser(User user);
+    List<User> pageSearch();
 
     // 修改用户
     int updateUser(User user);
