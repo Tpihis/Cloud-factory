@@ -8,13 +8,14 @@
        http://www.springframework.org/schema/security/spring-security.xsd">
     <security:http auto-config="true">
         <!-- 放行静态资源和首页 -->
-        <security:intercept-url pattern="/static/css/**" access="permitAll" />
-        <security:intercept-url pattern="/static/js/**" access="permitAll" />
-        <security:intercept-url pattern="/static/assets/**" access="permitAll" />
-        <security:intercept-url pattern="/static/images/**" access="permitAll" />
-        <security:intercept-url pattern="/static/font/**" access="permitAll" />
-        <security:intercept-url pattern="/static/products/**" access="permitAll" />
-        <security:intercept-url pattern="/static/Widget/**" access="permitAll" />
+        <security:intercept-url pattern="/static/**" access="permitAll" />
+<!--        <security:intercept-url pattern="/static/css/**" access="permitAll" />-->
+<!--        <security:intercept-url pattern="/static/js/**" access="permitAll" />-->
+<!--        <security:intercept-url pattern="/static/assets/**" access="permitAll" />-->
+<!--        <security:intercept-url pattern="/static/images/**" access="permitAll" />-->
+<!--        <security:intercept-url pattern="/static/font/**" access="permitAll" />-->
+<!--        <security:intercept-url pattern="/static/products/**" access="permitAll" />-->
+<!--        <security:intercept-url pattern="/static/Widget/**" access="permitAll" />-->
         <!-- 放行静态资源和首页 -->
         <security:intercept-url pattern="/favicon.ico" access="permitAll" />
         <security:intercept-url pattern="/css/**" access="permitAll" />
