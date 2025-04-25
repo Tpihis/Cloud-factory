@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
 
     public boolean registerUser(User user) {
         boolean result = false;
-        user.setRole(0);
+//        user.setRole(0);
         try {
             userDao.addUser(user);
             result = true;
