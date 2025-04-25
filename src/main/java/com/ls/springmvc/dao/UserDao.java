@@ -27,5 +27,5 @@ public interface UserDao {
     int updateUser(User user);
 
     // 删除用户
-    int deleteUser(Integer userid);
+    boolean deleteUser(Integer userid);
 }

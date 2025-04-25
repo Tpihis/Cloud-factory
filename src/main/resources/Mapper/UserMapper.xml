@@ -24,8 +24,8 @@
 <!--        update user set name=#{name}, age=#{age} where id=#{id}-->
 <!--    </update>-->
 
-<!--    &lt;!&ndash; 删除用户 &ndash;&gt;-->
-<!--    <delete id="deleteUser" parameterType="Integer">-->
-<!--        delete from user where id=#{id}-->
-<!--    </delete>-->
+    <!-- 删除用户 -->
+    <delete id="deleteUser" parameterType="Integer">
+        delete from user where userid=#{userid}
+    </delete>
 </mapper>

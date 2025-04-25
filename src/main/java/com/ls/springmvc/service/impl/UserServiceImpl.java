@@ -38,6 +38,20 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public boolean deleteUser(Integer userid) {
+        boolean result = false;
+//        user.setRole(0);
+        try {
+            userDao.deleteUser(userid);
+            result = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            return result;
+        }
+    }
+
     public ServiceMessage loginUser(User user) {
         String inputPassword = user.getPassword();
         User existUser = userDao.findUserByUsername(user.getUsername());
