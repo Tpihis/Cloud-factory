@@ -9,6 +9,7 @@ import java.util.List;
 public interface UserService extends UserDetailsService {
     public boolean registerUser(User user);
     public boolean deleteUser(Integer userid);
+    public boolean updateUser(User user);
     public ServiceMessage loginUser(User user);
     User findUserById(Integer userid);
     User findUserByUsername(String username);

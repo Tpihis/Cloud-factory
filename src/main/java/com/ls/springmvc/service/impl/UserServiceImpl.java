@@ -27,7 +27,6 @@ public class UserServiceImpl implements UserService {
 
     public boolean registerUser(User user) {
         boolean result = false;
-//        user.setRole(0);
         try {
             userDao.addUser(user);
             result = true;
@@ -41,7 +40,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean deleteUser(Integer userid) {
         boolean result = false;
-//        user.setRole(0);
         try {
             userDao.deleteUser(userid);
             result = true;
@@ -51,6 +49,20 @@ public class UserServiceImpl implements UserService {
             return result;
         }
     }
+
+    @Override
+    public boolean updateUser(User user) {
+        boolean result = false;
+        try {
+            userDao.updateUser(user);
+            result = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            return result;
+        }
+    }
+
 
     public ServiceMessage loginUser(User user) {
         String inputPassword = user.getPassword();

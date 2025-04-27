@@ -3,6 +3,7 @@ package com.ls.springmvc.dao;
 
 import com.ls.springmvc.vo.User;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -24,8 +25,10 @@ public interface UserDao {
     List<User> pageSearch();
 
     // 修改用户
-    int updateUser(User user);
+    boolean updateUser(User user);
 
     // 删除用户
     boolean deleteUser(Integer userid);
+
+
 }

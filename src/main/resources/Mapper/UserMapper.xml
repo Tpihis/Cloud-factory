@@ -19,10 +19,12 @@
         values(#{username}, #{password},#{phone},#{email},#{age},#{role},#{address},#{time},#{status},#{gender})
     </insert>
 
-<!--    &lt;!&ndash; 修改用户 &ndash;&gt;-->
-<!--    <update id="updateUser" parameterType="com.ls.springmvc.vo.User">-->
-<!--        update user set name=#{name}, age=#{age} where id=#{id}-->
-<!--    </update>-->
+    <!-- 更新用户信息 -->
+    <update id="updateUser" parameterType="com.ls.springmvc.vo.User">
+        UPDATE user SET  username = #{username},gender = #{gender},phone = #{phone},email = #{email},
+                         address = #{address},role = #{role},status = #{status}
+        WHERE userid = #{userid}
+    </update>
 
     <!-- 删除用户 -->
     <delete id="deleteUser" parameterType="Integer">

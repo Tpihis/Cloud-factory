@@ -98,4 +98,19 @@ public class UserController {
         return ajaxResponse;
     }
 
+    @PostMapping(value="/delete")
+    @ResponseBody
+    public AjaxResponse delete(@RequestBody
+                               @RequestParam("userid") Integer userid) {
+        boolean delete = userService.deleteUser(userid);
+        if(delete){
+            ajaxResponse.setCode(0);
+            ajaxResponse.setMsg("删除成功");
+        }else{
+            ajaxResponse.setCode(-1);
+            ajaxResponse.setMsg("删除失败");
+        }
+        return ajaxResponse;
+    }
+
 }
