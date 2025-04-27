@@ -94,6 +94,16 @@ public class UserServiceImpl implements UserService {
     public List<User> pageSearch() {
         return userDao.pageSearch();
     }
+
+    // 停用或启用用户
+    public boolean changeUserStatus(User user) {
+        try {
+            return userDao.changeUserStatus(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
     @Override
     public UserDetails loadUserByUsername(String username) {
         UserDetails user = null;

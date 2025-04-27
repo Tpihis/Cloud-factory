@@ -30,5 +30,8 @@ public interface UserDao {
     // 删除用户
     boolean deleteUser(Integer userid);
 
+    // 更新用户状态（停用 / 启用）
+    boolean changeUserStatus(User user);
+
 
 }

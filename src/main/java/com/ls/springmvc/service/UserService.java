@@ -14,4 +14,5 @@ public interface UserService extends UserDetailsService {
     User findUserById(Integer userid);
     User findUserByUsername(String username);
     List<User> pageSearch();
+    public boolean changeUserStatus(User user);
 }

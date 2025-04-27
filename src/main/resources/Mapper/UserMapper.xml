@@ -26,6 +26,12 @@
         WHERE userid = #{userid}
     </update>
 
+    <!-- 更新用户状态 -->
+    <update id="changeUserStatus" parameterType="com.ls.springmvc.vo.User">
+        UPDATE user SET status = #{status}
+        WHERE userid = #{userid}
+    </update>
+
     <!-- 删除用户 -->
     <delete id="deleteUser" parameterType="Integer">
         delete from user where userid=#{userid}
