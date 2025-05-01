@@ -99,7 +99,6 @@
 <div class="platform-title">云制造资源管理平台</div>
 <div class="container">
     <h1>WELCOME</h1>
-<%--    <form action="${pageContext.request.contextPath}/auth/login" method="post">--%>
     <form action="${pageContext.request.contextPath}/login" method="post">
         <div class="input-group">
             <input type="text" id="username" name="username" placeholder="用户名..." required>
@@ -125,9 +124,6 @@
 <%--        <a href="register">免费注册</a>--%>
         <a href="${pageContext.request.contextPath}/auth/register">免费注册</a>
     </div>
-</div>
-<div>
-    ${msg="aa"}
 </div>
 </body>
 </html>

@@ -15,4 +15,6 @@ public interface UserService extends UserDetailsService {
     User findUserByUsername(String username);
     List<User> pageSearch();
     public boolean changeUserStatus(User user);
+    public boolean batchDelete(List<Long> userIds);
+
 }

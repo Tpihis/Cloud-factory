@@ -36,4 +36,11 @@
     <delete id="deleteUser" parameterType="Integer">
         delete from user where userid=#{userid}
     </delete>
+
+    <delete id="batchDelete" parameterType="list">
+        DELETE FROM user WHERE userid IN
+        <foreach collection="userids" item="userid" open="(" separator="," close=")">
+            #{userid}
+        </foreach>
+    </delete>
 </mapper>

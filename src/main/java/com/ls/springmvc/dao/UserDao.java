@@ -33,5 +33,7 @@ public interface UserDao {
     // 更新用户状态（停用 / 启用）
     boolean changeUserStatus(User user);
 
+    boolean batchDelete(@Param("userids") List<Long> userids);
+
 
 }
