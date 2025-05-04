@@ -103,7 +103,7 @@
 <%--    <form action="${pageContext.request.contextPath}/auth/register" method="post">--%>
     <form action="${pageContext.request.contextPath}/auth/register" method="post">
         <div class="input-group">
-            <input type="text" id="username" name="username" placeholder="用户名..." required>
+            <input type="text" name="username" placeholder="用户名..." required>
         </div>
         <div class="input-group">
             <input type="password" name="password" placeholder="密码..." required>

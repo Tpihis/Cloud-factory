@@ -1,5 +1,8 @@
 package com.ls.springmvc.vo;
 
+import lombok.Data;
+
+@Data
 public class User {
     private Integer userid;
     private String username;
@@ -13,7 +16,7 @@ public class User {
     private String address;
     private int status;
 
-    public int getRole() {
+   /* public int getRole() {
         return role;
     }
 
@@ -117,5 +120,5 @@ public class User {
                 ", address='" + address + '\'' +
                 ", status=" + status +
                 '}';
-    }
+    }*/
 }

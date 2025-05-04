@@ -1,4 +1,4 @@
-package com.ls.springmvc.controller;
+package com.ls.springmvc.controller.admin;
 
 
 import org.springframework.stereotype.Controller;
@@ -11,6 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class AdminController {
     @GetMapping("/index")
     public String Index(){
-        return "admin/user/index";
+        return "admin/index";
+    }
+    @GetMapping(value = "/home")
+    public String home() {
+        return "admin/home";
     }
 }
