@@ -48,7 +48,7 @@
     </div>
      <div class="border clearfix">
        <span class="l_f">
-        <a href="picture-add.html" title="添加商品" class="btn btn-warning Order_form"><i class="icon-plus"></i>添加商品</a>
+        <a href="${pageContext.request.contextPath}/admin/resource/add" title="添加商品" class="btn btn-warning Order_form"><i class="icon-plus"></i>添加商品</a>
         <a href="javascript:ovid()" class="btn btn-danger"><i class="icon-trash"></i>批量删除</a>
        </span>
        <span class="r_f">共：<b>2334</b>件商品</span>
@@ -150,10 +150,10 @@
                 {
                     data: null, render: function (data) {
                         var html = "<td class='td-manage'>";
-                        html += "<a onclick='resource_edit(\"" + data.resid + "\")' ";
+                        html += "<a onclick='resource_edit(\"" + data.resourceid + "\")' ";
                         html += "class='btn btn-xs btn-info' title='编辑'>";
                         html += "<i class='icon-edit bigger-120'></i></a> ";
-                        html += "<a onclick='resource_del(this, \"" + data.resid + "\")' ";
+                        html += "<a onclick='resource_del(this, \"" + data.resourceid + "\")' ";
                         html += "class='btn btn-xs btn-warning' title='删除'>";
                         html += "<i class='icon-trash bigger-120'></i></a> ";
                         html += "<a onclick='resource_detail(\"" + data.resid + "\")' ";
@@ -285,14 +285,14 @@ function member_edit(title,url,id,w,h){
 }
 
 /*资源-删除*/
-function resource_del(obj,resid){
+function resource_del(obj,resourceid){
         // console.log('Deleting user with ID:', userid); // 添加这一行
         layer.confirm('确认要删除吗？', function(index) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/admin/resource/delete",
                 type: 'POST',
                 contentType: 'application/json',
-                data: JSON.stringify({ resid: resid }),
+                data: JSON.stringify({ resourceid: resourceid }),
                 dataType: 'json',
                 success: function(response) {
                     if (response.code === 0) {

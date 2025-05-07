@@ -9,4 +9,5 @@ import java.util.List;
 public interface ResourceDao {
     List<Resource> pageSearch();
     boolean deleteResource(Integer resourceid);
+    boolean addResource(Resource resource);
 }

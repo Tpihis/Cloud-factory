@@ -37,4 +37,17 @@ public class ResourceServiceImpl implements ResourceService {
             return result;
         }
     }
+
+    @Override
+    public boolean addResource(Resource resource) {
+        boolean result = false;
+        try {
+            resourceDao.addResource(resource);
+            result = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            return result;
+        }
+    }
 }

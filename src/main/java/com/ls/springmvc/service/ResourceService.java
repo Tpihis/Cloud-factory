@@ -8,4 +8,5 @@ import java.util.List;
 public interface ResourceService {
     List<Resource> pageSearch();
     boolean deleteResource(Integer resourceid);
+    boolean addResource(Resource resource);
 }
