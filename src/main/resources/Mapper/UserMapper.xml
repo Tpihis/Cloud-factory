@@ -20,11 +20,11 @@
     </insert>
 
     <!-- 更新用户信息 -->
-    <update id="updateUser" parameterType="com.ls.springmvc.vo.User">
+  <!--  <update id="updateUser" parameterType="com.ls.springmvc.vo.User">
         UPDATE user SET  username = #{username},gender = #{gender},phone = #{phone},email = #{email},
                          address = #{address},role = #{role},status = #{status}
         WHERE userid = #{userid}
-    </update>
+    </update>-->
 
     <!-- 更新用户状态 -->
     <update id="changeUserStatus" parameterType="com.ls.springmvc.vo.User">
@@ -36,11 +36,86 @@
     <delete id="deleteUser" parameterType="Integer">
         delete from user where userid=#{userid}
     </delete>
-
+    <!-- 批量删除用户 -->
     <delete id="batchDelete" parameterType="list">
         DELETE FROM user WHERE userid IN
         <foreach collection="userids" item="userid" open="(" separator="," close=")">
             #{userid}
         </foreach>
     </delete>
+
+    <!--基本查询语句-->
+    <sql id="list_user">
+        SELECT u.userid,u.username,u.password,u.gender,u.phone,u.email,
+               u.time,u.role,u.age,u.status,u.address
+        FROM user u
+    </sql>
+    <!--查询条件-->
+    <sql id="condition">
+        <where>
+            <!-- 模糊查询条件 -->
+            <if test="searchKey != null and searchKey != ''">
+                AND (
+                username LIKE CONCAT("%",#{searchKey},"%")
+                OR phone LIKE CONCAT("%",#{searchKey},"%")
+                OR email LIKE CONCAT("%",#{searchKey},"%")
+                )
+            </if>
+            <if test="username != null and username != ''">
+                and username like concat("%",#{username},"%")
+            </if>
+            <if test="phone != null and phone != ''">
+                and phone = #{phone}
+            </if>
+            <if test="email != null and email != ''">
+                and email = #{email}
+            </if>
+            <if test="address != null and address != ''">
+                and address like concat("%",#{address},"%")
+            </if>
+        </where>
+    </sql>
+    <select id="pageListUser" resultType="com.ls.springmvc.vo.User">
+        <include refid="list_user"></include>
+        <include refid="condition"></include>
+        limit #{pageNum},#{pageSize}
+    </select>
+    <select id="totalUserCount" resultType="int">
+        select count(*) from user
+        <include refid="condition"></include>
+    </select>
+
+    <!--用户更新-->
+    <update id="updateUser">
+        update user
+        <set>
+            <if test="username != null and username !=''">
+                username=#{username},
+            </if>
+            <if test="password != null and password !=''">
+                password=#{password},
+            </if>
+            <if test="email != null and email !=''">
+                email=#{email},
+            </if>
+            <if test="phone != null and phone !=''">
+                phone=#{phone},
+            </if>
+            <if test="address != null and address !=''">
+                address=#{address}
+            </if>
+            <if test="role != null and role !=''">
+                role=#{role}
+            </if>
+            <if test="status != null and status !=''">
+                status=#{status}
+            </if>
+            <if test="gender != null and gender !=''">
+                gender=#{gender}
+            </if>
+        </set>
+        <where>
+            userid = #{userid}
+        </where>
+    </update>
 </mapper>

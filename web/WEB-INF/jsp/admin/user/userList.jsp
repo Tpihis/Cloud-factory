@@ -86,7 +86,6 @@
                     <thead>
                     <tr>
                         <th width="25"><label><input type="checkbox" class="ace"><span class="lbl"></span></label></th>
-<%--                        <th width="80" id="userid" name="userid">ID</th>--%>
                         <th width="80">ID</th>
                         <th width="100">用户名</th>
                         <th width="80">性别</th>
@@ -141,33 +140,155 @@
     $(function() {
         reloadUserTable();
 
-        $('table th input:checkbox').on('click', function () {
-            var that = this;
-            $(this).closest('table').find('tr > td:first-child input:checkbox')
-                .each(function () {
-                    this.checked = that.checked;
-                    $(this).closest('tr').toggleClass('selected');
-                });
-
+        // 查询按钮点击事件
+        $('.btn_search').click(function() {
+            fetchQueryUserData();
         });
 
-    $('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
-        function tooltip_placement(context, source) {
-            var $source = $(source);
-            var $parent = $source.closest('table')
-            var off1 = $parent.offset();
-            var w1 = $parent.width();
-
-            var off2 = $source.offset();
-            var w2 = $source.width();
-
-            if( parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2) ) return 'right';
-            return 'left';
-        }
+        // 回车键触发查询
+        $('.text_add').keypress(function(e) {
+            if(e.which == 13) {
+                fetchQueryUserData();
+            }
+        });
     });
-
-    // 重新加载表格的函数
+    // 重新加载表格的函数（现在只需调用 fetchUserData）
     function reloadUserTable() {
+        fetchAllUserData(); // 会自动触发渲染
+    }
+    // 请求用户数据并自动渲染表格
+    function fetchAllUserData() {
+        $.ajax({
+            url: "${pageContext.request.contextPath}/admin/user/pageSearch",
+            type: "POST",
+            dataType: "json",
+            success: function(data) {
+                renderUserTable(data); // 成功获取数据后自动渲染
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.error("加载用户数据失败:", textStatus, errorThrown);
+                // 可以在这里添加错误提示，比如弹窗或Toast
+            }
+        });
+    }
+    // 请求用户数据并自动渲染表格
+    function fetchQueryUserData() {
+        const params = {
+            searchKey: $('.text_add').val(),
+            // startTime: $('#start').val() ? $('#start').val().split('~')[0].trim() : '',
+            // endTime: $('#start').val() ? $('#start').val().split('~')[1].trim() : ''
+        };
+        $.ajax({
+            url: "${pageContext.request.contextPath}/admin/user/pageList",
+            type: "POST",
+            dataType: "json",
+            data: params,
+            success: function(data) {
+                renderUserTable(data); // 成功获取数据后自动渲染
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.error("加载用户数据失败:", textStatus, errorThrown);
+                // 可以在这里添加错误提示，比如弹窗或Toast
+            }
+        });
+    }
+    // 渲染用户表格
+    function renderUserTable(data) {
+        // 销毁旧表格
+        if ($.fn.dataTable.isDataTable('#sample-table')) {
+            $('#sample-table').DataTable().destroy();
+        }
+
+        // 渲染新表格
+        $('#sample-table').DataTable({
+            data: data,
+            columns: [
+                {
+                    data: null, render: function (e) {
+                        return "<label><input type='checkbox' class='ace'><span class='lbl'></span></label>";
+                    }
+                },
+                { data: "userid" },
+                { data: "username"},
+                {
+                    data: "gender", render: function (gender) {
+                        switch (gender) {
+                            case 1: return "男";
+                            case 2: return "女";
+                            case 3: return "保密";
+                            default: return gender;
+                        }
+                    }
+                },
+                {
+                    data: "phone", render: function(phone) {
+                        return phone || "--";
+                    }
+                },
+                {
+                    data: "email", render: function(email) {
+                        return email || "--";
+                    }
+                },
+                {
+                    data: "address", render: function(address) {
+                        return address || "--";
+                    }
+                },
+                {
+                    data: "time", render: function(time) {
+                        return time || "--";
+                    }
+                },
+                {
+                    data: "role", render: function(role) {
+                        switch (role) {
+                            case 0: return "用户";
+                            case 1: return "管理员";
+                            default: return role;
+                        }
+                    }
+                },
+                {
+                    data: "status", render: function(status) {
+                        switch (status) {
+                            case 0: return "<span class='label label-success radius'>正常</span>";
+                            case 1: return "<span class='label label-defaunt radius'>封禁</span>";
+                            default: return status;
+                        }
+                    }
+                },
+                {
+                    data: null, render: function(data, type, row) {
+                        var html = "";
+                        html += "<td class='td-manage'>";
+                        if (data.status === 0) {
+                            // 正常 ➔ 显示停用按钮（红色）
+                            html += "<a onclick='changeUserStatus(this, \"" + data.userid + "\", 1)' ";
+                            html += "class='btn btn-xs btn-danger' title='停用'>";
+                            html += "<i class='icon-remove bigger-120'></i></a> ";
+                        } else if (data.status === 1) {
+                            // 封禁 ➔ 显示启用按钮（绿色）
+                            html += "<a onclick='changeUserStatus(this, \"" + data.userid + "\", 0)' ";
+                            html += "class='btn btn-xs btn-success' title='启用'>";
+                            html += "<i class='icon-ok bigger-120'></i></a> ";
+                        }
+                        html += "<a onclick='member_edit(\"" + data.userid + "\")' ";
+                        html += "class='btn btn-xs btn-info' title='编辑'>";
+                        html += "<i class='icon-edit bigger-120'></i></a> ";
+                        html += "<a onclick='member_del(this, \"" + data.userid + "\")' ";
+                        html += "class='btn btn-xs btn-warning' title='删除'>";
+                        html += "<i class='icon-trash bigger-120'></i></a>";
+                        html += "</td>";
+                        return html;
+                    }
+                }
+            ],
+            destroy: true
+        });
+    }
+    // 重新加载表格的函数
+    /*function reloadUserTable() {
         // 销毁旧表格
         if ($.fn.dataTable.isDataTable('#sample-table')) {
             $('#sample-table').DataTable().destroy();
@@ -265,7 +386,7 @@
             ],
             destroy: true
         });
-    }
+    }*/
 
     // 更改用户状态的函数
     function changeUserStatus(obj, userid, status) {
@@ -591,10 +712,14 @@
         });
     }
 
-    // 日期选择器初始化
-    laydate({
+    // 初始化日期选择器
+    laydate.render({
         elem: '#start',
-        event: 'focus'
+        type: 'datetime',
+        range: '~',
+        format: 'yyyy-MM-dd HH:mm:ss'
     });
+
+
 
 </script>

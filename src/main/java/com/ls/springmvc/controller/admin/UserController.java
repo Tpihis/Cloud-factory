@@ -3,6 +3,7 @@ package com.ls.springmvc.controller.admin;
 import com.ls.springmvc.service.UserService;
 import com.ls.springmvc.vo.AjaxResponse;
 import com.ls.springmvc.vo.User;
+import com.ls.springmvc.vo.UserPageParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -90,8 +91,8 @@ public class UserController {
     @PostMapping(value="/update")
     @ResponseBody
     public AjaxResponse update(@RequestBody  User user) {
-        boolean update = userService.updateUser(user);
-        if(update){
+        int update = userService.updateUser(user);
+        if(update > 0){
             ajaxResponse.setCode(0);
             ajaxResponse.setMsg("更新成功");
         }else{
@@ -134,4 +135,24 @@ public class UserController {
         }
         return ajaxResponse;
     }
+    @GetMapping(value="/search_pager")
+    public String search_pager() {
+        return "admin/user/searchPager";
+    }
+
+    @PostMapping(value="/pageList")
+    @ResponseBody
+    public List<User> pageListUser(UserPageParam userPageParam) {
+        userPageParam.setPageNum((userPageParam.getPageNum() == null || userPageParam.getPageNum()== 0)? 1 : userPageParam.getPageNum());
+        userPageParam.setPageSize((userPageParam.getPageSize() == null || userPageParam.getPageSize()== 0)? 10000 : userPageParam.getPageSize());
+        userPageParam.setPageNum((userPageParam.getPageNum()-1)*userPageParam.getPageSize());
+        return userService.pageListUser(userPageParam);
+    }
+
+    @PostMapping(value="/totalCount")
+    @ResponseBody
+    public int totalUserCount(UserPageParam userPageParam) {
+        return userService.totalUserCount(userPageParam);
+    }
+
 }

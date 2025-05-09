@@ -346,6 +346,12 @@
 <%--                        <li class="home"><a href="javascript:void(0)" name="integration.html" title="会员记录管理"  class="iframeurl"><i class="icon-double-angle-right"></i>会员记录管理</a></li>--%>
                     </ul>
                 </li>
+                <li>
+                    <a href="#" class="dropdown-toggle"><i class="icon-list"></i><span class="menu-text"> 动态sql语句 </span><b class="arrow icon-angle-down"></b></a>
+                    <ul class="submenu">
+                        <li class="home"><a href="javascript:void(0)" name="${pageContext.request.contextPath}/admin/user/search_pager" title="分页模糊查询"  class="iframeurl"><i class="icon-double-angle-right"></i>分页模糊查询</a></li>
+                    </ul>
+                </li>
 <%--                <li>--%>
 <%--                    <a href="#" class="dropdown-toggle"><i class="icon-picture "></i><span class="menu-text"> 图片管理 </span><b class="arrow icon-angle-down"></b></a>--%>
 <%--                    <ul class="submenu">--%>

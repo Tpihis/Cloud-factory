@@ -2,6 +2,7 @@ package com.ls.springmvc.dao;
 
 
 import com.ls.springmvc.vo.User;
+import com.ls.springmvc.vo.UserPageParam;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -25,7 +26,7 @@ public interface UserDao {
     List<User> pageSearch();
 
     // 修改用户
-    boolean updateUser(User user);
+//    boolean updateUser(User user);
 
     // 删除用户
     boolean deleteUser(Integer userid);
@@ -35,5 +36,10 @@ public interface UserDao {
 
     boolean batchDelete(@Param("userids") List<Long> userids);
 
-
+    //通过注解(静态)和xml里面(动态)两种方式编写SQL语句
+    int updateUser(User user);
+    //查询满足条件的某一页用户
+    List<User> pageListUser(UserPageParam userPageParam);
+    //查询满足条件的所有用户数
+    int totalUserCount(UserPageParam userPageParam);
 }

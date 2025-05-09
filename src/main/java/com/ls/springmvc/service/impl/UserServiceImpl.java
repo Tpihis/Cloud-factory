@@ -4,6 +4,7 @@ import com.ls.springmvc.dao.UserDao;
 import com.ls.springmvc.service.UserService;
 import com.ls.springmvc.vo.ServiceMessage;
 import com.ls.springmvc.vo.User;
+import com.ls.springmvc.vo.UserPageParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -51,11 +52,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean updateUser(User user) {
-        boolean result = false;
+    public int updateUser(User user) {
+        int result = 0;
         try {
-            userDao.updateUser(user);
-            result = true;
+            result = userDao.updateUser(user);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -118,6 +118,15 @@ public class UserServiceImpl implements UserService {
         return userDao.batchDelete(userids);
     }
 
+    @Override
+    public List<User> pageListUser(UserPageParam userPageParam) {
+        return userDao.pageListUser(userPageParam);
+    }
+
+    @Override
+    public int totalUserCount(UserPageParam userPageParam) {
+        return userDao.totalUserCount(userPageParam);
+    }
     @Override
     public UserDetails loadUserByUsername(String username) {
         UserDetails user = null;
