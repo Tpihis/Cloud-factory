@@ -10,6 +10,8 @@
     <title>云制造资源优化平台 - 资源详情</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="${pageContext.request.contextPath}/static/assets/js/jquery.min.js"></script>
     <style>
         :root {
             --primary-color: #3498db;
@@ -247,7 +249,7 @@
 </head>
 
 <body>
-    <!-- 导航栏 -->
+    <%--<!-- 导航栏 -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
         <div class="container">
             <a class="navbar-brand" href="#">
@@ -292,7 +294,7 @@
                 </div>
             </div>
         </div>
-    </nav>
+    </nav>--%>
     <!-- 主要内容区 -->
     <div class="container py-4">
         <!-- 面包屑导航 -->
@@ -305,7 +307,7 @@
         </nav>
         <div class="row">
             <!-- 左侧边栏 -->
-            <div class="col-lg-3 mb-4">
+            <%--<div class="col-lg-3 mb-4">
                 <div class="sidebar">
                     <!-- 搜索框 -->
                     <div class="search-box mb-4">
@@ -404,41 +406,111 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>--%>
             <!-- 右侧资源详情内容 -->
             <div class="col-lg-9 mb-4 right-content">
                 <!-- 资源详情卡片 -->
-                <div class="resource-detail-card">
-                    <div class="resource-detail-header">
-                        <h2 class="resource-name">高精度CNC加工设备</h2>
-                        <span class="category-badge">设备资源</span>
-                    </div>
-                    <div class="resource-tags">
-                        <span class="resource-tag">机械加工</span>
-                        <span class="resource-tag">高精度</span>
-                        <span class="resource-tag">CNC</span>
-                    </div>
-                    <img src="https://via.placeholder.com/800x400" alt="CNC加工设备" class="product-img">
-                    <div class="resource-info">
-                        <span class="info-label">价格：</span><span class="price">¥500/小时</span>
-                        <span class="info-label">数量：</span><span class="evaluation">3台</span>
-                        <span class="info-label">资源类型：</span><span class="delivery">设备</span>
-                        <span class="info-label">规格：</span><span class="service">XYZ行程1000*800*500mm</span>
-                        <span class="info-label">状态：</span><span class="installment">可用</span>
-                        <span class="info-label">好评率：</span><span class="installment">90%</span>
-                    </div>
-                    <div class="section-header">
-                        <h3>资源描述</h3>
-                    </div>
-                    <p>该高精度CNC加工设备采用先进的控制系统，具备高稳定性和高精度加工能力，适用于多种复杂零部件的加工，可满足汽车制造、航空航天等行业的高精度加工需求。</p>
-                    <div class="purchase-buttons">
-                        <button class="buy-now">购买资源</button>
-                    </div>
-                </div>
+                <div class="resource-detail-container"></div>
             </div>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
+<script>
+
+    // 获取URL中的资源ID
+    function getResourceIdFromUrl() {
+        var urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get('resourceId');
+    }
+
+    // 加载资源详情
+    function loadResourceDetail() {
+        const resourceId = getResourceIdFromUrl();
+        if (!resourceId) {
+            console.error("未获取到资源ID");
+            return;
+        }
+
+        $.ajax({
+            url: '${pageContext.request.contextPath}/user/resource/' + resourceId,
+            type: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                if (response.code === 0) {
+                    renderResourceDetail(response.obj); // 渲染数据
+                    console.log(response.obj);
+                } else {
+                    showError(response.msg || "加载失败");
+                }
+            },
+            error: function(xhr) {
+                console.error("请求失败:", xhr.status);
+                document.querySelector('.resource-detail-card').innerHTML =
+                    '<div class="alert alert-danger">加载资源详情失败</div>';
+            }
+        });
+    }
+
+    // 渲染资源详情（纯字符串拼接）
+    function renderResourceDetail(resource) {
+        var html =
+            '<div class="resource-detail-card">' +
+            '<div class="resource-detail-header">' +
+            '<h2 class="resource-name">' + resource.resourcename + '</h2>' +
+            '<span class="category-badge">' + getCategoryName(resource.categoryid) + '</span>' +
+            '</div>' +
+            '<div class="resource-tags">' +
+            '<span class="resource-tag">标签</span>' +
+            '<span class="resource-tag">标签</span>' +
+            '<span class="resource-tag">标签</span>' +
+            '</div>' +
+            '<img src="' + (resource.imageUrl || 'https://via.placeholder.com/800x400') + '" alt="' + resource.resourcename + '" class="product-img">' +
+            '<div class="resource-info">' +
+            '<span class="info-label">价格：</span><span class="price">¥' + resource.resourceprice.toFixed(2) + '</span>' +
+            '<span class="info-label">数量：</span><span class="evaluation">' + resource.quantity + '台</span>' +
+            '<span class="info-label">资源类型：</span><span class="delivery">' + getCategoryName(resource.categoryid) + '</span>' +
+            '<span class="info-label">规格：</span><span class="service">' + (resource.specification || '暂无规格') + '</span>' +
+            '<span class="info-label">状态：</span><span class="installment">' + getResourceStatus(resource.resourcestatus) + '</span>' +
+            '<span class="info-label">好评率：</span><span class="installment">' + (resource.rating || '暂无评分') + '</span>' +
+            '</div>' +
+            '<div class="section-header">' +
+            '<h3>资源描述</h3>' +
+            '</div>' +
+            '<p>' + (resource.resourcedescription || '暂无描述') + '</p>' +
+            '<div class="purchase-buttons">' +
+            '<button class="buy-now">购买资源</button>' +
+            '</div>' +
+            '</div>';
+        //清空数据
+        document.querySelector('.resource-detail-container').innerHTML = html;
+    }
+
+    // 辅助函数：分类ID转名称
+    function getCategoryName(categoryId) {
+        let categories = {
+            1: '设备资源',
+            2: '工艺知识',
+            3: '设计模型',
+            4: '制造服务'
+        };
+        return categories[categoryId] || '其他';
+    }
+
+    // 辅助函数：分类ID转资源类型
+    function getResourceStatus(resourceStatus) {
+        let status = {
+            1: "繁忙",
+            2: "空闲",
+            3: "损坏",
+        };
+        return status[resourceStatus] || '其他';
+    }
+
+    // 页面加载时执行
+    document.addEventListener('DOMContentLoaded', function() {
+        loadResourceDetail();
+    });
+
+</script>

@@ -4,7 +4,7 @@ import com.ls.springmvc.dao.UserDao;
 import com.ls.springmvc.service.UserService;
 import com.ls.springmvc.vo.ServiceMessage;
 import com.ls.springmvc.vo.User;
-import com.ls.springmvc.vo.UserPageParam;
+import com.ls.springmvc.vo.page.UserPageParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -138,6 +138,7 @@ public class UserServiceImpl implements UserService {
                     true, true,
                     getAuthorities(existUser.getRole()));
         } catch (Exception e) {
+
             throw new UsernameNotFoundException("Error in retrieving user");
         }
         return user;

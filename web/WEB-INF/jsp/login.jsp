@@ -117,7 +117,7 @@
 <%--            <label><input type="radio" name = "role" value = 0 required> 用户</label>--%>
 <%--        </div>--%>
 
-        <button class="btn" value="Login" >登录</button>
+        <button id="login" class="btn" value="Login" >登录</button>
     </form>
 
     <div class="footer">

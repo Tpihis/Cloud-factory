@@ -1,14 +1,17 @@
 package com.ls.springmvc.vo;
 
+import lombok.Data;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 @Component
+@Data
 @Scope(value = "prototype")
 public class AjaxResponse {
     private Integer code;
     private String msg;
     private Object obj;
+
 
     public Integer getCode() {
         return code;

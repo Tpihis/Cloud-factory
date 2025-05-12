@@ -1,0 +1,5 @@
+// 原模板字符串
+`<li class="page-item ${active}">...</li>`
+
+// 字符串拼接替代
+'<li class="page-item ' + active + '">...</li>'

@@ -1,4 +1,4 @@
-package com.ls.springmvc.controller;
+package com.ls.springmvc.controller.user;
 
 import com.ls.springmvc.service.UserService;
 import com.ls.springmvc.vo.AjaxResponse;
@@ -19,12 +19,6 @@ public class UserController {
     private AjaxResponse ajaxResponse;
 
 
-//    @GetMapping("/login")
-//    public String loginPage(){
-//        return "login";
-//    }
-//
-
     @GetMapping("/register")
     public String registerPage(){
         return "register";
@@ -35,10 +29,18 @@ public class UserController {
         return "chat";
     }
 
-
-    @GetMapping("/resourceDisplay")
-    public String resourceDisplay(){
-        return "/user/resourceDisplay";
+    @GetMapping("/index")
+    public String iframe(){
+        return "user/iframe_top";
     }
 
+    @GetMapping("/orderList")
+    public String orderList(){
+        return "user/orderList";
+    }
+
+    @GetMapping("/personalCenter")
+    public String personalCenter(){
+        return "user/personalCenter";
+    }
 }

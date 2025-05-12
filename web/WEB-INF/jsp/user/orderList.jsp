@@ -547,3 +547,24 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+<script>
+    // $('.dropdown-menu').on('show.bs.dropdown', function () {
+    //     console.log('下拉框已弹出');
+    // });
+    //
+    // $('.dropdown-menu').on('hide.bs.dropdown', function () {
+    //     console.log('下拉框已隐藏');
+    // });
+    // 获取下拉菜单元素
+    const dropdownMenu = document.querySelector('.dropdown-menu');
+
+    // 监听下拉菜单的显示事件
+    dropdownMenu.addEventListener('show.bs.dropdown', function () {
+        console.log('下拉框已弹出');
+    });
+
+    // 如果你想同时监听隐藏事件
+    dropdownMenu.addEventListener('hide.bs.dropdown', function () {
+        console.log('下拉框已隐藏');
+    });
+</script>

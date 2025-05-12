@@ -32,11 +32,9 @@
     <![endif]-->
 
     <!--[if !IE]> -->
-
     <script type="text/javascript">
         window.jQuery || document.write("<script src='${pageContext.request.contextPath}/static/assets/js/jquery-2.0.3.min.js'>"+"<"+"/script>");
     </script>
-
     <!-- <![endif]-->
 
     <!--[if IE]>
@@ -67,7 +65,7 @@
             <div class="search_style">
                 <div class="title_names">搜索查询</div>
                 <ul class="search_content clearfix">
-                    <li><label class="l_f">会员名称</label><input name="" type="text"  class="text_add" placeholder="输入会员名称、电话、邮箱"  style=" width:400px"/></li>
+                    <li><label class="l_f">会员名称</label><input name="" type="text"  class="text_add" placeholder="输入用户名称、电话、邮箱"  style=" width:400px"/></li>
                     <li><label class="l_f">添加时间</label><input class="inline laydate-icon" id="start" style=" margin-left:10px;"></li>
                     <li style="width:90px;"><button type="button" class="btn_search"><i class="icon-search"></i>查询</button></li>
                 </ul>
@@ -156,6 +154,24 @@
     function reloadUserTable() {
         fetchAllUserData(); // 会自动触发渲染
     }
+    // 更新总数显示
+    function updateTotalCount(count) {
+        $('.r_f b').text(count || 0);
+    }
+    function fetchTotalCount() {
+      $.ajax({
+          url: "${pageContext.request.contextPath}/admin/user/totalCount",
+          type: "POST",
+          dataType: "json",
+          success: function(data) {
+              updateTotalCount(data); // 成功获取数据后自动渲染
+              console.log(data);
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+              console.error("加载用户数据失败:", textStatus, errorThrown);
+          }
+      })
+    }
     // 请求用户数据并自动渲染表格
     function fetchAllUserData() {
         $.ajax({
@@ -164,6 +180,7 @@
             dataType: "json",
             success: function(data) {
                 renderUserTable(data); // 成功获取数据后自动渲染
+                fetchTotalCount();
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 console.error("加载用户数据失败:", textStatus, errorThrown);
@@ -171,7 +188,7 @@
             }
         });
     }
-    // 请求用户数据并自动渲染表格
+    // 请求用户数据并自动渲染表格_模糊查询
     function fetchQueryUserData() {
         const params = {
             searchKey: $('.text_add').val(),
@@ -185,6 +202,7 @@
             data: params,
             success: function(data) {
                 renderUserTable(data); // 成功获取数据后自动渲染
+                fetchTotalCount();
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 console.error("加载用户数据失败:", textStatus, errorThrown);
@@ -287,106 +305,6 @@
             destroy: true
         });
     }
-    // 重新加载表格的函数
-    /*function reloadUserTable() {
-        // 销毁旧表格
-        if ($.fn.dataTable.isDataTable('#sample-table')) {
-            $('#sample-table').DataTable().destroy();
-        }
-
-        // 重新渲染
-        $('#sample-table').DataTable({
-            ajax: {
-                url: "${pageContext.request.contextPath}/admin/user/pageSearch",
-                type: "POST",
-                dataType: "json",
-                dataSrc: "" // 后端返回的是数组
-            },
-            columns: [
-                {
-                    data: null, render: function (e) {
-                        return "<label><input type='checkbox' class='ace'><span class='lbl'></span></label>";
-                    }
-                },
-                { data: "userid" },
-                { data: "username"},
-                {
-                    data: "gender", render: function (gender) {
-                        switch (gender) {
-                            case 1: return "男";
-                            case 2: return "女";
-                            case 3: return "保密";
-                            default: return gender;
-                        }
-                    }
-                },
-                {
-                    data: "phone", render: function(phone) {
-                        return phone || "--";
-                    }
-                },
-                {
-                    data: "email", render: function(email) {
-                        return email || "--";
-                    }
-                },
-                {
-                    data: "address", render: function(address) {
-                        return address || "--";
-                    }
-                },
-                {
-                    data: "time", render: function(time) {
-                        return time || "--";
-                    }
-                },
-                {
-                    data: "role", render: function(role) {
-                        switch (role) {
-                            case 0: return "用户";
-                            case 1: return "管理员";
-                            default: return role;
-                        }
-                    }
-                },
-                {
-                    data: "status", render: function(status) {
-                        switch (status) {
-                            case 0: return "<span class='label label-success radius'>正常</span>";
-                            case 1: return "<span class='label label-defaunt radius'>封禁</span>";
-                            default: return status;
-                        }
-                    }
-                },
-                {
-                    data: null, render: function(data, type, row) {
-                        var html = "";
-                        html += "<td class='td-manage'>";
-                        if (data.status === 0) {
-                            // 正常 ➔ 显示停用按钮（红色）
-                            html += "<a onclick='changeUserStatus(this, \"" + data.userid + "\", 1)' ";
-                            html += "class='btn btn-xs btn-danger' title='停用'>";
-                            html += "<i class='icon-remove bigger-120'></i></a> ";
-                        } else if (data.status === 1) {
-                            // 封禁 ➔ 显示启用按钮（绿色）
-                            html += "<a onclick='changeUserStatus(this, \"" + data.userid + "\", 0)' ";
-                            html += "class='btn btn-xs btn-success' title='启用'>";
-                            html += "<i class='icon-ok bigger-120'></i></a> ";
-                        }
-                        html += "<a onclick='member_edit(\"" + data.userid + "\")' ";
-                        html += "class='btn btn-xs btn-info' title='编辑'>";
-                        html += "<i class='icon-edit bigger-120'></i></a> ";
-                        html += "<a onclick='member_del(this, \"" + data.userid + "\")' ";
-                        html += "class='btn btn-xs btn-warning' title='删除'>";
-                        html += "<i class='icon-trash bigger-120'></i></a>";
-                        html += "</td>";
-                        return html;
-                    }
-                }
-            ],
-            destroy: true
-        });
-    }*/
 
     // 更改用户状态的函数
     function changeUserStatus(obj, userid, status) {

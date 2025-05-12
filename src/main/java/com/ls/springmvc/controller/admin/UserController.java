@@ -3,7 +3,7 @@ package com.ls.springmvc.controller.admin;
 import com.ls.springmvc.service.UserService;
 import com.ls.springmvc.vo.AjaxResponse;
 import com.ls.springmvc.vo.User;
-import com.ls.springmvc.vo.UserPageParam;
+import com.ls.springmvc.vo.page.UserPageParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -31,12 +31,17 @@ public class UserController {
         return "admin/user/userList";
     }
 
+    @GetMapping(value="/search_pager")
+    public String search_pager() {
+        return "admin/user/searchPager";
+    }
 
     @PostMapping(value = "/pageSearch")
     @ResponseBody
     public List<User> pageSearch() {
         return userService.pageSearch();
     }
+
 
     @PostMapping(value="/add")
     @ResponseBody
@@ -135,10 +140,7 @@ public class UserController {
         }
         return ajaxResponse;
     }
-    @GetMapping(value="/search_pager")
-    public String search_pager() {
-        return "admin/user/searchPager";
-    }
+
 
     @PostMapping(value="/pageList")
     @ResponseBody

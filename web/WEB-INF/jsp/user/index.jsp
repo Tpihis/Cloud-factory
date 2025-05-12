@@ -21,7 +21,8 @@
 <%--</c:forEach>--%>
 <a href="${pageContext.request.contextPath}/logout">退出</a>
 <a href="/user/chat">消息</a>
-<a href="/user/resourceDisplay">资源展示</a>
+<a href="/user/resource/display">资源展示</a>
+<a href="/user/index">iframe</a>
 <a href="${pageContext.request.contextPath}/auth/loginPage">登录</a>
 </body>
 </html>

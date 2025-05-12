@@ -1,4 +1,4 @@
-package com.ls.springmvc.vo;
+package com.ls.springmvc.vo.page;
 
 import lombok.Data;
 

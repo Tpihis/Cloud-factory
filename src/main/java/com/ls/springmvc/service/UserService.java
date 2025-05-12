@@ -2,7 +2,7 @@ package com.ls.springmvc.service;
 
 import com.ls.springmvc.vo.ServiceMessage;
 import com.ls.springmvc.vo.User;
-import com.ls.springmvc.vo.UserPageParam;
+import com.ls.springmvc.vo.page.UserPageParam;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;

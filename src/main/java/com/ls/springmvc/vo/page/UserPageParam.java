@@ -1,6 +1,5 @@
-package com.ls.springmvc.vo;
+package com.ls.springmvc.vo.page;
 
-import com.mysql.cj.x.protobuf.MysqlxDatatypes;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 

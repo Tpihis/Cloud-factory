@@ -18,5 +18,44 @@
         values(#{resourceid}, #{userid},#{resourcename},#{resourcedescription},#{quantity},#{resourceprice},
                #{resourcestatus},#{categoryid},#{resourcedate},#{auditstatus})
     </insert>
+    <select id="getResourceById" resultType="com.ls.springmvc.vo.Resource">
+        SELECT * FROM resource WHERE resourceid = #{resourceid}
+    </select>
+    <!-- 基础查询字段 -->
+    <sql id="list_resource">
+        SELECT userid, resourceid, resourcename, resourcedescription,quantity,
+               resourceprice, resourcestatus, categoryid, resourcedate,auditstatus
+        FROM resource
+    </sql>
 
+    <!-- 动态查询条件 -->
+    <sql id="dynamicConditions">
+        <where>
+            <if test="searchKey != null and searchKey != ''">
+                AND resourcename LIKE CONCAT('%', #{searchKey}, '%')
+            </if>
+            <if test="resourcestatus != null">
+                AND resourcestatus = #{resourcestatus}
+            </if>
+            <if test="categoryid != null">
+                AND categoryid = #{categoryid}
+            </if>
+        </where>
+    </sql>
+
+    <!-- 分页查询 -->
+    <select id="pageListResource" resultType="com.ls.springmvc.vo.Resource">
+        <include refid="list_resource"/>
+        <include refid="dynamicConditions"/>
+        <if test="orderBy != null and orderDirect != null">
+            ORDER BY ${orderBy} ${orderDirect}
+        </if>
+        LIMIT #{pageNum}, #{pageSize}
+    </select>
+
+    <!-- 查询总数 -->
+    <select id="totalResourceCount" resultType="int">
+        SELECT COUNT(*) FROM resource
+        <include refid="dynamicConditions"/>
+    </select>
 </mapper>

@@ -2,7 +2,7 @@ package com.ls.springmvc.dao;
 
 
 import com.ls.springmvc.vo.User;
-import com.ls.springmvc.vo.UserPageParam;
+import com.ls.springmvc.vo.page.UserPageParam;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

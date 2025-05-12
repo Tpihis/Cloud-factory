@@ -17,6 +17,7 @@ public class IndexController {
    @GetMapping("/")
    public String Index(){
        return "user/index";
+//       return "user/在JSP页面中打印网址";
    }
 
 }
