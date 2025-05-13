@@ -24,50 +24,9 @@
             background-color: #f5f7fa;
         }
 
-        .navbar-brand {
-            font-weight: 700;
-            color: var(--primary-color);
-        }
-
-        .resource-card {
-            transition: transform 0.3s, box-shadow 0.3s;
-            border-radius: 10px;
-            overflow: hidden;
-            margin-bottom: 20px;
-            border: none;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
         .resource-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-        }
-
-        .card-img-top {
-            height: 160px;
-            object-fit: cover;
-        }
-
-        .category-badge {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: rgba(52, 58, 64, 0.8);
-            color: white;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-        }
-
-        .resource-tag {
-            display: inline-block;
-            background-color: #e9ecef;
-            padding: 3px 8px;
-            border-radius: 15px;
-            font-size: 0.75rem;
-            margin-right: 5px;
-            margin-bottom: 5px;
-            color: #495057;
         }
 
         .section-header {
@@ -86,57 +45,10 @@
             background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
         }
 
-        .sidebar {
-            background-color: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-        }
-
-        .sidebar-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 15px;
-            color: var(--dark-bg);
-        }
-
-        .filter-group {
-            margin-bottom: 25px;
-        }
-
-        .filter-title {
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: #495057;
-        }
-
-        .stats-card {
-            background-color: white;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-        }
-
-        .stats-value {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--primary-color);
-        }
-
-        .stats-label {
-            font-size: 0.9rem;
-            color: #6c757d;
-        }
 
         .breadcrumb {
             background-color: transparent;
             padding: 0;
-        }
-
-        .search-box {
-            position: relative;
         }
 
         .search-box input {
@@ -183,57 +95,35 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
             margin-top: 20px;
         }
+        /* Toast提示样式 */
+        .toast {
+            transition: opacity 0.3s ease;
+            top: 20px;
+            right: 20px;
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+
+        .bg-success {
+            background-color: #28a745 !important;
+        }
+
+        .bg-danger {
+            background-color: #dc3545 !important;
+        }
+
+        /* 按钮加载状态 */
+        .spinner-border-sm {
+            width: 1rem;
+            height: 1rem;
+            border-width: 0.2em;
+        }
     </style>
 </head>
 
 <body>
-    <!-- 导航栏 -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-        <div class="container">
-            <a class="navbar-brand" href="#">
-                <i class="bi bi-cloud-fill me-2"></i>云制造资源优化平台
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">首页</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#">资源中心</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">制造服务</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">数据分析</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">我的项目</a>
-                    </li>
-                </ul>
-                <div class="d-flex align-items-center">
-                    <div class="dropdown me-3">
-                        <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" id="userDropdown"
-                            data-bs-toggle="dropdown">
-                            <img src="https://via.placeholder.com/40" alt="用户头像" class="rounded-circle me-2">
-                            <span>张工程师</span>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="#">个人中心</a></li>
-                            <li><a class="dropdown-item" href="#">我的收藏</a></li>
-                            <li><a class="dropdown-item" href="#">消息中心</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">退出登录</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </nav>
-
     <!-- 主要内容区 -->
     <div class="container py-4">
         <!-- 面包屑导航 -->
@@ -247,7 +137,7 @@
 
         <div class="row">
             <!-- 左侧边栏 -->
-            <div class="col-lg-3 mb-4">
+            <%--<div class="col-lg-3 mb-4">
                 <div class="sidebar">
                     <!-- 搜索框 -->
                     <div class="search-box mb-4">
@@ -346,33 +236,32 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>--%>
 
             <!-- 右侧资源发布页面 -->
             <div class="col-lg-9">
                 <h4 class="section-header">资源发布</h4>
                 <div class="task-form">
                     <div class="card-body">
-                        <form>
+                        <form action="${pageContext.request.contextPath}/user/resource/publish" method="post">
                             <div class="row">
                                 <!-- 资源名称 -->
                                 <div class="col-md-6 mb-3">
-                                    <label for="resourceName" class="form-label">资源名称</label>
-                                    <input type="text" class="form-control" id="resourceName" placeholder="请输入资源的具体名称">
+                                    <label for="resourceName" class="form-label">*资源名称</label>
+                                    <input type="text" class="form-control" id="resourceName"  name="resourcename" placeholder="请输入资源的具体名称" required>
                                 </div>
-                                <!-- 资源所属行业 -->
+                                <!-- 资源所属类别 -->
                                 <div class="col-md-6 mb-3">
-                                    <label for="industry" class="form-label">资源所属行业</label>
-                                    <select class="form-select" id="industry">
-                                        <option>汽车零部件制造</option>
-                                        <option>航空发动机制造</option>
-                                        <option>消费电子制造</option>
-                                        <option>医疗耗材生产</option>
-                                        <option>工业机械制造</option>
+                                    <label for="category" class="form-label">资源所属类别</label>
+                                    <select class="form-select" id="category" name="categoryid">
+                                        <option value="1">设备资源</option>
+                                        <option value="2">工艺知识</option>
+                                        <option value="3">设计模型</option>
+                                        <option value="4">制造服务</option>
                                     </select>
                                 </div>
                             </div>
-                            <div class="row">
+                        <%--<div class="row">
                                 <!-- 资源工艺类型 -->
                                 <div class="col-md-6 mb-3">
                                     <label for="process" class="form-label">资源涉及工艺</label>
@@ -393,47 +282,47 @@
                                         <option>智能仓储设备</option>
                                     </select>
                                 </div>
-                            </div>
+                            </div>--%>
                             <div class="row">
-                                <!-- 资源详细规格 -->
+                               <%-- <!-- 资源详细规格 -->
                                 <div class="col-md-6 mb-3">
                                     <label for="specification" class="form-label">资源详细规格</label>
                                     <input type="text" class="form-control" id="specification"
                                         placeholder="请详细描述资源的规格，如精度、功率等">
-                                </div>
+                                </div>--%>
                                 <!-- 资源可用数量 -->
                                 <div class="col-md-6 mb-3">
-                                    <label for="quantity" class="form-label">资源可用数量</label>
-                                    <input type="number" class="form-control" id="quantity" placeholder="请输入资源的可用数量">
+                                    <label for="quantity" class="form-label">*资源可用数量</label>
+                                    <input type="number" class="form-control" id="quantity" name="quantity" placeholder="请输入资源的可用数量" required>
                                 </div>
                             </div>
                             <div class="row">
                                 <!-- 资源租赁价格 -->
                                 <div class="col-md-6 mb-3">
-                                    <label for="price" class="form-label">资源租赁单价（元/天）</label>
-                                    <input type="number" class="form-control" id="price" placeholder="请输入资源的租赁单价">
+                                    <label for="price" class="form-label">*资源租赁单价（元/天）</label>
+                                    <input type="number" class="form-control" id="price" name="resourceprice" placeholder="请输入资源的租赁单价" required>
                                 </div>
                                 <!-- 资源当前状态 -->
                                 <div class="col-md-6 mb-3">
                                     <label for="status" class="form-label">资源当前状态</label>
-                                    <select class="form-select" id="status">
-                                        <option>闲置可立即使用</option>
-                                        <option>需提前预约使用</option>
-                                        <option>近期有维护计划</option>
+                                    <select class="form-select" id="status" name="resourcestatus">
+                                        <option value="1">繁忙</option>
+                                        <option value="2">空闲</option>
+                                        <option value="3">损坏</option>
                                     </select>
                                 </div>
                             </div>
                             <!-- 资源详细说明 -->
                             <div class="mb-3">
                                 <label for="description" class="form-label">资源详细说明</label>
-                                <textarea class="form-control" id="description" rows="3"
+                                <textarea class="form-control" id="description" name="resourcedescription" rows="3"
                                     placeholder="请详细描述资源的特点、优势等"></textarea>
                             </div>
-                            <!-- 上传资源资料 -->
+                            <%--<!-- 上传资源资料 -->
                             <div class="mb-3">
                                 <label for="file" class="form-label">上传资源相关资料</label>
                                 <input class="form-control" type="file" id="file">
-                            </div>
+                            </div>--%>
                             <!-- 提交按钮 -->
                             <button type="submit" class="btn btn-primary">发布资源</button>
                         </form>
@@ -446,4 +335,98 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
-</html>    
+</html>
+<script>
+    // 拦截表单提交并处理
+    document.querySelector('form').addEventListener('submit', function(event) {
+        event.preventDefault(); // 阻止默认表单提交
+
+        // 收集表单数据
+        const formData = new FormData(this);
+        const jsonData = {};
+        formData.forEach((value, key) => {
+            // 转换数字类型字段
+            if (['quantity', 'resourceprice', 'categoryid', 'resourcestatus'].includes(key)) {
+                jsonData[key] = value ? Number(value) : null;
+            } else {
+                jsonData[key] = value;
+            }
+        });
+
+        // 显示加载中状态
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const originalBtnText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> 提交中...';
+        submitBtn.disabled = true;
+
+        // 发送AJAX请求
+        fetch('${pageContext.request.contextPath}/user/resource/publish', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(jsonData)
+        })
+            .then(response => response.json())
+            .then(data => {
+                // 恢复按钮状态
+                submitBtn.innerHTML = originalBtnText;
+                submitBtn.disabled = false;
+
+                if (data.code === 0) {
+                    // 成功提示
+                    showToast('资源发布成功', 'success');
+
+                    // 2秒后刷新父页面
+                    setTimeout(() => {
+                        if (window.opener) {
+                            parent.opener.location.reload();
+                            window.close();
+                        } else {
+                            parent.location.reload();
+                        }
+                    }, 2000);
+                } else {
+                    showToast(data.msg || '发布失败', 'error');
+                }
+            })
+            .catch(error => {
+                // 恢复按钮状态
+                submitBtn.innerHTML = originalBtnText;
+                submitBtn.disabled = false;
+                showToast('请求失败: ' + error.message, 'error');
+            });
+    });
+
+    // 显示Toast提示函数（字符串拼接版）
+    function showToast(message, type) {
+        type = type || 'success';
+
+        // 移除旧的toast
+        var oldToast = document.getElementById('custom-toast');
+        if (oldToast) oldToast.parentNode.removeChild(oldToast);
+
+        // 创建toast元素
+        var toast = document.createElement('div');
+        toast.id = 'custom-toast';
+        toast.className = 'toast show align-items-center text-white bg-' + (type === 'error' ? 'danger' : 'success');
+        toast.style.position = 'fixed';
+        toast.style.zIndex = '9999';
+        toast.style.minWidth = '250px';
+
+        toast.innerHTML = '<div class="d-flex">' +
+            '<div class="toast-body">' + message + '</div>' +
+            '<button type="button" class="btn-close btn-close-white me-2 m-auto"' +
+            'onclick="document.getElementById(\'custom-toast\').remove()"></button>' +
+            '</div>';
+
+        document.body.appendChild(toast);
+
+        // 2秒后自动消失
+        setTimeout(function() {
+            if (document.getElementById('custom-toast')) {
+                document.getElementById('custom-toast').remove();
+            }
+        }, 2000);
+    }
+</script>

@@ -10,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.xml.transform.Result;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +33,10 @@ public class ResourceController {
     @GetMapping("/details")
     public String resourceDetails(){
         return "/user/resourceDetails";
+    }
+    @GetMapping("/publish")
+    public String resourcePublish(){
+        return "/user/resourcePublishing";
     }
 
     @PostMapping(value = "/pageSearch")
@@ -69,6 +75,32 @@ public class ResourceController {
             ajaxResponse.setCode(0);
             ajaxResponse.setMsg("获取资源成功");
             ajaxResponse.setObj(resource);
+        }
+        return ajaxResponse;
+    }
+
+    @PostMapping(value="/publish")
+    @ResponseBody
+    public AjaxResponse resourcePublish(@RequestBody Resource resource) {
+        if(resource.getResourcedate() == null || resource.getResourcedate().isEmpty()) {
+            // 获取当前时间
+            LocalDateTime now = LocalDateTime.now();
+            // 定义时间格式
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            // 格式化时间
+            String formattedDateTime = now.format(formatter);
+            resource.setResourcedate(formattedDateTime);
+        }
+        resource.setAuditstatus("待审");
+        boolean Add = resourceService.addResource(resource);
+        if(Add){
+            ajaxResponse.setCode(0);
+            ajaxResponse.setMsg("添加成功");
+//            return "admin/resource/resourceList";
+        }else{
+            ajaxResponse.setCode(-1);
+            ajaxResponse.setMsg("添加失败");
+//            return "admin/resource/resourceAdd";
         }
         return ajaxResponse;
     }

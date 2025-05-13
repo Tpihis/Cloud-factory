@@ -13,14 +13,12 @@
     <title>云制造资源优化平台 - 资源中心</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-    <!-- 正确方式：使用 bundle 版本（包含 Popper.js） -->
-<%--    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>--%>
-<%--    <script src="${pageContext.request.contextPath}/static/assets/js/bootstrap.min.js"></script>--%>
     <script src="${pageContext.request.contextPath}/static/assets/js/jquery.min.js"></script>
     <style>
         iframe {
-             border: none;
-         }
+            border: none;
+        }
+
          :root {
              --primary-color: #3498db;
              --secondary-color: #2980b9;
@@ -32,21 +30,22 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f5f7fa;
+            /*-ms-overflow-style: none;*/
+            /*scrollbar-width: none;*/
+            /*overflow-y: scroll;*/
         }
+
+        /*!* 隐藏滚动条 *!*/
+        /*::-webkit-scrollbar {*/
+        /*    display: none;*/
+        /*}*/
 
         .navbar-brand {
             font-weight: 700;
             color: var(--primary-color);
         }
 
-        .resource-card {
-            transition: transform 0.3s, box-shadow 0.3s;
-            border-radius: 10px;
-            overflow: hidden;
-            margin-bottom: 20px;
-            border: none;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
+
 
         .resource-card:hover {
             transform: translateY(-5px);
@@ -96,58 +95,7 @@
             background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
         }
 
-        .sidebar {
-            background-color: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-        }
 
-        .sidebar-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 15px;
-            color: var(--dark-bg);
-        }
-
-        .filter-group {
-            margin-bottom: 25px;
-        }
-
-        .filter-title {
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: #495057;
-        }
-
-        .stats-card {
-            background-color: white;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-        }
-
-        .stats-value {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--primary-color);
-        }
-
-        .stats-label {
-            font-size: 0.9rem;
-            color: #6c757d;
-        }
-
-        .breadcrumb {
-            background-color: transparent;
-            padding: 0;
-        }
-
-        .search-box {
-            position: relative;
-        }
 
         .search-box input {
             padding-left: 40px;
@@ -185,13 +133,6 @@
             float: right;
             /* 将发布资源按钮移到右侧 */
 
-        }
-        .task-form {
-            background-color: white;
-            border-radius: 10px;
-            padding: 50px; /* 增加表单内边距 */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-            margin-top: 20px;
         }
     </style>
 
@@ -243,7 +184,7 @@
         </div>
     </div>
 </nav>
-<iframe id="iframe" src="/user/resource/display" width="100%" height="100%"></iframe>
+<iframe id="iframe" src="/user/resource/display" width="100%" height="100%" style="overflow: hidden;scrollbar-width: none;"></iframe>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 <script>

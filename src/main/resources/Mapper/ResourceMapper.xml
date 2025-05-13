@@ -37,6 +37,9 @@
             <if test="resourcestatus != null">
                 AND resourcestatus = #{resourcestatus}
             </if>
+            <if test="auditstatus != null">
+                AND auditstatus = #{auditstatus}
+            </if>
             <if test="categoryid != null">
                 AND categoryid = #{categoryid}
             </if>

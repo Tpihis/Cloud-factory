@@ -149,9 +149,7 @@
             padding: 0;
         }
 
-       .search-box {
-            position: relative;
-        }
+
 
        .search-box input {
             padding-left: 40px;
@@ -165,14 +163,7 @@
             color: #6c757d;
         }
 
-       .pagination.page-item.active.page-link {
-            background-color: var(--primary-color);
-            border-color: var(--primary-color);
-        }
 
-       .pagination.page-link {
-            color: var(--primary-color);
-        }
 
        .right-content {
             display: flex;
@@ -227,7 +218,10 @@
             display: flex;
             justify-content: flex-end;
             margin-top: 20px;
+           align-items: center;
+           gap: 16px;
         }
+
 
        .purchase-buttons button {
             padding: 10px 20px;
@@ -245,56 +239,78 @@
        .buy-now {
             background-color: #3498db;
         }
+
+
+
+        .purchase-section {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ccc;
+            border-radius: 999px;
+            overflow: hidden;
+            height: 40px;
+            background-color: #fff;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .qty-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            width: 40px;
+            height: 100%;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .qty-btn:hover {
+            background-color: #2980b9;
+        }
+
+        #quantity-input {
+            width: 50px;
+            text-align: center;
+            border: none;
+            outline: none;
+            font-size: 18px;
+            font-weight: bold;
+            background: transparent;
+            color: #333;
+        }
+
+        .buy-now {
+            padding: 10px 24px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .buy-now:hover {
+            background-color: #3498db;
+        }
+
     </style>
 </head>
 
 <body>
-    <%--<!-- 导航栏 -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-        <div class="container">
-            <a class="navbar-brand" href="#">
-                <i class="bi bi-cloud-fill me-2"></i>云制造资源优化平台
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">首页</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">资源中心</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">制造服务</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">数据分析</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">我的项目</a>
-                    </li>
-                </ul>
-                <div class="d-flex align-items-center">
-                    <div class="dropdown me-3">
-                        <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" id="userDropdown"
-                            data-bs-toggle="dropdown">
-                            <img src="https://via.placeholder.com/40" alt="用户头像" class="rounded-circle me-2">
-                            <span>张工程师</span>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="#">个人中心</a></li>
-                            <li><a class="dropdown-item" href="#">我的收藏</a></li>
-                            <li><a class="dropdown-item" href="#">消息中心</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">退出登录</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </nav>--%>
     <!-- 主要内容区 -->
     <div class="container py-4">
         <!-- 面包屑导航 -->
@@ -479,12 +495,35 @@
             '<h3>资源描述</h3>' +
             '</div>' +
             '<p>' + (resource.resourcedescription || '暂无描述') + '</p>' +
-            '<div class="purchase-buttons">' +
+            '<div class="purchase-section">' +
+            '<div class="quantity-control">' +
+            '<button class="qty-btn" onclick="decreaseQuantity()">−</button>' +
+            '<input type="text" id="quantity-input" value="1"  min="1" max="' + resource.quantity + '" readonly>' +
+            '<button class="qty-btn" onclick="increaseQuantity()">＋</button>' +
+            '</div>' +
             '<button class="buy-now">购买资源</button>' +
             '</div>' +
             '</div>';
         //清空数据
         document.querySelector('.resource-detail-container').innerHTML = html;
+    }
+
+    function increaseQuantity() {
+        var input = document.getElementById('quantity-input');
+        var value = parseInt(input.value);
+        if (value >= parseInt(input.max)) {
+            alert('库存不足');
+            return;
+        }
+        input.value = value + 1;
+    }
+
+    function decreaseQuantity() {
+        var input = document.getElementById('quantity-input');
+        var value = parseInt(input.value);
+        if (value > 1) {
+            input.value = value - 1;
+        }
     }
 
     // 辅助函数：分类ID转名称

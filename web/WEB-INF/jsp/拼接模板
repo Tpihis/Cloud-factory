@@ -3,3 +3,5 @@
 
 // 字符串拼接替代
 '<li class="page-item ' + active + '">...</li>'
+
+link和script标签引入的文件可以直接使用，不需要下载

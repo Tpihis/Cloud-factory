@@ -23,6 +23,14 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f5f7fa;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            overflow-y: scroll;
+        }
+
+        /* 隐藏滚动条 */
+        ::-webkit-scrollbar {
+            display: none;
         }
 
         .navbar-brand {
@@ -222,6 +230,59 @@
             color: #0056b3;
             background-color: #f8f9fa;
         }
+        /*悬浮按钮发布资源*/
+        /* 悬浮按钮样式 */
+        .floating-action-btn {
+            position: fixed;
+            right: 50px;
+            bottom: 80px;
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+
+        .floating-action-btn button {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .floating-action-btn:hover {
+            transform: scale(1.1);
+        }
+
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .floating-action-btn {
+                right: 20px;
+                bottom: 20px;
+            }
+        }
+        /* 悬浮按钮样式 */
+
+         .fab {
+             position: fixed;
+             bottom: 30px;
+             right: 30px;
+             width: 60px;
+             height: 60px;
+             background-color: #007bff;
+             color: white;
+             border-radius: 50%;
+             text-align: center;
+             line-height: 60px;
+             font-size: 30px;
+             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+             text-decoration: none;
+             transition: background-color 0.3s ease;
+             z-index: 999;
+         }
+        .fab:hover {
+            background-color: #0056b3;
+        }
+
     </style>
 </head>
 
@@ -412,6 +473,14 @@
             </div>
         </div>
     </div>
+    <!-- 固定在右下角的发布按钮 -->
+    <div class="floating-action-btn">
+        <form action="${pageContext.request.contextPath}/user/resource/publish" method="get">
+            <button type="submit" class="btn btn-primary rounded-circle">
+                <i class="bi bi-plus-lg fs-4"></i>
+            </button>
+        </form>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
@@ -559,6 +628,7 @@
     let currentSearchParams = {
         pageNum: 1,
         pageSize: 6,
+        auditstatus: '通过',
         searchKey: '',
         categoryid:'',
     };
