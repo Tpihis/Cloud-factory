@@ -3,6 +3,7 @@ package com.ls.springmvc.dao;
 import com.ls.springmvc.vo.Resource;
 import com.ls.springmvc.vo.page.ResourceSearchParam;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -18,4 +19,6 @@ public interface ResourceDao {
 
     // 查询总数
     int totalResourceCount(ResourceSearchParam param);
+    int deductStock(@Param(value = "resourceid")Integer resourceid, @Param(value = "quantity") Integer quantity);
+    boolean checkStock(@Param(value = "resourceid")Integer resourceid, @Param(value = "quantity") Integer quantity);
 }

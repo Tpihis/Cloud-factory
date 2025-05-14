@@ -77,4 +77,39 @@ public class ResourceServiceImpl implements ResourceService {
 
         return new PageData<>(list, total, param.getPageNum(), param.getPageSize());
     }
+
+    // 扣减库存
+    @Override
+    @Transactional
+    public int deductStock(Integer resourceid, Integer quantity) {
+        int result = 0;
+        // 验证参数
+        if (resourceid == null || quantity == null || quantity <= 0) {
+            throw new IllegalArgumentException("参数不合法");
+        }
+        try {
+            result = resourceDao.deductStock(resourceid, quantity);
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            return result;
+        }
+    }
+//检查库存
+    @Override
+    public boolean checkStock(Integer resourceid, Integer quantity) {
+        boolean result = false;
+        // 验证参数
+        if (resourceid == null || quantity == null) {
+            throw new IllegalArgumentException("参数不合法");
+        }
+        try {
+            // 调用DAO层检查库存
+            result = resourceDao.checkStock(resourceid, quantity);
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            return result;
+        }
+    }
 }

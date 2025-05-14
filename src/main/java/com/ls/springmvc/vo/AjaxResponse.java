@@ -12,6 +12,14 @@ public class AjaxResponse {
     private String msg;
     private Object obj;
 
+    public AjaxResponse() {
+    }
+    public AjaxResponse(Integer code, String msg, Object obj) {
+        this.code = code;
+        this.msg = msg;
+        this.obj = obj;
+    }
+
 
     public Integer getCode() {
         return code;

@@ -474,6 +474,7 @@
         var html =
             '<div class="resource-detail-card">' +
             '<div class="resource-detail-header">' +
+            '<div class="resource-name" >' + resource.resourceid + '</div>' +
             '<h2 class="resource-name">' + resource.resourcename + '</h2>' +
             '<span class="category-badge">' + getCategoryName(resource.categoryid) + '</span>' +
             '</div>' +
@@ -501,7 +502,7 @@
             '<input type="text" id="quantity-input" value="1"  min="1" max="' + resource.quantity + '" readonly>' +
             '<button class="qty-btn" onclick="increaseQuantity()">＋</button>' +
             '</div>' +
-            '<button class="buy-now">购买资源</button>' +
+            '<button class="buy-now" onclick="createOrder(' + resource.resourceid + ')">购买资源</button>' +
             '</div>' +
             '</div>';
         //清空数据
@@ -552,4 +553,46 @@
         loadResourceDetail();
     });
 
+    function createOrder(resourceId) {
+        // 获取购买数量
+        const quantity = parseInt(document.getElementById('quantity-input').value);
+        //获取总价
+        const price = parseFloat(document.querySelector('.price').textContent.replace('¥', ''));
+        //获取总价
+        const totalPrice = price * quantity;
+
+        // 显示加载状态
+        const buyBtn = document.querySelector('.buy-now');
+        const originalText = buyBtn.innerHTML;
+        buyBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> 创建订单中...';
+        buyBtn.disabled = true;
+
+        // 发送AJAX请求
+        $.ajax({
+            url: '${pageContext.request.contextPath}/user/order/create',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                resourceids: resourceId.toString(),
+                quantity: quantity,
+                totalprice: totalPrice
+            }),
+            success: function(response) {
+                if(response.code === 200) { // 假设200表示成功
+                    // 跳转到订单详情页面
+                    window.location.href = '${pageContext.request.contextPath}/user/order/detail?id=' + response.obj.orderid;
+                } else {
+                    alert('创建订单失败: ' + response.msg);
+                }
+            },
+            error: function(xhr) {
+                alert('请求失败: ' + xhr.statusText);
+            },
+            complete: function() {
+                // 无论成功或失败，都恢复按钮状态
+                buyBtn.innerHTML = originalText;
+                buyBtn.disabled = false;
+            }
+        });
+    }
 </script>

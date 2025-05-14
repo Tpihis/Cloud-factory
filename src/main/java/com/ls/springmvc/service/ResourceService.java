@@ -15,4 +15,8 @@ public interface ResourceService {
     Resource getResourceById(Integer resourceId);
     // 分页模糊查询
     PageData<Resource> pageSearch(ResourceSearchParam param);
+    //扣减库存
+    int deductStock(Integer resourceId,  Integer quantity);
+    //检查库存
+    boolean checkStock(Integer resourceId, Integer quantity);
 }

@@ -23,11 +23,6 @@
             background-color: #f5f7fa;
         }
 
-        .navbar-brand {
-            font-weight: 700;
-            color: var(--primary-color);
-        }
-
         .breadcrumb-container {
             display: flex;
             align-items: center;
@@ -90,11 +85,6 @@
             flex: 1;
         }
 
-        .status-completed {
-            color: #28a745;
-            font-weight: 600;
-        }
-
         .product-table {
             width: 100%;
             border-collapse: collapse;
@@ -117,67 +107,8 @@
             border-bottom: none;
         }
 
-        .timeline {
-            display: flex;
-            justify-content: space-between;
-            position: relative;
-            margin-top: 30px;
-        }
-
-        .timeline::before {
-            content: '';
-            position: absolute;
-            top: 20px;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: #e9ecef;
-            z-index: 1;
-        }
-
-        .timeline-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            position: relative;
-            z-index: 2;
-        }
-
-        .timeline-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: var(--primary-color);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 10px;
-        }
-
-        .timeline-step {
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        .timeline-date {
-            font-size: 0.85rem;
-            color: #6c757d;
-        }
-
         .active-step .timeline-icon {
             background-color: #28a745;
-        }
-
-        .active-step::after {
-            content: '';
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            width: 100%;
-            height: 2px;
-            background: #28a745;
-            z-index: 1;
         }
 
         .price-detail {
@@ -203,55 +134,26 @@
             padding-top: 15px;
             border-top: 1px solid #eee;
         }
+        /* 订单状态样式 */
+        .status-待支付 {
+            color: #ff9800;
+            font-weight: bold;
+        }
+        .status-已支付 {
+            color: #4caf50;
+            font-weight: bold;
+        }
+        .status-已取消 {
+            color: #f44336;
+            font-weight: bold;
+        }
+        .status-已完成 {
+            color: #2196f3;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
-<!-- 导航栏 -->
-<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-    <div class="container">
-        <a class="navbar-brand" href="#">
-            <i class="bi bi-cloud-fill me-2"></i>云制造资源优化平台
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav me-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="#">首页</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">资源中心</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">制造服务</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" href="#">我的订单</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">数据分析</a>
-                </li>
-            </ul>
-            <div class="d-flex align-items-center">
-                <div class="dropdown me-3">
-                    <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" id="userDropdown" data-bs-toggle="dropdown">
-                        <img src="https://via.placeholder.com/40" alt="用户头像" class="rounded-circle me-2">
-                        <span>张工程师</span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="#">个人中心</a></li>
-                        <li><a class="dropdown-item" href="#">我的收藏</a></li>
-                        <li><a class="dropdown-item" href="#">消息中心</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#">退出登录</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</nav>
-
 <!-- 主要内容区 -->
 <div class="container py-4">
     <!-- 返回按钮和面包屑导航 -->
@@ -269,7 +171,7 @@
     </div>
 
     <!-- 订单详情主容器 -->
-    <div class="order-detail-container">
+    <%--<div class="order-detail-container">
         <h2 class="mb-4">订单详情 #ORD20250423001</h2>
 
         <!-- 基本信息部分 -->
@@ -323,10 +225,10 @@
             <table class="product-table">
                 <thead>
                     <tr>
-                        <th>产品名称</th>
+                        <th>资源名称</th>
                         <th>规格描述</th>
                         <th>数量</th>
-                        <th>周期类型</th>
+                        <th>资源类型</th>
                         <th>生效时间</th>
                         <th>失效时间</th>
                     </tr>
@@ -369,10 +271,105 @@
                 <span class="price-label">实际支付金额：</span>
                 <span class="price-value">¥4500.00</span>
             </div>
+        </div>--%>
+    <!-- 订单详情主容器 -->
+    <div class="order-detail-container">
+        <h2 class="mb-4">订单详情 #${order.orderid}</h2>
+
+        <!-- 基本信息部分 -->
+        <div class="order-section">
+            <h3 class="section-title">
+                <i class="bi bi-info-circle"></i>基本信息
+            </h3>
+            <div class="detail-row">
+                <div class="detail-label">订单号：</div>
+                <div class="detail-value">${order.orderid}</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">创建时间：</div>
+                <div class="detail-value">${order.ordertime}</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">客户名称：</div>
+                <div class="detail-value">${user.username}</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">联系电话：</div>
+                <div class="detail-value">${user.phone}</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">订单状态：</div>
+                <div class="detail-value status-${order.orderstatus}">${order.orderstatus}</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">收货地址：</div>
+                <div class="detail-value">${user.address}</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">邮箱：</div>
+                <div class="detail-value">${user.email}</div>
+            </div>
         </div>
 
-        <!-- 操作记录部分 -->
+        <!-- 产品和服务详情部分 -->
         <div class="order-section">
+            <h3 class="section-title">
+                <i class="bi bi-box-seam"></i>产品和服务详情
+            </h3>
+            <table class="product-table">
+                <thead>
+                <tr>
+                    <th>资源名称</th>
+                    <th>规格描述</th>
+                    <th>数量</th>
+                    <th>资源类型</th>
+                    <th>单价</th>
+                </tr>
+                </thead>
+                <tbody>
+                <c:forEach items="${resources}" var="resource">
+                    <tr>
+                        <td>${resource.resourcename}</td>
+                        <td>${resource.resourcedescription}</td>
+                        <td>${order.quantity}</td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${resource.categoryid == 1}">设备资源</c:when>
+                                <c:when test="${resource.categoryid == 2}">工艺知识</c:when>
+                                <c:when test="${resource.categoryid == 3}">设计模型</c:when>
+                                <c:when test="${resource.categoryid == 4}">制造服务</c:when>
+                                <c:otherwise>未知类型</c:otherwise>
+                            </c:choose>
+                        </td>
+                        <td>¥${resource.resourceprice}</td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 金额信息部分 -->
+        <div class="order-section">
+            <h3 class="section-title">
+                <i class="bi bi-cash-stack"></i>金额信息
+            </h3>
+            <div class="price-detail">
+                <span class="price-label">原价：</span>
+                <span class="price-value">¥${order.totalprice}</span>
+            </div>
+            <div class="price-detail">
+                <span class="price-label">优惠金额：</span>
+                <span class="price-value">-¥0.00</span>
+            </div>
+            <div class="price-detail total-price">
+                <span class="price-label">实际支付金额：</span>
+                <span class="price-value">¥${order.totalprice}</span>
+            </div>
+        </div>
+    </div>
+
+        <!-- 操作记录部分 -->
+<%--        <div class="order-section">
             <h3 class="section-title">
                 <i class="bi bi-clock-history"></i>操作记录
             </h3>
@@ -406,7 +403,7 @@
                     <div class="timeline-date">2025-04-23 12:55:00</div>
                 </div>
             </div>
-        </div>
+        </div>--%>
     </div>
 </div>
 
