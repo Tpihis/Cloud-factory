@@ -28,7 +28,13 @@ public class TestController {
     public String userList() {
         return "admin/user/userList";
     }
-
+    @GetMapping(value = "/error")
+    public String error() {
+        if (true) {
+            throw new RuntimeException("这是一个测试异常");
+        }
+        return "success";
+    }
 
     @GetMapping("/register")
     public String registerPage(){

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:security="http://www.springframework.org/schema/security"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:beans="http://www.springframework.org/schema/c"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/security
@@ -19,7 +19,8 @@
         <security:intercept-url pattern="/auth/**" access="permitAll" />
         <security:intercept-url pattern="/user/**" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" />
         <security:intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')" />
-        <security:access-denied-handler error-page="/auth/noAuthority"/>
+<!--        <security:access-denied-handler error-page="/auth/noAuthority"/>-->
+        <security:access-denied-handler ref="customAccessDeniedHandler"/>
         <security:csrf disabled="true"/>
 <!--        <security:csrf/>-->
         <security:form-login
@@ -31,6 +32,9 @@
         </security:headers>
     </security:http>
 <!--    authentication-failure-forward-url="/WEB-INF/jsp/login.jsp"-->  <!-- 重定向使用可直接访问路径 -->
+
+    <bean id="nullAccessDeniedHandler" class="org.springframework.security.web.access.AccessDeniedHandlerImpl">
+    </bean>
     <bean id="passwordEncoder"
           class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
     <bean id="userService" class="com.ls.springmvc.service.impl.UserServiceImpl"/>
@@ -39,4 +43,8 @@
             <security:password-encoder ref="passwordEncoder"/>
         </security:authentication-provider>
     </security:authentication-manager>
+
+    <!-- 注册自定义处理器 -->
+    <bean id="customAccessDeniedHandler"
+                class="com.ls.springmvc.Exception.GlobalExceptionHandler"/>
 </beans>
