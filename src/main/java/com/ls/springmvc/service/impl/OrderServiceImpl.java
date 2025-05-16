@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 @Service("orderService")
 @Transactional
@@ -30,5 +31,9 @@ public class OrderServiceImpl implements OrderService {
     }
     public Order findOrderById(Integer orderid) {
         return orderdao.findOrderById(orderid);
+    }
+    @Override
+    public List<Order> getOrdersByUserId(Integer userId) {
+        return orderdao.selectByUserId(userId);
     }
 }

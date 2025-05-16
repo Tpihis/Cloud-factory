@@ -16,7 +16,7 @@ import java.util.Date;
 import java.util.Random;
 
 @ControllerAdvice
-public class GlobalExceptionHandler implements AccessDeniedHandler {
+public class GlobalExceptionHandler implements AccessDeniedHandler{
 
     /**
      * 处理所有异常

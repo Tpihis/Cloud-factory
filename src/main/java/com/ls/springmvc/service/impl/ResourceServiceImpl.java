@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service("resourceService")
@@ -111,5 +112,12 @@ public class ResourceServiceImpl implements ResourceService {
         }finally {
             return result;
         }
+    }
+    @Override
+    public List<Resource> getResourcesByIds(List<Integer> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return new ArrayList<>();
+        }
+        return resourceDao.selectByIds(ids);
     }
 }

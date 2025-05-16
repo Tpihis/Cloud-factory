@@ -21,4 +21,6 @@ public interface ResourceDao {
     int totalResourceCount(ResourceSearchParam param);
     int deductStock(@Param(value = "resourceid")Integer resourceid, @Param(value = "quantity") Integer quantity);
     boolean checkStock(@Param(value = "resourceid")Integer resourceid, @Param(value = "quantity") Integer quantity);
+    List<Resource> selectByIds(List<Integer> ids);
+
 }

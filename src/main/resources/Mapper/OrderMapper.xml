@@ -7,11 +7,16 @@
     <select id="pageSearch"  resultType="com.ls.springmvc.vo.Order">
         select * from `order`
     </select>
-    <!-- 根据id查询资源 -->
+    <!-- 根据订单id查询订单 -->
     <select id="findOrderById" parameterType="Integer" resultType="com.ls.springmvc.vo.Order">
         select * from `order` where orderid = #{orderid}
     </select>
-
+<!--         根据用户id查询订单-->
+    <select id="selectByUserId" resultType="com.ls.springmvc.vo.Order" parameterType="java.lang.Integer">
+        SELECT * FROM `order`
+        WHERE userid = #{userId}
+        ORDER BY ordertime DESC
+    </select>
     <!-- 更新资源状态 -->
     <update id="changeOrderStatus" parameterType="com.ls.springmvc.vo.Order">
         UPDATE `order` SET orderstatus = #{status} WHERE orderid = #{orderId}

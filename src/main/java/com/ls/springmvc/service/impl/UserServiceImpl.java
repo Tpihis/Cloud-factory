@@ -111,10 +111,8 @@ public class UserServiceImpl implements UserService {
         if (userids == null || userids.isEmpty()) {
             throw new IllegalArgumentException("用户ID列表不能为空");
         }
-
         // 可以在这里添加业务逻辑校验
         // 例如检查这些用户是否可以被删除
-
         return userDao.batchDelete(userids);
     }
 

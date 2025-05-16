@@ -1,7 +1,9 @@
 package com.ls.springmvc.controller;
 
+import com.ls.springmvc.service.OrderService;
 import com.ls.springmvc.service.UserService;
 import com.ls.springmvc.vo.AjaxResponse;
+import com.ls.springmvc.vo.Order;
 import com.ls.springmvc.vo.User;
 
 import jakarta.servlet.http.HttpSession;
@@ -10,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -22,6 +25,9 @@ public class TestController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private OrderService orderService;
     @Autowired
     private AjaxResponse ajaxResponse;
     @GetMapping(value = "/list")
@@ -100,5 +106,17 @@ public class TestController {
         }
         return ajaxResponse;
     }
-
+    @PostMapping("/order/list")
+    public AjaxResponse listOrders() {
+        Integer userId = 1;
+        if(userId == null) {
+            return new AjaxResponse(401, "用户未登录", null);
+        }
+        try {
+            List<Order> orders = orderService.getOrdersByUserId(userId);
+            return new AjaxResponse( 200,"获取订单列表成功",orders);
+        } catch (Exception e) {
+            return new AjaxResponse(500, "获取订单列表失败: " + e.getMessage(),null);
+        }
+    }
 }

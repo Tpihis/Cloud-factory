@@ -34,6 +34,21 @@ public class OrderController {
         return "/user/orderDetails";
     }
 
+    @PostMapping("/list")
+    @ResponseBody
+    public AjaxResponse listOrders(Principal principal) {
+        Integer userId = userService.findUserByUsername(principal.getName()).getUserid();
+        if(userId == null) {
+            return new AjaxResponse(401, "用户未登录", null);
+        }
+        try {
+            List<Order> orders = orderService.getOrdersByUserId(userId);
+            return new AjaxResponse( 200,"获取订单列表成功",orders);
+        } catch (Exception e) {
+            return new AjaxResponse(500, "获取订单列表失败: " + e.getMessage(),null);
+        }
+    }
+
     @PostMapping(value = "/create")
     @ResponseBody
     public AjaxResponse createOrder(@RequestBody Order order, HttpSession session, Principal principal) {
@@ -82,7 +97,8 @@ public class OrderController {
             // 1. 查询订单基本信息
             Order order = orderService.findOrderById(orderId);
             if (order == null) {
-                return "error/404"; // 订单不存在
+                model.addAttribute("error", "订单不存在");
+                return "error/error"; // 订单不存在
             }
 
             // 2. 查询用户信息
@@ -107,7 +123,8 @@ public class OrderController {
 
             return "/user/orderDetails"; // 返回订单详情页面
         } catch (Exception e) {
-            return "error/500"; // 服务器错误
+            model.addAttribute("error", "服务器错误: " + e.getMessage());
+            return "error/error"; // 服务器错误
         }
     }
 }

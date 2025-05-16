@@ -71,4 +71,11 @@
     <update id="deductStock" parameterType="com.ls.springmvc.vo.Resource">
         UPDATE resource SET quantity = quantity - #{quantity} WHERE resourceid = #{resourceid}
     </update>
+    <select id="selectByIds" resultType="com.ls.springmvc.vo.Resource" parameterType="java.util.List">
+        SELECT * FROM `resource`
+        WHERE resourceid IN
+        <foreach collection="list" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
 </mapper>

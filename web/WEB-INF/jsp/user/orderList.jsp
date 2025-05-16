@@ -9,6 +9,7 @@
     <title>云制造资源优化平台 - 我的订单</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <script src="${pageContext.request.contextPath}/static/assets/js/jquery.min.js"></script>
     <style>
         :root {
             --primary-color: #3498db;
@@ -306,7 +307,8 @@
                 </div>
 
                 <!-- 订单卡片 -->
-                <div class="card order-card mb-4">
+                <div class="order-container">
+<%--                <div class="card order-card mb-4">
                     <div class="card-header bg-light d-flex justify-content-between align-items-center">
                         <div>
                             <span class="fw-bold">订单编号: </span>
@@ -479,6 +481,7 @@
                             </div>
                         </div>
                     </div>
+                </div>--%>
                 </div>
 
                 <!-- 分页 -->
@@ -504,23 +507,204 @@
 </body>
 </html>
 <script>
-    // $('.dropdown-menu').on('show.bs.dropdown', function () {
-    //     console.log('下拉框已弹出');
-    // });
-    //
-    // $('.dropdown-menu').on('hide.bs.dropdown', function () {
-    //     console.log('下拉框已隐藏');
-    // });
-    // 获取下拉菜单元素
-    const dropdownMenu = document.querySelector('.dropdown-menu');
-
-    // 监听下拉菜单的显示事件
-    dropdownMenu.addEventListener('show.bs.dropdown', function () {
-        console.log('下拉框已弹出');
+    $(document).ready(function() {
+        // 获取订单列表数据
+        $.ajax({
+            url: '/user/order/list',
+            type: 'POST',
+            dataType: 'json',
+            success: function(response) {
+                if (response.code === 200 && response.obj) {
+                    renderOrderCards(response.obj);
+                } else {
+                    console.error('获取订单数据失败:', response.message);
+                    // 可以在这里添加错误提示
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX请求失败:', status, error);
+                // 可以在这里添加错误提示
+            }
+        });
     });
 
-    // 如果你想同时监听隐藏事件
-    dropdownMenu.addEventListener('hide.bs.dropdown', function () {
-        console.log('下拉框已隐藏');
-    });
+    // 渲染订单卡片
+    function renderOrderCards(orders) {
+        const container = $('.order-container'); // 假设你的订单卡片容器有这个类名
+        if (!container.length) {
+            console.error('找不到订单卡片容器');
+            return;
+        }
+
+        // 清空容器（如果需要）
+        container.empty();
+
+        // 遍历每个订单并渲染
+        orders.forEach(order => {
+            // 首先获取资源详情
+            getResourceDetails(order.resourceids, function(resources) {
+                const orderCard = createOrderCard(order, resources);
+                container.append(orderCard);
+            });
+        });
+    }
+
+    // 获取资源详情
+    function getResourceDetails(resourceIds, callback) {
+        const ids = resourceIds.split(',').filter(id => id.trim() !== '');
+        if (ids.length === 0) {
+            callback([]);
+            return;
+        }
+
+        // 这里假设有一个接口可以批量获取资源信息
+        $.ajax({
+            url: '/user/resource/batch',
+            type: 'POST',
+            data: { ids: ids.join(',') },
+            dataType: 'json',
+            success: function(response) {
+                if (response.code === 200) {
+                    callback(response.obj || []);
+                } else {
+                    console.error('获取资源详情失败:', response.message);
+                    callback([]);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('获取资源详情AJAX请求失败:', status, error);
+                callback([]);
+            }
+        });
+    }
+
+    // 创建订单卡片HTML
+    function createOrderCard(order, resources) {
+        // 格式化日期
+        const orderTime = formatDate(order.ordertime);
+        const completionTime = order.completiontime ? formatDate(order.completiontime) : '未完成';
+
+        // 根据状态设置样式
+        let statusClass = '';
+        let statusText = '';
+        switch (order.orderstatus) {
+            case '待支付':
+                statusClass = 'status-pending';
+                statusText = '待支付';
+                break;
+            case '已支付':
+                statusClass = 'status-processing';
+                statusText = '进行中';
+                break;
+            case '已完成':
+                statusClass = 'status-completed';
+                statusText = '已完成';
+                break;
+            case '已取消':
+                statusClass = 'status-cancelled';
+                statusText = '已取消';
+                break;
+            default:
+                statusClass = 'status-default';
+                statusText = order.orderstatus;
+        }
+
+        // 创建资源项HTML
+        let resourceItemsHtml = '';
+        resources.forEach(resource => {
+            // 根据categoryid设置不同的占位图
+            let placeholderText = '资源';
+            switch (resource.categoryid) {
+                case 1:
+                    placeholderText = '设备资源';
+                    break;
+                case 2:
+                    placeholderText = '工艺知识';
+                    break;
+                case 3:
+                    placeholderText = '设计模型';
+                    break;
+                case 4:
+                    placeholderText = '制造服务';
+                    break;
+            }
+
+            resourceItemsHtml +=
+                '<div class="order-item d-flex">' +
+                '<div class="flex-shrink-0 me-3">' +
+                '<img src="https://via.placeholder.com/100?text=' + encodeURIComponent(placeholderText) + '" class="item-img" alt="' + resource.resourcename + '">' +
+                '</div>' +
+                '<div class="flex-grow-1">' +
+                '<h6 class="mb-1">' + resource.resourcename + '</h6>' +
+                '<div class="d-flex justify-content-between">' +
+                '<div>' +
+                '<small class="text-muted">供应商ID: ' + resource.userid + '</small><br>' +
+                //数量不对应
+                '<small class="text-muted">数量: ' + (order.quantity || 1) + '</small>' +
+                '</div>' +
+                '<div class="text-end">' +
+                '<div class="fw-bold">¥' + resource.resourceprice.toFixed(2) + '</div>' +
+                '<small class="text-muted">预计完成: ' + completionTime + '</small>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '</div>';
+        });
+
+            // 构建完整的订单卡片HTML
+            const orderCardHtml =
+                '<div class="card order-card mb-4">' +
+                '<div class="card-header bg-light d-flex justify-content-between align-items-center">' +
+                '<div>' +
+                '<span class="fw-bold">订单编号: </span>' +
+                '<span>ORD-' + order.orderid.toString().padStart(8, '0') + '</span>' +
+                '<span class="ms-3 fw-bold">创建时间: </span>' +
+                '<span>' + orderTime + '</span>' +
+                '</div>' +
+                '<span class="order-status ' + statusClass + '">' + statusText + '</span>' +
+                '</div>' +
+                '<div class="card-body">' +
+                resourceItemsHtml +
+                '<hr>' +
+                '<div class="d-flex justify-content-between align-items-center">' +
+                '<div>' +
+                '<span class="fw-bold me-2">合计: </span>' +
+                '<span class="text-danger fw-bold">¥' + order.totalprice.toFixed(2) + '</span>' +
+                '</div>' +
+                '<div>' +
+                '<button class="btn btn-sm btn-outline-primary action-btn me-2" onclick="contactSupplier(' + order.orderid + ')">' +
+                '<i class="bi bi-chat-left-text me-1"></i>联系供应商' +
+                '</button>' +
+                '<button class="btn btn-sm btn-outline-secondary action-btn" onclick="viewOrderDetails(' + order.orderid + ')">' +
+                '<i class="bi bi-eye me-1"></i>查看详情' +
+                '</button>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '</div>';
+
+        return orderCardHtml;
+    }
+
+    // 辅助函数：格式化日期
+    function formatDate(dateString) {
+        if (!dateString) return '';
+        const date = new Date(dateString);
+        return date.toISOString().split('T')[0] + ' ' + date.toTimeString().split(' ')[0].substring(0, 5);
+    }
+
+    // 联系供应商函数
+    function contactSupplier(orderId) {
+        console.log('联系供应商，订单ID:', orderId);
+        // 这里可以添加联系供应商的逻辑
+        // 例如打开聊天窗口或跳转到聊天页面
+    }
+
+    // 查看订单详情函数
+    function viewOrderDetails(orderId) {
+        console.log('查看订单详情，订单ID:', orderId);
+        // 这里可以添加查看订单详情的逻辑
+        // 例如跳转到订单详情页面
+        window.location.href = `${pageContext.request.contextPath}/user/order/detail?id=`+orderId;
+    }
 </script>

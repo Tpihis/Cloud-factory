@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.*;
 import javax.xml.transform.Result;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller(value = "userResourceController")
 @RequestMapping(value = "/user/resource")
@@ -122,4 +124,17 @@ public class ResourceController {
 //
 //        return Result.success().put("data", stats);
 //    }
+@PostMapping("/batch")
+@ResponseBody
+public AjaxResponse getResourcesBatch(@RequestParam String ids) {
+    try {
+        List<Integer> resourceIds = Arrays.stream(ids.split(","))
+                .map(Integer::parseInt)
+                .collect(Collectors.toList());
+        List<Resource> resources = resourceService.getResourcesByIds(resourceIds);
+        return  new AjaxResponse(200,"获取资源详情成功",resources);
+    } catch (Exception e) {
+        return new AjaxResponse(500, "获取资源详情失败: " + e.getMessage(),null);
+    }
+}
 }

@@ -19,4 +19,5 @@ public interface ResourceService {
     int deductStock(Integer resourceId,  Integer quantity);
     //检查库存
     boolean checkStock(Integer resourceId, Integer quantity);
+    List<Resource> getResourcesByIds(List<Integer> ids);
 }
