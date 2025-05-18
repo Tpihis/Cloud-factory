@@ -106,35 +106,26 @@ public class ResourceController {
         }
         return ajaxResponse;
     }
-//    // 新增分类统计接口
-//    @GetMapping("/category-stats")
-//    public Result getCategoryStats(
-//            @RequestParam(required = false) String keyword) {
-//
-//        Map<String, Integer> stats = new HashMap<>();
-//
-//        // 全部资源数（受搜索关键词影响）
-//        stats.put("all", resourceMapper.countByKeyword(keyword));
-//
-//        // 各分类资源数
-//        stats.put("1", resourceMapper.countByCategoryAndKeyword(1, keyword));
-//        stats.put("2", resourceMapper.countByCategoryAndKeyword(2, keyword));
-//        stats.put("3", resourceMapper.countByCategoryAndKeyword(3, keyword));
-//        stats.put("4", resourceMapper.countByCategoryAndKeyword(4, keyword));
-//
-//        return Result.success().put("data", stats);
-//    }
-@PostMapping("/batch")
-@ResponseBody
-public AjaxResponse getResourcesBatch(@RequestParam String ids) {
-    try {
-        List<Integer> resourceIds = Arrays.stream(ids.split(","))
+    // 统计所有资源分类的数量
+    @PostMapping("/category_counts")
+    @ResponseBody
+    public AjaxResponse getAllResourceCategoryCounts( ResourceSearchParam param) {
+        List<Map<String, Integer>> counts = resourceService.getAllResourceCategoryCounts(param);
+        Map<String, Object> result = new HashMap<>();
+        result.put("data", counts);
+        return new AjaxResponse(0, "查询成功", result);
+    }
+    @PostMapping("/batch")
+    @ResponseBody
+    public AjaxResponse getResourcesBatch(@RequestParam String ids) {
+       try {
+            List<Integer> resourceIds = Arrays.stream(ids.split(","))
                 .map(Integer::parseInt)
                 .collect(Collectors.toList());
-        List<Resource> resources = resourceService.getResourcesByIds(resourceIds);
-        return  new AjaxResponse(200,"获取资源详情成功",resources);
-    } catch (Exception e) {
-        return new AjaxResponse(500, "获取资源详情失败: " + e.getMessage(),null);
+            List<Resource> resources = resourceService.getResourcesByIds(resourceIds);
+            return  new AjaxResponse(200,"获取资源详情成功",resources);
+        } catch (Exception e) {
+            return new AjaxResponse(500, "获取资源详情失败: " + e.getMessage(),null);
+        }
     }
-}
 }

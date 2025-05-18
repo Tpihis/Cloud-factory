@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface ResourceDao {
@@ -22,5 +23,6 @@ public interface ResourceDao {
     int deductStock(@Param(value = "resourceid")Integer resourceid, @Param(value = "quantity") Integer quantity);
     boolean checkStock(@Param(value = "resourceid")Integer resourceid, @Param(value = "quantity") Integer quantity);
     List<Resource> selectByIds(List<Integer> ids);
+    List<Map<String, Integer>> getAllResourceCategoryCounts( ResourceSearchParam  param);
 
 }

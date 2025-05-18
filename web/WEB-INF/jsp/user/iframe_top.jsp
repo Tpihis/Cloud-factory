@@ -14,6 +14,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <script src="${pageContext.request.contextPath}/static/assets/js/jquery.min.js"></script>
+
     <style>
         iframe {
             border: none;
@@ -50,39 +51,6 @@
         .resource-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-        }
-
-        .card-img-top {
-            height: 160px;
-            object-fit: cover;
-        }
-
-        .category-badge {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: rgba(52, 58, 64, 0.8);
-            color: white;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-        }
-
-        .resource-tag {
-            display: inline-block;
-            background-color: #e9ecef;
-            padding: 3px 8px;
-            border-radius: 15px;
-            font-size: 0.75rem;
-            margin-right: 5px;
-            margin-bottom: 5px;
-            color: #495057;
-        }
-
-        .section-header {
-            position: relative;
-            margin-bottom: 30px;
-            padding-bottom: 10px;
         }
 
         .section-header:after {
@@ -132,7 +100,6 @@
         .col-lg-9 .task-form button[type="submit"] {
             float: right;
             /* 将发布资源按钮移到右侧 */
-
         }
     </style>
 

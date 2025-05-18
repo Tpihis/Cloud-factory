@@ -78,4 +78,16 @@
             #{id}
         </foreach>
     </select>
+    <!-- Map 映射  -->
+    <resultMap id="categoryCountMap" type="map">
+        <result property="categoryid" column="categoryid" javaType="string"/>
+        <result property="count" column="count" javaType="int"/>
+    </resultMap>
+    <!-- 查询所有订单状态的数量 -->
+    <select id="getAllResourceCategoryCounts" resultMap="categoryCountMap">
+        SELECT categoryid, COUNT(*) as count
+        FROM resource
+        <include refid="dynamicConditions"/>
+        GROUP BY categoryid
+    </select>
 </mapper>

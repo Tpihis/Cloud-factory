@@ -12,6 +12,14 @@
             <param-value>classpath:springmvc.xml</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
+        <multipart-config>
+            <!-- 单个文件最大 10MB -->
+            <max-file-size>10485760</max-file-size>
+            <!-- 总请求最大 100MB -->
+            <max-request-size>104857600</max-request-size>
+            <!-- 文件写入磁盘阈值 -->
+            <file-size-threshold>0</file-size-threshold>
+        </multipart-config>
     </servlet>
     <servlet-mapping>
         <servlet-name>springmvc</servlet-name>

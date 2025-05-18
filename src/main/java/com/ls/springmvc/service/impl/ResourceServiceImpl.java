@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service("resourceService")
 @Transactional
@@ -119,5 +121,29 @@ public class ResourceServiceImpl implements ResourceService {
             return new ArrayList<>();
         }
         return resourceDao.selectByIds(ids);
+    }
+
+    @Override
+    public List<Map<String, Integer>> getAllResourceCategoryCounts(ResourceSearchParam  param) {
+        List<Map<String, Integer>> countsList = new ArrayList<Map<String, Integer>>();
+        try {
+            countsList = resourceDao.getAllResourceCategoryCounts(param);
+            System.out.println("查询资源分类数量成功"+countsList);
+        }catch (Exception e){
+            e.printStackTrace();
+            System.out.println("查询资源分类数量失败"+e.getMessage());
+//            return new HashMap<>();
+        }
+        // 计算全部订单数量（更健壮地实现）
+        int totalCount =  0 ;
+        for (Map<String, Integer> countMap : countsList) {
+            totalCount +=  countMap.get("count");
+        }
+
+        Map<String, Integer> totalMap = new HashMap<>();
+        totalMap.put("categoryid", -1);
+        totalMap.put("count", totalCount);
+        countsList.add(totalMap);
+        return countsList;
     }
 }

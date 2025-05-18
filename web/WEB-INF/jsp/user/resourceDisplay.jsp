@@ -33,11 +33,6 @@
             display: none;
         }
 
-        .navbar-brand {
-            font-weight: 700;
-            color: var(--primary-color);
-        }
-
         .resource-card {
             transition: transform 0.3s, box-shadow 0.3s;
             border-radius: 10px;
@@ -107,12 +102,6 @@
             font-size: 0.9rem;
             color: #6c757d;
             line-height: 1.5;
-        }
-
-        .section-header {
-            position: relative;
-            margin-bottom: 30px;
-            padding-bottom: 10px;
         }
 
         .section-header:after {
@@ -287,52 +276,6 @@
 </head>
 
 <body>
-    <!-- 导航栏 -->
-    <!--  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-         <div class="container">
-             <a class="navbar-brand" href="#">
-                 <i class="bi bi-cloud-fill me-2"></i>云制造资源优化平台
-             </a>
-             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                 <span class="navbar-toggler-icon"></span>
-             </button>
-             <div class="collapse navbar-collapse" id="navbarNav">
-                 <ul class="navbar-nav me-auto">
-                     <li class="nav-item">
-                         <a class="nav-link" href="#">首页</a>
-                     </li>
-                     <li class="nav-item">
-                         <a class="nav-link active" href="#">资源中心</a>
-                     </li>
-                     <li class="nav-item">
-                         <a class="nav-link" href="#">制造服务</a>
-                     </li>
-                     <li class="nav-item">
-                         <a class="nav-link" href="#">数据分析</a>
-                     </li>
-                     <li class="nav-item">
-                         <a class="nav-link" href="#">我的项目</a>
-                     </li>
-                 </ul>
-                 <div class="d-flex align-items-center">
-                     <div class="dropdown me-3">
-                         <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" id="userDropdown"
-                             data-bs-toggle="dropdown">
-                             <img src="https://via.placeholder.com/40" alt="用户头像" class="rounded-circle me-2">
-                             <span>张工程师</span>
-                         </a>
-                         <ul class="dropdown-menu dropdown-menu-end">
-                             <li><a class="dropdown-item" href="#">个人中心</a></li>
-                             <li><a class="dropdown-item" href="#">我的收藏</a></li>
-                             <li><a class="dropdown-item" href="#">消息中心</a></li>
-                             <li><hr class="dropdown-divider"></li>
-                             <li><a class="dropdown-item" href="#">退出登录</a></li>
-                         </ul>
-                     </div>
-                 </div>
-             </div>
-         </div>
-     </nav>-->
 
     <!-- 主要内容区 -->
     <div class="container py-4">
@@ -491,6 +434,7 @@
         // 加载资源数据
         // loadResources();
         searchResources();
+        fetchAllResourceCategoryCounts();
     });
 
     function loadResources() {
@@ -527,7 +471,7 @@
                         totalPages: response.obj.totalPages
                     });
                     // 更新当前分类的数字
-                    updateCategoryBadges(response.obj.total);
+                    // updateCategoryBadges(response.obj.total);
                 }
             },
             error: function(xhr, status, error) {
@@ -656,16 +600,18 @@
         clearTimeout(searchTimer);
         searchTimer = setTimeout(search, 300);
     }
-    // 搜索函数（示例）
+    // 搜索函数
     function search() {
-        const keyword = document.getElementById('resourceSearchInput').value.trim();
+        const searchKey = document.getElementById('resourceSearchInput').value.trim();
         // 获取当前选中的分类ID（新增部分）
         const activeCategoryItem = document.querySelector('#resourceCategoryFilter .list-group-item.active');
         const categoryId = activeCategoryItem ? activeCategoryItem.getAttribute('data-category') : '';
-        currentSearchParams.searchKey = keyword;
+        currentSearchParams.searchKey = searchKey;
         currentSearchParams.categoryid = categoryId;
         currentSearchParams.pageNum = 1; // 重置到第一页
         searchResources();
+        fetchAllResourceCategoryCounts();
+
     }
 
     // 分类筛选函数
@@ -685,17 +631,10 @@
         currentSearchParams.pageNum = 1; // 切换分类时重置页码
         // 3. 执行筛选（可以结合之前的搜索功能）
         searchResources();
-    }
+        // 当点击全部资源时，获取并更新所有状态数量
+        fetchAllResourceCategoryCounts();
 
-    // 初始化默认选中状态
-    document.addEventListener('DOMContentLoaded', function() {
-        // 默认"全部资源"是active状态
-        const defaultItem = document.querySelector('#resourceCategoryFilter .list-group-item[data-category=""]');
-        if (defaultItem) {
-            defaultItem.classList.add('active');
-            defaultItem.querySelector('.badge').className = 'badge bg-primary rounded-pill';
-        }
-    });
+    }
 
     // 更新分类标签数字的函数
     function updateCategoryBadges(total) {
@@ -712,35 +651,54 @@
             activeBadge.textContent = total;
             activeBadge.classList.replace('bg-secondary', 'bg-primary');
         }
-
-        // 如果是全部资源，还需要更新其他分类的数字（如果需要）
-        if (currentCategory === '') {
-            // 这里可以添加从服务端获取各分类总数的逻辑
-            // fetchCategoryCounts();
-        }
     }
-
-    // 获取分类统计
-    function fetchCategoryCounts() {
-        fetch('/api/resources/category-counts')
-            .then(response => response.json())
-            .then(data => {
-                if (data.code === 0) {
-                    updateAllBadges(data.data);
+    // 定义获取所有资源状态数量的函数
+    function fetchAllResourceCategoryCounts() {
+        $.ajax({
+            url: '/user/resource/category_counts',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                auditstatus: currentSearchParams.auditstatus,
+                searchKey: currentSearchParams.searchKey,
+            },
+            success: function (response) {
+                if (response.code === 0) {
+                    updateAllResourceCategoryBadges(response.obj.data);
                 }
-            });
-    }
-
-    // 更新所有分类标签
-    function updateAllBadges(counts) {
-        document.querySelectorAll('#resourceCategoryFilter .list-group-item').forEach(item => {
-            const category = item.getAttribute('data-category') || 'all';
-            const badge = item.querySelector('.badge');
-            if (badge && counts[category]) {
-                badge.textContent = counts[category];
+            },
+            error: function (xhr, status, error) {
+                console.error('获取资源状态数量失败:', error);
             }
         });
     }
+    // 更新所有资源状态的 badge 数字
+    function updateAllResourceCategoryBadges(counts) {
+        console.log(counts);
+        const categoryCounts = {};
+        // 遍历响应数据，将资源状态和对应的数量存入 statusCounts 对象
+        counts.forEach(item => {
+            const category = item.categoryid === -1 ? '' : item.categoryid;
+            categoryCounts[category] = item.count;
+        });
+
+        const categoryItems = document.querySelectorAll('#resourceCategoryFilter .list-group-item');
+        categoryItems.forEach(item => {
+            const category = item.getAttribute('data-category') || '';
+            const badge = item.querySelector('.badge');
+            if (badge) {
+                // 根据资源状态获取对应的数量，如果不存在则默认为 0
+                const count = categoryCounts[category] || 0;
+                badge.textContent = count;
+                if (item.classList.contains('active')) {
+                    badge.classList.replace('bg-secondary', 'bg-primary');
+                } else {
+                    badge.classList.replace('bg-primary', 'bg-secondary');
+                }
+            }
+        });
+    }
+
 
 </script>
 

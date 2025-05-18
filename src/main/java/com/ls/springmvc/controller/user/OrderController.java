@@ -7,6 +7,9 @@ import com.ls.springmvc.vo.AjaxResponse;
 import com.ls.springmvc.vo.Order;
 import com.ls.springmvc.vo.Resource;
 import com.ls.springmvc.vo.User;
+import com.ls.springmvc.vo.page.OrderSearchParam;
+import com.ls.springmvc.vo.page.PageData;
+import com.ls.springmvc.vo.page.ResourceSearchParam;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -126,5 +129,29 @@ public class OrderController {
             model.addAttribute("error", "服务器错误: " + e.getMessage());
             return "error/error"; // 服务器错误
         }
+    }
+    // 分页模糊查询
+    @PostMapping("/page_Search")
+    @ResponseBody
+    public AjaxResponse pageSearch(OrderSearchParam param) {
+        PageData<Order> pageData = orderService.pageSearch(param);
+        if (pageData == null) {
+            ajaxResponse.setCode(-1);
+            ajaxResponse.setMsg("查询失败");
+            ajaxResponse.setObj(null);
+        }else {
+            ajaxResponse.setCode(0);
+            ajaxResponse.setMsg("查询成功");
+            ajaxResponse.setObj(pageData);
+        }
+        return ajaxResponse;
+    }
+    @PostMapping("/status_counts")
+    @ResponseBody
+    public AjaxResponse getAllOrderStatusCounts(OrderSearchParam param) {
+        List<Map<String, Integer>> counts = orderService.getAllOrderStatusCounts(param);
+        Map<String, Object> result = new HashMap<>();
+        result.put("data", counts);
+        return new AjaxResponse(0, "查询成功", result);
     }
 }

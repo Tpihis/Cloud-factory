@@ -1,11 +1,16 @@
 package com.ls.springmvc.controller;
 
+import com.ls.springmvc.Utils.LogUtil;
 import com.ls.springmvc.service.OrderService;
+import com.ls.springmvc.service.ResourceService;
 import com.ls.springmvc.service.UserService;
 import com.ls.springmvc.vo.AjaxResponse;
 import com.ls.springmvc.vo.Order;
 import com.ls.springmvc.vo.User;
 
+import com.ls.springmvc.vo.page.OrderSearchParam;
+import com.ls.springmvc.vo.page.PageData;
+import com.ls.springmvc.vo.page.ResourceSearchParam;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -15,7 +20,9 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Controller
@@ -29,6 +36,8 @@ public class TestController {
     @Autowired
     private OrderService orderService;
     @Autowired
+    private ResourceService resourceService;
+    @Autowired
     private AjaxResponse ajaxResponse;
     @GetMapping(value = "/list")
     public String userList() {
@@ -37,6 +46,7 @@ public class TestController {
     @GetMapping(value = "/error")
     public String error() {
         if (true) {
+            LogUtil.error("这是一个测试异常");
             throw new RuntimeException("这是一个测试异常");
         }
         return "success";
@@ -118,5 +128,36 @@ public class TestController {
         } catch (Exception e) {
             return new AjaxResponse(500, "获取订单列表失败: " + e.getMessage(),null);
         }
+    }
+    @GetMapping("/order/page_Search")
+    @ResponseBody
+    public AjaxResponse pageSearch(OrderSearchParam param) {
+        PageData<Order> pageData = orderService.pageSearch(param);
+        if (pageData == null) {
+            ajaxResponse.setCode(-1);
+            ajaxResponse.setMsg("查询失败");
+            ajaxResponse.setObj(null);
+        }else {
+            ajaxResponse.setCode(0);
+            ajaxResponse.setMsg("查询成功");
+            ajaxResponse.setObj(pageData);
+        }
+        return ajaxResponse;
+    }
+    @GetMapping("/order/status_counts")
+    @ResponseBody
+    public AjaxResponse getAllOrderStatusCounts( OrderSearchParam param) {
+        List<Map<String, Integer>> counts = orderService.getAllOrderStatusCounts(param);
+        Map<String, Object> result = new HashMap<>();
+        result.put("data", counts);
+        return new AjaxResponse(0, "查询成功", result);
+    }
+    @GetMapping("/resource/category_counts")
+    @ResponseBody
+    public AjaxResponse getAllResourceCategoryCounts(ResourceSearchParam param) {
+        List<Map<String, Integer>> counts = resourceService.getAllResourceCategoryCounts(param);
+        Map<String, Object> result = new HashMap<>();
+        result.put("data", counts);
+        return new AjaxResponse(0, "查询成功", result);
     }
 }

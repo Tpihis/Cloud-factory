@@ -10,6 +10,8 @@
     <title>云制造资源优化平台 - 资源中心 - 资源发布</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <script src="${pageContext.request.contextPath}/static/Custom/js/toast.js"></script>
+    <link href="${pageContext.request.contextPath}/static/Custom/css/toast.css">
     <style>
         :root {
             --primary-color: #3498db;
@@ -95,24 +97,6 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
             margin-top: 20px;
         }
-        /* Toast提示样式 */
-        .toast {
-            transition: opacity 0.3s ease;
-            top: 20px;
-            right: 20px;
-        }
-
-        .toast.show {
-            opacity: 1;
-        }
-
-        .bg-success {
-            background-color: #28a745 !important;
-        }
-
-        .bg-danger {
-            background-color: #dc3545 !important;
-        }
 
         /* 按钮加载状态 */
         .spinner-border-sm {
@@ -136,107 +120,6 @@
         </nav>
 
         <div class="row">
-            <!-- 左侧边栏 -->
-            <%--<div class="col-lg-3 mb-4">
-                <div class="sidebar">
-                    <!-- 搜索框 -->
-                    <div class="search-box mb-4">
-                        <i class="bi bi-search"></i>
-                        <input type="text" class="form-control" placeholder="搜索资源...">
-                    </div>
-
-                    <!-- 资源分类 -->
-                    <div class="filter-group">
-                        <div class="sidebar-title">资源分类</div>
-                        <div class="list-group">
-                            <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center active">
-                                全部资源
-                                <span class="badge bg-primary rounded-pill">128</span>
-                            </a>
-                            <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                                设备资源
-                                <span class="badge bg-secondary rounded-pill">42</span>
-                            </a>
-                            <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                                工艺知识
-                                <span class="badge bg-secondary rounded-pill">35</span>
-                            </a>
-                            <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                                设计模型
-                                <span class="badge bg-secondary rounded-pill">28</span>
-                            </a>
-                            <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                                制造服务
-                                <span class="badge bg-secondary rounded-pill">23</span>
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- 筛选条件 -->
-                    <div class="filter-group">
-                        <div class="sidebar-title">筛选条件</div>
-                        <div class="mb-3">
-                            <div class="filter-title">资源类型</div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="type1" checked>
-                                <label class="form-check-label" for="type1">3D模型</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="type2" checked>
-                                <label class="form-check-label" for="type2">CAD图纸</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="type3">
-                                <label class="form-check-label" for="type3">工艺文档</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="type4">
-                                <label class="form-check-label" for="type4">设备参数</label>
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            <div class="filter-title">行业领域</div>
-                            <select class="form-select form-select-sm">
-                                <option selected>全部行业</option>
-                                <option>汽车制造</option>
-                                <option>航空航天</option>
-                                <option>电子电器</option>
-                                <option>医疗器械</option>
-                                <option>机械装备</option>
-                            </select>
-                        </div>
-
-                        <div class="mb-3">
-                            <div class="filter-title">上传时间</div>
-                            <select class="form-select form-select-sm">
-                                <option selected>全部时间</option>
-                                <option>最近一周</option>
-                                <option>最近一个月</option>
-                                <option>最近三个月</option>
-                                <option>最近半年</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- 统计信息 -->
-                    <div class="filter-group">
-                        <div class="sidebar-title">资源统计</div>
-                        <div class="stats-card">
-                            <div class="stats-value">128</div>
-                            <div class="stats-label">总资源数</div>
-                        </div>
-                        <div class="stats-card">
-                            <div class="stats-value">42</div>
-                            <div class="stats-label">设备资源</div>
-                        </div>
-                        <div class="stats-card">
-                            <div class="stats-value">35</div>
-                            <div class="stats-label">工艺知识</div>
-                        </div>
-                    </div>
-                </div>
-            </div>--%>
 
             <!-- 右侧资源发布页面 -->
             <div class="col-lg-9">
@@ -399,7 +282,7 @@
     });
 
     // 显示Toast提示函数（字符串拼接版）
-    function showToast(message, type) {
+/*    function showToast(message, type) {
         type = type || 'success';
 
         // 移除旧的toast
@@ -428,5 +311,5 @@
                 document.getElementById('custom-toast').remove();
             }
         }, 2000);
-    }
+    }*/
 </script>

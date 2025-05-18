@@ -182,6 +182,38 @@
             font-size: 0.85rem;
             border-radius: 20px;
         }
+        /* 分页样式 */
+        .pagination .page-item .page-link {
+            /*color: #6c757d; !* 默认灰色文字 *!*/
+            color: var(--primary-color);
+        }
+
+        /* 当前页样式 */
+        .pagination .page-item.active .page-link {
+            /*color: #000 !important; !* 黑色文字 *!*/
+            color: #007bff !important; /* 黑色文字 */
+            background-color: #fff !important; /* 白色背景 */
+            font-weight: bold;
+        }
+
+        /* 当前页底部蓝条 */
+        .pagination .page-item.active .page-link::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70%;
+            height: 3px;
+            background-color: #007bff; /* 蓝色条 */
+            border-radius: 2px;
+        }
+
+        /* 悬停效果 */
+        .pagination .page-item:not(.active):hover .page-link {
+            color: #0056b3;
+            background-color: #f8f9fa;
+        }
     </style>
 </head>
 <body>
@@ -204,30 +236,39 @@
                 <!-- 搜索框 -->
                 <div class="search-box mb-4">
                     <i class="bi bi-search"></i>
-                    <input type="text" class="form-control" placeholder="搜索订单...">
+                    <input type="text"
+                           id="orderSearchInput"
+                           class="form-control"
+                           placeholder="搜索订单..."
+                           onkeyup="handleSearch(event)">
                 </div>
 
                 <!-- 订单状态筛选 -->
                 <div class="filter-group">
                     <div class="sidebar-title">订单状态</div>
-                    <div class="list-group">
-                        <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center active">
+                    <div class="list-group" id="orderStatusFilter">
+                        <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center active"
+                           data-status="" onclick="filterByStatus(this, '')">
                             全部订单
-                            <span class="badge bg-primary rounded-pill">15</span>
+                            <span class="badge bg-primary rounded-pill">0</span>
                         </a>
-                        <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                        <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+                           data-status="待支付" onclick="filterByStatus(this, '待支付')">
                             待支付
-                            <span class="badge bg-secondary rounded-pill">3</span>
+                            <span class="badge bg-secondary rounded-pill">0</span>
                         </a>
-                        <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                        <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+                           data-status="已支付" onclick="filterByStatus(this, '已支付')">
                             进行中
-                            <span class="badge bg-secondary rounded-pill">8</span>
+                            <span class="badge bg-secondary rounded-pill">0</span>
                         </a>
-                        <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                        <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+                           data-status="已完成" onclick="filterByStatus(this, '已完成')">
                             已完成
-                            <span class="badge bg-secondary rounded-pill">4</span>
+                            <span class="badge bg-secondary rounded-pill">0</span>
                         </a>
-                        <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                        <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+                           data-status="已取消" onclick="filterByStatus(this, '已取消')">
                             已取消
                             <span class="badge bg-secondary rounded-pill">0</span>
                         </a>
@@ -307,195 +348,12 @@
                 </div>
 
                 <!-- 订单卡片 -->
-                <div class="order-container">
-<%--                <div class="card order-card mb-4">
-                    <div class="card-header bg-light d-flex justify-content-between align-items-center">
-                        <div>
-                            <span class="fw-bold">订单编号: </span>
-                            <span>ORD-20230512-001</span>
-                            <span class="ms-3 fw-bold">创建时间: </span>
-                            <span>2025-05-12 14:30</span>
-                        </div>
-                        <span class="order-status status-processing">进行中</span>
-                    </div>
-                    <div class="card-body">
-                        <!-- 订单项目1 -->
-                        <div class="order-item d-flex">
-                            <div class="flex-shrink-0 me-3">
-                                <img src="https://via.placeholder.com/100?text=CNC加工" class="item-img" alt="CNC加工">
-                            </div>
-                            <div class="flex-grow-1">
-                                <h6 class="mb-1">五轴CNC精密加工服务</h6>
-                                <div class="d-flex justify-content-between">
-                                    <div>
-                                        <small class="text-muted">供应商: 精密机械有限公司</small><br>
-                                        <small class="text-muted">数量: 1批次</small>
-                                    </div>
-                                    <div class="text-end">
-                                        <div class="fw-bold">¥8,500.00</div>
-                                        <small class="text-muted">预计完成: 2025-05-20</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- 订单项目2 -->
-                        <div class="order-item d-flex">
-                            <div class="flex-shrink-0 me-3">
-                                <img src="https://via.placeholder.com/100?text=3D打印" class="item-img" alt="3D打印">
-                            </div>
-                            <div class="flex-grow-1">
-                                <h6 class="mb-1">工业级3D打印服务</h6>
-                                <div class="d-flex justify-content-between">
-                                    <div>
-                                        <small class="text-muted">供应商: 创新打印科技</small><br>
-                                        <small class="text-muted">数量: 5件</small>
-                                    </div>
-                                    <div class="text-end">
-                                        <div class="fw-bold">¥3,200.00</div>
-                                        <small class="text-muted">预计完成: 2025-05-18</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <span class="fw-bold me-2">合计: </span>
-                                <span class="text-danger fw-bold">¥11,700.00</span>
-                            </div>
-                            <div>
-                                <button class="btn btn-sm btn-outline-primary action-btn me-2">
-                                    <i class="bi bi-chat-left-text me-1"></i>联系供应商
-                                </button>
-                                <button class="btn btn-sm btn-outline-secondary action-btn">
-                                    <i class="bi bi-eye me-1"></i>查看详情
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 订单卡片2 -->
-                <div class="card order-card mb-4">
-                    <div class="card-header bg-light d-flex justify-content-between align-items-center">
-                        <div>
-                            <span class="fw-bold">订单编号: </span>
-                            <span>ORD-20230505-002</span>
-                            <span class="ms-3 fw-bold">创建时间: </span>
-                            <span>2025-05-05 09:15</span>
-                        </div>
-                        <span class="order-status status-completed">已完成</span>
-                    </div>
-                    <div class="card-body">
-                        <!-- 订单项目 -->
-                        <div class="order-item d-flex">
-                            <div class="flex-shrink-0 me-3">
-                                <img src="https://via.placeholder.com/100?text=设计服务" class="item-img" alt="设计服务">
-                            </div>
-                            <div class="flex-grow-1">
-                                <h6 class="mb-1">机械结构设计服务</h6>
-                                <div class="d-flex justify-content-between">
-                                    <div>
-                                        <small class="text-muted">供应商: 卓越工程设计</small><br>
-                                        <small class="text-muted">数量: 1套设计方案</small>
-                                    </div>
-                                    <div class="text-end">
-                                        <div class="fw-bold">¥6,800.00</div>
-                                        <small class="text-success">已完成: 2025-05-10</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <span class="fw-bold me-2">合计: </span>
-                                <span class="text-danger fw-bold">¥6,800.00</span>
-                                <span class="ms-3">
-                                    <i class="bi bi-star-fill text-warning"></i>
-                                    <i class="bi bi-star-fill text-warning"></i>
-                                    <i class="bi bi-star-fill text-warning"></i>
-                                    <i class="bi bi-star-fill text-warning"></i>
-                                    <i class="bi bi-star-fill text-warning"></i>
-                                </span>
-                            </div>
-                            <div>
-                                <button class="btn btn-sm btn-outline-primary action-btn me-2">
-                                    <i class="bi bi-chat-left-text me-1"></i>联系供应商
-                                </button>
-                                <button class="btn btn-sm btn-outline-secondary action-btn">
-                                    <i class="bi bi-eye me-1"></i>查看详情
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 订单卡片3 -->
-                <div class="card order-card mb-4">
-                    <div class="card-header bg-light d-flex justify-content-between align-items-center">
-                        <div>
-                            <span class="fw-bold">订单编号: </span>
-                            <span>ORD-20230428-003</span>
-                            <span class="ms-3 fw-bold">创建时间: </span>
-                            <span>2025-04-28 16:45</span>
-                        </div>
-                        <span class="order-status status-pending">待支付</span>
-                    </div>
-                    <div class="card-body">
-                        <!-- 订单项目 -->
-                        <div class="order-item d-flex">
-                            <div class="flex-shrink-0 me-3">
-                                <img src="https://via.placeholder.com/100?text=检测服务" class="item-img" alt="检测服务">
-                            </div>
-                            <div class="flex-grow-1">
-                                <h6 class="mb-1">材料性能检测服务</h6>
-                                <div class="d-flex justify-content-between">
-                                    <div>
-                                        <small class="text-muted">供应商: 材料分析中心</small><br>
-                                        <small class="text-muted">数量: 3项检测</small>
-                                    </div>
-                                    <div class="text-end">
-                                        <div class="fw-bold">¥2,400.00</div>
-                                        <small class="text-muted">需在2025-05-01前支付</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <span class="fw-bold me-2">合计: </span>
-                                <span class="text-danger fw-bold">¥2,400.00</span>
-                            </div>
-                            <div>
-                                <button class="btn btn-sm btn-danger action-btn me-2">
-                                    <i class="bi bi-credit-card me-1"></i>立即支付
-                                </button>
-                                <button class="btn btn-sm btn-outline-secondary action-btn me-2">
-                                    <i class="bi bi-x-circle me-1"></i>取消订单
-                                </button>
-                                <button class="btn btn-sm btn-outline-secondary action-btn">
-                                    <i class="bi bi-eye me-1"></i>查看详情
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>--%>
-                </div>
+                <div class="order-container"></div>
 
                 <!-- 分页 -->
                 <nav aria-label="Page navigation">
-                    <ul class="pagination justify-content-center">
-                        <li class="page-item disabled">
-                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">上一页</a>
-                        </li>
-                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">下一页</a>
-                        </li>
+                    <ul class="pagination justify-content-center" id="pagination">
+                        <!-- 动态生成分页按钮 -->
                     </ul>
                 </nav>
             </div>
@@ -507,25 +365,10 @@
 </body>
 </html>
 <script>
-    $(document).ready(function() {
-        // 获取订单列表数据
-        $.ajax({
-            url: '/user/order/list',
-            type: 'POST',
-            dataType: 'json',
-            success: function(response) {
-                if (response.code === 200 && response.obj) {
-                    renderOrderCards(response.obj);
-                } else {
-                    console.error('获取订单数据失败:', response.message);
-                    // 可以在这里添加错误提示
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error('AJAX请求失败:', status, error);
-                // 可以在这里添加错误提示
-            }
-        });
+    // 修改document.ready中的代码
+    $(document).ready(function () {
+        searchOrders();
+        fetchAllOrderStatusCounts();
     });
 
     // 渲染订单卡片
@@ -542,7 +385,7 @@
         // 遍历每个订单并渲染
         orders.forEach(order => {
             // 首先获取资源详情
-            getResourceDetails(order.resourceids, function(resources) {
+            getResourceDetails(order.resourceids, function (resources) {
                 const orderCard = createOrderCard(order, resources);
                 container.append(orderCard);
             });
@@ -561,9 +404,9 @@
         $.ajax({
             url: '/user/resource/batch',
             type: 'POST',
-            data: { ids: ids.join(',') },
+            data: {ids: ids.join(',')},
             dataType: 'json',
-            success: function(response) {
+            success: function (response) {
                 if (response.code === 200) {
                     callback(response.obj || []);
                 } else {
@@ -571,7 +414,7 @@
                     callback([]);
                 }
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 console.error('获取资源详情AJAX请求失败:', status, error);
                 callback([]);
             }
@@ -651,37 +494,37 @@
                 '</div>';
         });
 
-            // 构建完整的订单卡片HTML
-            const orderCardHtml =
-                '<div class="card order-card mb-4">' +
-                '<div class="card-header bg-light d-flex justify-content-between align-items-center">' +
-                '<div>' +
-                '<span class="fw-bold">订单编号: </span>' +
-                '<span>ORD-' + order.orderid.toString().padStart(8, '0') + '</span>' +
-                '<span class="ms-3 fw-bold">创建时间: </span>' +
-                '<span>' + orderTime + '</span>' +
-                '</div>' +
-                '<span class="order-status ' + statusClass + '">' + statusText + '</span>' +
-                '</div>' +
-                '<div class="card-body">' +
-                resourceItemsHtml +
-                '<hr>' +
-                '<div class="d-flex justify-content-between align-items-center">' +
-                '<div>' +
-                '<span class="fw-bold me-2">合计: </span>' +
-                '<span class="text-danger fw-bold">¥' + order.totalprice.toFixed(2) + '</span>' +
-                '</div>' +
-                '<div>' +
-                '<button class="btn btn-sm btn-outline-primary action-btn me-2" onclick="contactSupplier(' + order.orderid + ')">' +
-                '<i class="bi bi-chat-left-text me-1"></i>联系供应商' +
-                '</button>' +
-                '<button class="btn btn-sm btn-outline-secondary action-btn" onclick="viewOrderDetails(' + order.orderid + ')">' +
-                '<i class="bi bi-eye me-1"></i>查看详情' +
-                '</button>' +
-                '</div>' +
-                '</div>' +
-                '</div>' +
-                '</div>';
+        // 构建完整的订单卡片HTML
+        const orderCardHtml =
+            '<div class="card order-card mb-4">' +
+            '<div class="card-header bg-light d-flex justify-content-between align-items-center">' +
+            '<div>' +
+            '<span class="fw-bold">订单编号: </span>' +
+            '<span>ORD-' + order.orderid.toString().padStart(8, '0') + '</span>' +
+            '<span class="ms-3 fw-bold">创建时间: </span>' +
+            '<span>' + orderTime + '</span>' +
+            '</div>' +
+            '<span class="order-status ' + statusClass + '">' + statusText + '</span>' +
+            '</div>' +
+            '<div class="card-body">' +
+            resourceItemsHtml +
+            '<hr>' +
+            '<div class="d-flex justify-content-between align-items-center">' +
+            '<div>' +
+            '<span class="fw-bold me-2">合计: </span>' +
+            '<span class="text-danger fw-bold">¥' + order.totalprice.toFixed(2) + '</span>' +
+            '</div>' +
+            '<div>' +
+            '<button class="btn btn-sm btn-outline-primary action-btn me-2" onclick="contactSupplier(' + order.orderid + ')">' +
+            '<i class="bi bi-chat-left-text me-1"></i>联系供应商' +
+            '</button>' +
+            '<button class="btn btn-sm btn-outline-secondary action-btn" onclick="viewOrderDetails(' + order.orderid + ')">' +
+            '<i class="bi bi-eye me-1"></i>查看详情' +
+            '</button>' +
+            '</div>' +
+            '</div>' +
+            '</div>' +
+            '</div>';
 
         return orderCardHtml;
     }
@@ -705,6 +548,174 @@
         console.log('查看订单详情，订单ID:', orderId);
         // 这里可以添加查看订单详情的逻辑
         // 例如跳转到订单详情页面
-        window.location.href = `${pageContext.request.contextPath}/user/order/detail?id=`+orderId;
+        window.location.href = `${pageContext.request.contextPath}/user/order/detail?id=` + orderId;
+    }
+
+    // 在script标签顶部添加分页参数
+    var currentSearchParams = {
+        pageNum: 1,
+        pageSize: 6,
+        searchKey: '',
+        orderstatus: ''
+    };
+
+
+
+    // ajax请求
+    function searchOrders() {
+        $.ajax({
+            url: '/user/order/page_Search',
+            type: 'POST',
+            dataType: 'json',
+            data: currentSearchParams,
+            success: function (response) {
+                if (response.code === 0) {
+                    renderOrderCards(response.obj.list);
+                    renderPagination({
+                        pageNum: currentSearchParams.pageNum,
+                        pageSize: currentSearchParams.pageSize,
+                        total: response.obj.total,
+                        totalPages: response.obj.totalPages
+                    });
+                } else {
+                    console.error('获取订单数据失败:', response.message);
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('AJAX请求失败:', status, error);
+            }
+        });
+    }
+
+    // 搜索处理函数（支持回车和防抖）
+    let searchTimer;
+    function handleSearch(event) {
+        // 回车键触发搜索
+        if (event.key === 'Enter') {
+            search();
+            return;
+        }
+        // 输入防抖（300毫秒延迟）
+        clearTimeout(searchTimer);
+        searchTimer = setTimeout(search, 300);
+    }
+    // 搜索函数
+    function search() {
+        // 获取搜索关键字
+        const searchKey = document.getElementById('orderSearchInput').value.trim();
+        // 获取当前选中的分类ID（新增部分）
+        const activeStatusItem = document.querySelector('#orderStatusFilter .list-group-item.active');
+        const orderstatus = activeStatusItem ? activeStatusItem.getAttribute('data-status') : '';
+        currentSearchParams.searchKey = searchKey;
+        currentSearchParams.orderstatus = orderstatus;
+        currentSearchParams.pageNum = 1; // 重置到第一页
+        searchOrders();
+        fetchAllOrderStatusCounts();
+    }
+
+    // 状态筛选事件处理
+    function filterByStatus(clickedElement, status) {
+        // 1. 更新 UI 状态
+        const items = document.querySelectorAll('#orderStatusFilter .list-group-item');
+        items.forEach(item => {
+            item.classList.remove('active');
+            item.querySelector('.badge').className = 'badge bg-secondary rounded-pill';
+        });
+
+        clickedElement.classList.add('active');
+        clickedElement.querySelector('.badge').className = 'badge bg-primary rounded-pill';
+
+        // 2. 更新当前筛选状态
+        currentSearchParams.orderstatus = status;
+        currentSearchParams.pageNum = 1; // 切换状态时重置页码
+
+        // 3. 执行筛选
+        searchOrders();
+        fetchAllOrderStatusCounts();
+    }
+
+    // 更新所有订单状态的 badge 数字
+    function updateAllOrderStatusBadges(counts) {
+        const statusCounts = {};
+        // 遍历响应数据，将订单状态和对应的数量存入 statusCounts 对象
+        counts.forEach(item => {
+            const status = item.orderstatus === -1 ? '' : item.orderstatus;
+            statusCounts[status] = item.count;
+        });
+
+        const statusItems = document.querySelectorAll('#orderStatusFilter .list-group-item');
+        statusItems.forEach(item => {
+            const status = item.getAttribute('data-status') || '';
+            const badge = item.querySelector('.badge');
+            if (badge) {
+                // 根据订单状态获取对应的数量，如果不存在则默认为 0
+                const count = statusCounts[status] || 0;
+                badge.textContent = count;
+                if (item.classList.contains('active')) {
+                    badge.classList.replace('bg-secondary', 'bg-primary');
+                } else {
+                    badge.classList.replace('bg-primary', 'bg-secondary');
+                }
+            }
+        });
+    }
+    // 定义获取所有订单状态数量的函数
+    function fetchAllOrderStatusCounts() {
+        $.ajax({
+            url: '/user/order/status_counts',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                searchKey: currentSearchParams.searchKey
+            },
+            success: function (response) {
+                if (response.code === 0) {
+                    updateAllOrderStatusBadges(response.obj.data);
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('获取订单状态数量失败:', error);
+            }
+        });
+    }
+
+    // 分页跳转
+    function goToPage(pageNum) {
+        currentSearchParams.pageNum = pageNum;
+        searchOrders();
+    }
+
+    function renderPagination(pageData) {
+        var pagination = $('#pagination');
+        pagination.empty();
+
+        // 上一页按钮
+        var prevDisabled = pageData.pageNum === 1 ? 'disabled' : '';
+        pagination.append(
+            '<li class="page-item ' + prevDisabled + '">' +
+            '<a class="page-link" href="#" onclick="goToPage(' + (pageData.pageNum - 1) + ')">上一页</a>' +
+            '</li>'
+        );
+
+        // 页码按钮
+        var startPage = Math.max(1, pageData.pageNum - 2);
+        var endPage = Math.min(pageData.totalPages, startPage + 4);
+
+        for (var i = startPage; i <= endPage; i++) {
+            var active = i === pageData.pageNum ? 'active' : '';
+            pagination.append(
+                '<li class="page-item ' + active + '">' +
+                '<a class="page-link" href="#" onclick="goToPage(' + i + ')">' + i + '</a>' +
+                '</li>'
+            );
+        }
+
+        // 下一页按钮
+        var nextDisabled = pageData.pageNum >= pageData.totalPages ? 'disabled' : '';
+        pagination.append(
+            '<li class="page-item ' + nextDisabled + '">' +
+            '<a class="page-link" href="#" onclick="goToPage(' + (pageData.pageNum + 1) + ')">下一页</a>' +
+            '</li>'
+        );
     }
 </script>

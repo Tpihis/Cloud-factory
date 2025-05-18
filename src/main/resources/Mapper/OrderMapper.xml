@@ -11,7 +11,7 @@
     <select id="findOrderById" parameterType="Integer" resultType="com.ls.springmvc.vo.Order">
         select * from `order` where orderid = #{orderid}
     </select>
-<!--         根据用户id查询订单-->
+    <!--根据用户id查询订单-->
     <select id="selectByUserId" resultType="com.ls.springmvc.vo.Order" parameterType="java.lang.Integer">
         SELECT * FROM `order`
         WHERE userid = #{userId}
@@ -30,14 +30,57 @@
         VALUES (#{taskid},#{resourceids},#{totalprice},#{quantity},#{orderstatus},#{ordertime},#{userid})
     </insert>
 
-    <!-- 条件查询订单 -->
-    <select id="selectByCondition" resultType="com.ls.springmvc.vo.Resource" >
-        SELECT * FROM `order`
+    <!-- 基础查询字段 -->
+    <sql id="list_order">
+        SELECT orderid, userid, taskid, resourceids, totalprice,
+               quantity, orderstatus, ordertime, completiontime
+        FROM `order`
+    </sql>
+
+    <!-- 动态查询条件 -->
+    <sql id="dynamicConditions">
         <where>
-            <if test="orderid != null">AND orderid = #{orderid}</if>
-            <if test="userid != null">AND userid = #{userid}</if>
-            <if test="status != null">AND orderstatus = #{status}</if>
+            <if test="searchKey != null and searchKey != ''">
+                AND orderid LIKE CONCAT("%", #{searchKey}, "%")
+          <!--      OR resourceids LIKE CONCAT('%', #{searchKey}, '%')-->
+            </if>
+            <if test="orderstatus != null and orderstatus != ''">
+                AND orderstatus = #{orderstatus}
+            </if>
+            <if test="userid != null">
+                AND userid = #{userid}
+            </if>
+            <if test="taskid != null">
+                AND taskid = #{taskid}
+            </if>
         </where>
-        ORDER BY ordertime DESC
+    </sql>
+
+    <!-- 分页查询 -->
+    <select id="pageListOrder" resultType="com.ls.springmvc.vo.Order">
+        <include refid="list_order"/>
+        <include refid="dynamicConditions"/>
+        <if test="orderBy != null and orderDirect != null">
+            ORDER BY ${orderBy} ${orderDirect}
+        </if>
+        LIMIT #{pageNum}, #{pageSize}
+    </select>
+
+    <!-- 查询总数 -->
+    <select id="totalOrderCount" resultType="int">
+        SELECT COUNT(*) FROM `order`
+        <include refid="dynamicConditions"/>
+    </select>
+
+    <resultMap id="statusCountMap" type="map">
+        <result property="orderstatus" column="orderstatus" javaType="string"/>
+        <result property="count" column="count" javaType="int"/>
+    </resultMap>
+    <!-- 查询所有订单状态的数量 -->
+    <select id="getAllOrderStatusCounts" resultMap="statusCountMap">
+        SELECT orderstatus, COUNT(*) as count
+        FROM `order`
+        <include refid="dynamicConditions"/>
+        GROUP BY orderstatus
     </select>
 </mapper>

@@ -6,6 +6,7 @@ import com.ls.springmvc.vo.page.ResourceSearchParam;
 
 
 import java.util.List;
+import java.util.Map;
 
 public interface ResourceService {
     List<Resource> pageSearch();
@@ -20,4 +21,5 @@ public interface ResourceService {
     //检查库存
     boolean checkStock(Integer resourceId, Integer quantity);
     List<Resource> getResourcesByIds(List<Integer> ids);
+    List<Map<String, Integer>> getAllResourceCategoryCounts(ResourceSearchParam  param);
 }
