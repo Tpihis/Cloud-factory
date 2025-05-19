@@ -47,12 +47,24 @@
             transform: translateY(-5px);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
         }
-
+        img {
+            width: 100%;
+            height: auto;
+        }
         .card-img-top {
-            height: 160px;
-            object-fit: cover;
+            /*min-height: 180px;    !* 设置最小高度 *!*/
+
+            height: 250px;    /* 设置高度 */
+            object-fit: contain;  /* 完整显示图片 */
+            border-radius: 10px;
             filter: brightness(90%);
             transition: filter 0.3s;
+            /*margin: 0 auto;       !* 水平居中 *!*/
+        /*    contain–被替换的内容被缩放以保持其纵横比，同时适合元素的内容框。整个对象被制作成填充盒子，同时保持其纵横比，因此如果其纵横比与盒子的纵横比不匹配，则对象将被“信箱”。
+cover–替换的内容的大小可以在填充元素的整个内容框时保持其纵横比。如果对象的纵横比与其框的纵横比不匹配，则对象将被剪裁以适应。
+fill–替换的内容大小足以填充元素的内容框。整个对象将完全填满该框。如果对象的纵横比与其长方体的纵横比不匹配，则对象将被拉伸以适应。
+none–替换的内容不会调整大小。按比例缩小——内容的大小就像没有指定或包含一样，以产生较小的具体对象大小为准。*/
+
         }
 
         .resource-card:hover .card-img-top {
@@ -486,7 +498,8 @@
             const resourceCard =
                 '<div class="col-md-6">' +
                 '<div class="card resource-card" onclick="goToDetail('+ resource.resourceid+ ')">' +
-                '<img src="https://via.placeholder.com/300x160" class="card-img-top" alt="资源图片">' +
+                '<img src="${pageContext.request.contextPath}/system/resourceImage?resourceId='+ resource.resourceid +'" ' +
+                'class="card-img-top" alt="'+ resource.resourcename +'" style="object-fit: cover;">' +
                 '<div class="card-body">' +
                 '<span class="category-badge">' + getCategoryName(resource.categoryid) + '</span>' +
                 '<h5 class="card-title">' + resource.resourcename + '</h5>' +

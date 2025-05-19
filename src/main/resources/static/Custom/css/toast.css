@@ -1,9 +1,9 @@
 /* Toast 容器样式 - 固定在右上角，使用弹性布局垂直排列通知 */
 .toast-container {
-    position: fixed;  /* 固定定位脱离文档流 */
-    top: 20px;        /* 距顶部距离 */
-    right: 20px;      /* 距右侧距离 */
-    z-index: 9999;    /* 确保在最顶层 */
+    position: fixed !important;  /* 固定定位脱离文档流 */
+    top: 20px !important;        /* 距顶部距离 */
+    right: 20px !important;      /* 距右侧距离 */
+    z-index: 9999 !important;    /* 确保在最顶层 */
     display: flex;     /* 弹性布局 */
     flex-direction: column;  /* 垂直方向排列子元素 */
     gap: 5px;         /* 子元素之间的间距 */

@@ -64,10 +64,11 @@ public class ResourceController {
             resource.setResourcedate(formattedDateTime);
         }
         resource.setAuditstatus("待审");
-        boolean Add = resourceService.addResource(resource);
-        if(Add){
+        int Add = resourceService.addResource(resource);
+        if(Add>0){
             ajaxResponse.setCode(0);
             ajaxResponse.setMsg("添加成功");
+            ajaxResponse.setObj(Add);
 //            return "admin/resource/resourceList";
         }else{
             ajaxResponse.setCode(-1);

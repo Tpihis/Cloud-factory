@@ -1,6 +1,7 @@
 package com.ls.springmvc.controller.user;
 
 import com.ls.springmvc.service.ResourceService;
+import com.ls.springmvc.service.UserService;
 import com.ls.springmvc.vo.AjaxResponse;
 import com.ls.springmvc.vo.Resource;
 import com.ls.springmvc.vo.page.PageData;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.xml.transform.Result;
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -26,6 +28,8 @@ public class ResourceController {
     private ResourceService resourceService;
     @Autowired
     private AjaxResponse ajaxResponse;
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/display")
     public String resourceDisplay(){
@@ -83,7 +87,15 @@ public class ResourceController {
 
     @PostMapping(value="/publish")
     @ResponseBody
-    public AjaxResponse resourcePublish(@RequestBody Resource resource) {
+    public AjaxResponse resourcePublish(@RequestBody Resource resource, Principal principal) {
+
+        //获取到登录的用户名 这里的User对象是Spring-Security提供的User
+        // 设置当前用户ID（假设用户已登录）
+        Integer userid = userService.findUserByUsername(principal.getName()).getUserid();
+        if(userid == null) {
+            return new AjaxResponse(401, "用户未登录", null);
+        }
+
         if(resource.getResourcedate() == null || resource.getResourcedate().isEmpty()) {
             // 获取当前时间
             LocalDateTime now = LocalDateTime.now();
@@ -94,10 +106,12 @@ public class ResourceController {
             resource.setResourcedate(formattedDateTime);
         }
         resource.setAuditstatus("待审");
-        boolean Add = resourceService.addResource(resource);
-        if(Add){
+        resource.setUserid(userid);
+        int Add = resourceService.addResource(resource);
+        if(Add > 0){
             ajaxResponse.setCode(0);
             ajaxResponse.setMsg("添加成功");
+            ajaxResponse.setObj(Add);//返回资源id
 //            return "admin/resource/resourceList";
         }else{
             ajaxResponse.setCode(-1);

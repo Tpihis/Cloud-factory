@@ -11,7 +11,7 @@ import java.util.Map;
 public interface ResourceService {
     List<Resource> pageSearch();
     boolean deleteResource(Integer resourceid);
-    boolean addResource(Resource resource);
+    int addResource(Resource resource);
 
     Resource getResourceById(Integer resourceId);
     // 分页模糊查询

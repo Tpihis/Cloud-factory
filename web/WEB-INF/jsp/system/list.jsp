@@ -21,12 +21,14 @@
 <h2 style="text-align: center;">文件列表</h2>
 <table>
     <tr>
+        <th>路径</th>
         <th>文件名</th>
         <th>大小</th>
         <th>预览/操作</th>
     </tr>
     <c:forEach items="${exist_files}" var="file">
         <tr>
+            <td>${file.path}</td>
             <td>${file.name}</td>
             <td>${file.size}</td>
             <td>
@@ -36,11 +38,11 @@
                              alt="${file.name}"/>
                     </c:when>
                     <c:otherwise>
-                        <c:if test="${file.isImage == 'Directory'}">
-                            <a href="${pageContext.request.contextPath}/system/filesInDirectory?directoryName=${file.name}">
-                                <button>查看</button>
-                            </a>
-                        </c:if>
+<%--                        <c:if test="${file.isImage == 'Directory'}">--%>
+<%--                            <a href="${pageContext.request.contextPath}/system/filesInDirectory?directoryName=${file.name}">--%>
+<%--                                <button>查看</button>--%>
+<%--                            </a>--%>
+<%--                        </c:if>--%>
                         <a href="${pageContext.request.contextPath}/system/download?filename=${file.name}"
                            download="${file.name}">
                             <button>下载</button>

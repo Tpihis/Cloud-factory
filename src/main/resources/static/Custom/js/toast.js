@@ -46,6 +46,11 @@ function showToast(message, type = 'success', duration = 2000) {
         container = document.createElement('div');
         container.id = 'custom-toast-container';
         container.className = 'toast-container';
+        // 添加内联样式作为双重保障
+        container.style.position = 'fixed';
+        container.style.top = '20px';
+        container.style.right = '20px';
+        container.style.zIndex = '9999';
         document.body.appendChild(container);
     }
 
@@ -60,7 +65,7 @@ function showToast(message, type = 'success', duration = 2000) {
                 onclick="this.closest('.toast').classList.add('fade-out')"></button>
         </div>
     `;
-
+console.log(toast.innerHTML);
     // 添加到容器中
     container.appendChild(toast);
 
@@ -80,3 +85,11 @@ function showToast(message, type = 'success', duration = 2000) {
 if (typeof window !== 'undefined') {
     window.showToast = showToast;
 }
+/*document.addEventListener('DOMContentLoaded', function() {
+    const container = document.getElementById('custom-toast-container');
+    if(container) {
+        container.style.position = 'fixed';
+        container.style.top = '20px';
+        container.style.right = '20px';
+    }
+});*/

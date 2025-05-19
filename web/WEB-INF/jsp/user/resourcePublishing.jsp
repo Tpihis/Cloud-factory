@@ -126,7 +126,7 @@
                 <h4 class="section-header">资源发布</h4>
                 <div class="task-form">
                     <div class="card-body">
-                        <form action="${pageContext.request.contextPath}/user/resource/publish" method="post">
+                        <form action="${pageContext.request.contextPath}/user/resource/publish" method="post" enctype="multipart/form-data">
                             <div class="row">
                                 <!-- 资源名称 -->
                                 <div class="col-md-6 mb-3">
@@ -201,10 +201,20 @@
                                 <textarea class="form-control" id="description" name="resourcedescription" rows="3"
                                     placeholder="请详细描述资源的特点、优势等"></textarea>
                             </div>
-                            <%--<!-- 上传资源资料 -->
+                            <!-- 图片上传部分 -->
+                            <div class="row">
+                                <div class="col-md-12 mb-3">
+                                    <label for="resourceImages" class="form-label">资源图片(可多选)</label>
+                                    <input type="file" class="form-control" id="resourceImages" name="resourceImages" multiple accept="image/*">
+                                    <div class="form-text">可上传多张图片展示资源，支持JPG、PNG格式</div>
+                                    <!-- 图片预览区域 -->
+                                    <div id="imagePreview" class="d-flex flex-wrap mt-2"></div>
+                                </div>
+                            </div>
+                         <%--   <!-- 上传资源资料 -->
                             <div class="mb-3">
-                                <label for="file" class="form-label">上传资源相关资料</label>
-                                <input class="form-control" type="file" id="file">
+                                <label for="Img" class="form-label">上传资源图片</label>
+                                <input class="form-control" type="file" id="Img">
                             </div>--%>
                             <!-- 提交按钮 -->
                             <button type="submit" class="btn btn-primary">发布资源</button>
@@ -226,6 +236,7 @@
 
         // 收集表单数据
         const formData = new FormData(this);
+        const imageFiles = document.getElementById('resourceImages').files;
         const jsonData = {};
         formData.forEach((value, key) => {
             // 转换数字类型字段
@@ -248,19 +259,44 @@
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(jsonData)
+            body: JSON.stringify(Object.fromEntries(formData)),
+
         })
+            .then(response => response.json())
+            .then(data => {
+                if (data.code === 0) {
+                    // 2. 资源创建成功后再上传图片
+                    if (imageFiles.length > 0) {
+                        const imageFormData = new FormData();
+                        for (let i = 0; i < imageFiles.length; i++) {
+                            imageFormData.append('fileName', imageFiles[i]);
+                        }
+
+                        return fetch('${pageContext.request.contextPath}/system/multiUploadResourceFile?resourceId='+data.obj, {
+                            method: 'POST',
+                            body: imageFormData
+                        });
+                    } else {
+                        // showToast('无图片上传','error');
+                        return Promise.resolve(
+                            new Response(
+                                JSON.stringify({code: 0, msg: '无图片上传'}),
+                                { status: 200, headers: { 'Content-Type': 'application/json' } }
+                            )
+                        );
+                    }
+                } else {
+                    throw new Error(data.msg || '资源发布失败');
+                }
+            })
             .then(response => response.json())
             .then(data => {
                 // 恢复按钮状态
                 submitBtn.innerHTML = originalBtnText;
                 submitBtn.disabled = false;
 
-                if (data.code === 0) {
-                    // 成功提示
+                if (data.code === 0 || data.code === 200) {
                     showToast('资源发布成功', 'success');
-
-                    // 2秒后刷新父页面
                     setTimeout(() => {
                         if (window.opener) {
                             parent.opener.location.reload();
@@ -270,46 +306,41 @@
                         }
                     }, 2000);
                 } else {
-                    showToast(data.msg || '发布失败', 'error');
+                    showToast(data.msg || '图片上传失败', 'error');
                 }
             })
             .catch(error => {
-                // 恢复按钮状态
                 submitBtn.innerHTML = originalBtnText;
                 submitBtn.disabled = false;
                 showToast('请求失败: ' + error.message, 'error');
             });
     });
 
-    // 显示Toast提示函数（字符串拼接版）
-/*    function showToast(message, type) {
-        type = type || 'success';
+    // 图片预览功能
+    document.getElementById('resourceImages').addEventListener('change', function(e) {
+        const previewContainer = document.getElementById('imagePreview');
+        previewContainer.innerHTML = ''; // 清空之前的预览
 
-        // 移除旧的toast
-        var oldToast = document.getElementById('custom-toast');
-        if (oldToast) oldToast.parentNode.removeChild(oldToast);
+        const files = e.target.files;
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            if (!file.type.match('image.*')) continue;
 
-        // 创建toast元素
-        var toast = document.createElement('div');
-        toast.id = 'custom-toast';
-        toast.className = 'toast show align-items-center text-white bg-' + (type === 'error' ? 'danger' : 'success');
-        toast.style.position = 'fixed';
-        toast.style.zIndex = '9999';
-        toast.style.minWidth = '250px';
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const previewDiv = document.createElement('div');
+                previewDiv.className = 'position-relative me-2 mb-2';
+                previewDiv.style.width = '100px';
 
-        toast.innerHTML = '<div class="d-flex">' +
-            '<div class="toast-body">' + message + '</div>' +
-            '<button type="button" class="btn-close btn-close-white me-2 m-auto"' +
-            'onclick="document.getElementById(\'custom-toast\').remove()"></button>' +
-            '</div>';
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.className = 'img-thumbnail';
+                img.style.maxHeight = '100px';
 
-        document.body.appendChild(toast);
-
-        // 2秒后自动消失
-        setTimeout(function() {
-            if (document.getElementById('custom-toast')) {
-                document.getElementById('custom-toast').remove();
-            }
-        }, 2000);
-    }*/
+                previewDiv.appendChild(img);
+                previewContainer.appendChild(previewDiv);
+            };
+            reader.readAsDataURL(file);
+        }
+    });
 </script>

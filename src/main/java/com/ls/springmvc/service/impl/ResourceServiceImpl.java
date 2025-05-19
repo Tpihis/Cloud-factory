@@ -44,15 +44,14 @@ public class ResourceServiceImpl implements ResourceService {
     }
 
     @Override
-    public boolean addResource(Resource resource) {
-        boolean result = false;
+    public int addResource(Resource resource) {
+
         try {
             resourceDao.addResource(resource);
-            result = true;
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            return result;
+            return resource.getResourceid();
         }
     }
 

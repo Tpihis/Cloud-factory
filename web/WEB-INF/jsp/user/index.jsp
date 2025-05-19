@@ -10,6 +10,7 @@
     <link href="${pageContext.request.contextPath}/static/Custom/css/toast.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
 </head>
 <body>
 <h1>普通用户</h1>
@@ -26,8 +27,11 @@
 <%--</c:forEach>--%>
 <a href="${pageContext.request.contextPath}/logout">退出</a>
 <a href="${pageContext.request.contextPath}/user/chat">消息</a>
-<a href="${pageContext.request.contextPath}/user/index">iframe</a>
-<%--<a href="${pageContext.request.contextPath}/system/uploadFilePage"> 前往上传页面 </a>--%>
+<a href="javascript:void(0);" onclick="requestURL('/user/chat')">消息</a>
+<%--<a href="${pageContext.request.contextPath}/user/index" onclick="requestURL('/user/index')">iframe</a>--%>
+<a href="javascript:void(0);" onclick="requestURL('/user/index')">iframe</a>
+<%--<a href="${pageContext.request.contextPath}/system/uploadFilePage" onclick="requestURL('/system/uploadFilePage')"> 前往上传页面 </a>--%>
+<a href="javascript:void(0);" onclick="requestURL('/system/uploadFilePage')"> 前往上传页面 </a>
 <a href="${pageContext.request.contextPath}/auth/loginPage">登录</a>
 <div id="toast-container">
     <button >
@@ -41,6 +45,10 @@
 <script>
     function LshowToast(message, type = 'success', duration = 1000) {
         showToast(message, type,duration);
+    }
+
+    function requestURL(url) {
+        window.location.href = url;
     }
 </script>
 </html>

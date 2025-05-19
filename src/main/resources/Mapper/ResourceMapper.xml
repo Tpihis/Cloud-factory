@@ -12,10 +12,10 @@
     <delete id="deleteResource" parameterType="Integer">
         delete from resource where resourceid=#{resourceid}
     </delete>
-    <!-- 添加用户 -->
-    <insert id="addResource" parameterType="com.ls.springmvc.vo.Resource">
-        insert into resource(resourceid,userid,resourcename,resourcedescription,quantity,resourceprice,resourcestatus,categoryid,resourcedate,auditstatus)
-        values(#{resourceid}, #{userid},#{resourcename},#{resourcedescription},#{quantity},#{resourceprice},
+    <!-- 添加资源 -->
+    <insert id="addResource" parameterType="com.ls.springmvc.vo.Resource" useGeneratedKeys="true" keyProperty="resourceid">
+        insert into resource(userid,resourcename,resourcedescription,quantity,resourceprice,resourcestatus,categoryid,resourcedate,auditstatus)
+        values(#{userid},#{resourcename},#{resourcedescription},#{quantity},#{resourceprice},
                #{resourcestatus},#{categoryid},#{resourcedate},#{auditstatus})
     </insert>
     <select id="getResourceById" resultType="com.ls.springmvc.vo.Resource">

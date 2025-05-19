@@ -12,7 +12,7 @@ import java.util.Map;
 public interface ResourceDao {
     List<Resource> pageSearch();
     boolean deleteResource(Integer resourceid);
-    boolean addResource(Resource resource);
+    int addResource(Resource resource);
 
     Resource getResourceById(Integer resourceid);
     // 分页模糊查询
