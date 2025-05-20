@@ -5,6 +5,7 @@ import com.ls.springmvc.vo.User;
 import com.ls.springmvc.vo.page.UserPageParam;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+import java.security.Principal;
 import java.util.List;
 
 public interface UserService extends UserDetailsService {
@@ -21,4 +22,7 @@ public interface UserService extends UserDetailsService {
     List<User> pageListUser(UserPageParam userPageParam);
     //查询满足条件的所有用户数
     int totalUserCount(UserPageParam userPageParam);
+
+    //获得当前登录用户id
+    Integer getCurrentUserId(Principal principal);
 }

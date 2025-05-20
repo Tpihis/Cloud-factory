@@ -2,6 +2,7 @@ package com.ls.springmvc.service.impl;
 
 import com.ls.springmvc.dao.UserDao;
 import com.ls.springmvc.service.UserService;
+import com.ls.springmvc.vo.AjaxResponse;
 import com.ls.springmvc.vo.ServiceMessage;
 import com.ls.springmvc.vo.User;
 import com.ls.springmvc.vo.page.UserPageParam;
@@ -12,6 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -125,6 +127,16 @@ public class UserServiceImpl implements UserService {
     public int totalUserCount(UserPageParam userPageParam) {
         return userDao.totalUserCount(userPageParam);
     }
+
+    @Override
+    public Integer getCurrentUserId(Principal principal) {
+        if(principal == null) {
+            // 未登录，返回null或抛出异常
+            return null;
+        }
+        return userDao.findUserByUsername(principal.getName()).getUserid();
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) {
         UserDetails user = null;

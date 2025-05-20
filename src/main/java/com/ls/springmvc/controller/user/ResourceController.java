@@ -91,7 +91,7 @@ public class ResourceController {
 
         //获取到登录的用户名 这里的User对象是Spring-Security提供的User
         // 设置当前用户ID（假设用户已登录）
-        Integer userid = userService.findUserByUsername(principal.getName()).getUserid();
+        Integer userid = userService.getCurrentUserId(principal);
         if(userid == null) {
             return new AjaxResponse(401, "用户未登录", null);
         }

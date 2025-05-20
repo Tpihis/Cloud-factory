@@ -30,6 +30,10 @@ public class ResourceController {
     public String resourceAdd() {
         return "admin/resource/resourceAdd";
     }
+    @GetMapping(value = "/edit")
+    public String resourceEdit(){
+        return "admin/resource/resourceEdit";
+    }
 
     @PostMapping(value = "/pageSearch")
     @ResponseBody
@@ -74,6 +78,47 @@ public class ResourceController {
             ajaxResponse.setCode(-1);
             ajaxResponse.setMsg("添加失败");
 //            return "admin/resource/resourceAdd";
+        }
+        return ajaxResponse;
+    }
+
+    @GetMapping("/{resourceId}")
+    @ResponseBody
+    public AjaxResponse getResourceDetail(@PathVariable("resourceId") Integer resourceId) {
+        Resource resource = resourceService.getResourceById(resourceId);
+        if (resource == null) {
+            ajaxResponse.setCode(-1);
+            ajaxResponse.setMsg("资源不存在");
+            ajaxResponse.setObj(null);
+        }else{
+            ajaxResponse.setCode(0);
+            ajaxResponse.setMsg("获取资源成功");
+            ajaxResponse.setObj(resource);
+        }
+        return ajaxResponse;
+    }
+    @PostMapping("/update")
+    @ResponseBody
+    public AjaxResponse updateResource(@RequestBody Resource resource) {
+        if(resource.getResourcedate() == null || resource.getResourcedate().isEmpty()) {
+            // 获取当前时间
+            LocalDateTime now = LocalDateTime.now();
+            // 定义时间格式
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            // 格式化时间
+            String formattedDateTime = now.format(formatter);
+            resource.setResourcedate(formattedDateTime);
+        }
+//        resource.setAuditstatus("待审");
+        boolean update = resourceService.updateResource(resource);
+        if (update) {
+            ajaxResponse.setCode(0);
+            ajaxResponse.setMsg("更新成功");
+            ajaxResponse.setObj(resource);
+        }
+        else {
+            ajaxResponse.setCode(-1);
+            ajaxResponse.setMsg("更新失败");
         }
         return ajaxResponse;
     }

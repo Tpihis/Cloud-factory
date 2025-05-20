@@ -279,10 +279,107 @@ function member_start(obj,id){
 		layer.msg('已启用!',{icon: 6,time:1000});
 	});
 }
-/*产品-编辑*/
-function member_edit(title,url,id,w,h){
-	layer_show(title,url,w,h);
+/*资源-编辑*/
+function resource_edit(resourceId){
+    let h = 510;
+    let w = 800;
+    let title = "资源编辑";
+    let url = "${pageContext.request.contextPath}/admin/resource/edit";
+    // 先获取资源数据
+    $.ajax({
+        url: "${pageContext.request.contextPath}/admin/resource/" + resourceId,
+        type: "GET",
+        dataType: "json",
+        beforeSend: function() {
+            layer.load(1); // 显示加载中
+        },
+        success: function(response) {
+            layer.closeAll('loading');
+            if(response.code === 0) {
+                // 打开编辑弹窗并填充数据
+                layer.open({
+                    type: 2,
+                    title: title,
+                    area: [w+'px', h+'px'],
+                    content: url,
+                    success: function(layero, index) {
+                        var iframe = layero.find('iframe')[0];
+                        var iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                        // 方法1：直接检查 iframe 是否已加载
+                        if (iframeDoc.readyState === 'complete') {
+                            // console.log("1");
+                            fillForm(iframeDoc, response.obj);
+                        }
+                        // 方法2：如果未加载，监听 onload 事件
+                        else {
+                            iframe.onload = function() {
+                                // console.log("2");
+                                fillForm(iframe.contentDocument, response.obj);
+                            };
+                        }
+                        // 封装填充表单的逻辑
+                        function fillForm(doc, data) {
+                            var body = $(doc).find('body');
+
+                            body.find("[name='resourcename']").val(data.resourcename);
+                            body.find("[name='userid']").val(data.userid);
+                            body.find("[name='quantity']").val(data.quantity);
+                            body.find("select[name='categoryid']").val(data.categoryid);
+                            body.find("input[name='resourceprice']").val(data.resourceprice);
+                            body.find("select[name='resourcestatus']").val(data.resourcestatus);
+                            body.find("input[name='resourcedate']").val(data.resourcedate);
+                            body.find("textarea[name='resourcedescription']").val(data.resourcedescription);
+                            body.find("select[name='auditstatus']").val(data.auditstatus);
+                        }
+                    },
+                    btn: ['保存', '取消'],
+                    yes: function(index, layero) {
+                        // 1. 获取 iframe 的 document 对象
+                        var iframe = layero.find('iframe')[0];
+                        var iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+
+                        // 2. 从 iframe 内部获取表单数据
+                        var formData = {};
+                        $(iframeDoc).find('form input, select, textarea').each(function() {
+                            var name = $(this).attr('name');
+                            var value = $(this).val();
+                            if (name) {  // 确保字段有 name 属性
+                                formData[name] = value;
+                            }
+                        });
+                        // 3. 添加 resourceId 到提交数据
+                        formData.resourceid = resourceId;
+                        //打印表单数据
+                        // console.log(formData);
+
+                        $.ajax({
+                            url: "${pageContext.request.contextPath}/admin/resource/update",
+                            type: "POST",
+                            contentType: "application/json",
+                            data: JSON.stringify(formData),
+                            success: function(res) {
+                                if(res.code === 0) {
+                                    layer.msg('保存成功', {icon: 1});
+                                    reloadResourceTable(); // 刷新表格
+                                    layer.close(index); // 关闭弹窗
+                                } else {
+                                    layer.alert(res.msg || '保存失败', {icon: 2});
+                                }
+                            }
+                        });
+                    }
+                });
+            } else {
+                layer.msg('获取资源失败: ' + response.msg, {icon: 2});
+            }
+        },
+        error: function() {
+            layer.closeAll('loading');
+            layer.msg('请求失败', {icon: 2});
+        }
+    });
 }
+
 
 /*资源-删除*/
 function resource_del(obj,resourceid){

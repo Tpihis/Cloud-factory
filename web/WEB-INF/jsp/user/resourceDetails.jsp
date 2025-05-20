@@ -579,6 +579,7 @@
             }),
             success: function(response) {
                 if(response.code === 200) { // 假设200表示成功
+                    showToast("购买成功","success")
                     // 跳转到订单详情页面
                     window.location.href = '${pageContext.request.contextPath}/user/order/detail?id=' + response.obj.orderid;
                 } else {

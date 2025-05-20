@@ -14,6 +14,7 @@ public interface OrderService {
     public int createOrder(Order order);
     public Order findOrderById(Integer orderid);
     List<Order> getOrdersByUserId( Integer userId);
+    List<Order> pageSearch();
     // 分页模糊查询
     PageData<Order> pageSearch(OrderSearchParam param);
     List<Map<String, Integer>> getAllOrderStatusCounts(OrderSearchParam param);

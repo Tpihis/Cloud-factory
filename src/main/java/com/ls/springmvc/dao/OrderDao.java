@@ -14,6 +14,7 @@ import java.util.Map;
 public interface OrderDao {
     // 插入订单并返回主键
     int insert(Order order);
+    List<Order> pageSearch();
 
     // 根据ID查询订单
     Order findOrderById(Integer orderid);

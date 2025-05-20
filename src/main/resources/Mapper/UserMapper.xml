@@ -75,10 +75,15 @@
             </if>
         </where>
     </sql>
+<!-- 分页模糊查询，增加orderBy   -->
     <select id="pageListUser" resultType="com.ls.springmvc.vo.User">
         <include refid="list_user"></include>
         <include refid="condition"></include>
+        <if test="orderBy != null and orderDirect != null">
+            ORDER BY ${orderBy} ${orderDirect}
+        </if>
         limit #{pageNum},#{pageSize}
+
     </select>
     <select id="totalUserCount" resultType="int">
         select count(*) from user

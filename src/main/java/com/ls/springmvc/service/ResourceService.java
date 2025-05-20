@@ -22,4 +22,6 @@ public interface ResourceService {
     boolean checkStock(Integer resourceId, Integer quantity);
     List<Resource> getResourcesByIds(List<Integer> ids);
     List<Map<String, Integer>> getAllResourceCategoryCounts(ResourceSearchParam  param);
+
+    boolean updateResource(Resource resource);
 }

@@ -111,12 +111,6 @@
 <%--        <input type="hidden"--%>
 <%--               name="${_csrf.parameterName}"--%>
 <%--               value="${_csrf.token}" />--%>
-        <!-- 用户角色单选框 -->
-<%--        <div class="role-group">--%>
-<%--            <label><input type="radio" name = "role" value = 1 required> 管理员</label>--%>
-<%--            <label><input type="radio" name = "role" value = 0 required> 用户</label>--%>
-<%--        </div>--%>
-
         <button id="login" class="btn" value="Login" >登录</button>
     </form>
 

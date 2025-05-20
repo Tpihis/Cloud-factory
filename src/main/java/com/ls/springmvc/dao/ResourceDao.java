@@ -25,4 +25,5 @@ public interface ResourceDao {
     List<Resource> selectByIds(List<Integer> ids);
     List<Map<String, Integer>> getAllResourceCategoryCounts( ResourceSearchParam  param);
 
+    boolean updateResource(Resource resource);
 }

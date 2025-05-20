@@ -36,6 +36,9 @@ public class OrderServiceImpl implements OrderService {
         return orderDao.selectByUserId(userId);
     }
 
+    public List<Order> pageSearch(){
+        return orderDao.pageSearch();
+    }
     @Override
     public PageData<Order> pageSearch(OrderSearchParam param) {
         // 参数校验

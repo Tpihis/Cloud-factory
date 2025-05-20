@@ -1,3 +1,4 @@
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%--
   Created by IntelliJ IDEA.
   User: 86187
@@ -35,12 +36,10 @@
             /*scrollbar-width: none;*/
             /*overflow-y: scroll;*/
         }
-
-        /*!* 隐藏滚动条 *!*/
-        /*::-webkit-scrollbar {*/
-        /*    display: none;*/
-        /*}*/
-
+        /* 添加以下样式 */
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
         .navbar-brand {
             font-weight: 700;
             color: var(--primary-color);
@@ -101,6 +100,14 @@
             float: right;
             /* 将发布资源按钮移到右侧 */
         }
+        .nav-item .active{
+            color: black !important;
+            /*加粗*/
+            /*font-weight: bold !important;*/
+        /*    字体黑体*/
+            font-family: "黑体", sans-serif!important;
+        }
+
     </style>
 
 </head>
@@ -117,34 +124,37 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="#" onclick="loadPage('/home')">首页</a>
+                    <a class="nav-link" href="#" onclick="loadPage('/home',this)">首页</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="#" onclick="loadPage('/user/resource/display')">资源中心</a>
+                    <a class="nav-link active" href="#" onclick="loadPage('/user/resource/display',this)">资源中心</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" onclick="loadPage('/manufacturing/services')">制造服务</a>
+                    <a class="nav-link" href="#" onclick="loadPage('/manufacturing/services',this)">制造服务</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" onclick="loadPage('/data/analysis')">数据分析</a>
+                    <a class="nav-link" href="#" onclick="loadPage('/data/analysis',this)">数据分析</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" onclick="loadPage('/user/orderList')">我的订单</a>
+                    <a class="nav-link" href="#" onclick="loadPage('/user/orderList',this)">我的订单</a>
                 </li>
             </ul>
             <div class="d-flex align-items-center">
                 <div class="dropdown me-3">
-                    <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" id="userDropdown"
-                       data-bs-toggle="dropdown">
+                    <a href="#" class="d-flex align-items-center
+                     text-decoration-none dropdown-toggle" id="userDropdown">
+<%--                       data-bs-toggle="dropdown">--%>
                         <img src="https://via.placeholder.com/40" alt="用户头像" class="rounded-circle me-2">
-                        <span>张工程师</span>
+                        <sec:authentication property="principal.username" var="username"/>
+<%--                        <p>用户名: ${username}</p>--%>
+                        <span>${username}</span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="#" onclick="loadPage('/user/personalCenter')">个人中心</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="loadPage('/user/personalCenter',this)">个人中心</a></li>
                         <li><a class="dropdown-item" href="#">我的收藏</a></li>
-                        <li><a class="dropdown-item" href="#" onclick="loadPage('/user/chat')">消息中心</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="loadPage('/user/chat',this)">消息中心</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#">退出登录</a></li>
+                        <li><a class="dropdown-item" href="${pageContext.request.contextPath}/logout">退出登录</a></li>
                     </ul>
                 </div>
             </div>
@@ -155,9 +165,21 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 <script>
-    function loadPage(url) {
+    function loadPage(url, activeElement) {
+        setActive(activeElement);
         document.getElementById('iframe').src = url;
+
     }
+    //设置当前活动菜单项
+    function setActive(element) {
+        // 移除所有导航链接的active类
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.classList.remove('active');
+        });
+        // 为当前点击的链接添加active类
+        element.classList.add('active');
+    }
+
 </script>
 </html>
 

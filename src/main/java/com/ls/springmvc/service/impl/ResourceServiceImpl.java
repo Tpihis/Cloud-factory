@@ -145,4 +145,17 @@ public class ResourceServiceImpl implements ResourceService {
         countsList.add(totalMap);
         return countsList;
     }
+
+    @Override
+    public boolean updateResource(Resource resource) {
+        boolean result = false;
+        try {
+            result = resourceDao.updateResource(resource);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            return result;
+        }
+
+    }
 }

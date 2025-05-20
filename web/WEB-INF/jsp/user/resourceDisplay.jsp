@@ -284,6 +284,16 @@ none–替换的内容不会调整大小。按比例缩小——内容的大小�
             background-color: #0056b3;
         }
 
+        .空闲{
+            color: #28a745;
+        }
+        .损坏{
+
+            color: #dc3545;
+        }
+        .繁忙{
+            color: #ffc107;
+        }
     </style>
 </head>
 
@@ -370,14 +380,12 @@ none–替换的内容不会调整大小。按比例缩小——内容的大小�
                         </div>
 
                         <div class="mb-3">
-                            <div class="filter-title">行业领域</div>
-                            <select class="form-select form-select-sm">
-                                <option selected>全部行业</option>
-                                <option>汽车制造</option>
-                                <option>航空航天</option>
-                                <option>电子电器</option>
-                                <option>医疗器械</option>
-                                <option>机械装备</option>
+                            <div class="filter-title">资源状态</div>
+                            <select class="form-select form-select-sm" id="resourceStatusSelect" onchange="handleStatusChange(this)">
+                                <option value="" selected>全部</option>
+                                <option value="1">繁忙</option>
+                                <option value="2">空闲</option>
+                                <option value="3">损坏</option>
                             </select>
                         </div>
 
@@ -414,6 +422,25 @@ none–替换的内容不会调整大小。按比例缩小——内容的大小�
 
             <!-- 右侧资源展示区 -->
             <div class="col-lg-9">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="section-header m-0">全部资源</h4>
+                    <div class="d-flex">
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-outline-secondary btn-sm"
+                                    onclick="handleSortChange('resourceid')">
+                                默认排序 <span id="resourceidSort">▲▽</span>
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary btn-sm"
+                                    onclick="handleSortChange('resourceprice')">
+                                价格 <span id="resourcepriceSort">△▽</span>
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary btn-sm"
+                                    onclick="handleSortChange('resourcedate')">
+                                发布时间 <span id="resourcedateSort">△▽</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
                 <!-- 资源列表 -->
                 <div class="row" id="resources-container">
 
@@ -505,7 +532,8 @@ none–替换的内容不会调整大小。按比例缩小——内容的大小�
                 '<h5 class="card-title">' + resource.resourcename + '</h5>' +
                 '<p class="card-text">' + resource.resourcedescription + '</p>' +
                 '<span class="resource-tag">价格: ¥' + resource.resourceprice + '</span>' +
-                '<span class="resource-tag">状态: ' + getResourceStatusName(resource.resourcestatus) + '</span>' +
+                '<span class="resource-tag ' + getResourceStatusName(resource.resourcestatus) + '">' +
+                '状态: ' + getResourceStatusName(resource.resourcestatus) + '</span>' +
                 '<span class="resource-tag">库存: ' + resource.quantity + '</span>' +
                 '</div>' +
                 '</div>' +
@@ -588,6 +616,9 @@ none–替换的内容不会调整大小。按比例缩小——内容的大小�
         auditstatus: '通过',
         searchKey: '',
         categoryid:'',
+        resourcestatus:'',
+        orderBy: 'resourceid', // 排序字段
+        orderDirect: 'asc', // 排序类型，'asc'升 或 'desc'降
     };
 
     // 跳转到指定页
@@ -648,7 +679,45 @@ none–替换的内容不会调整大小。按比例缩小——内容的大小�
         fetchAllResourceCategoryCounts();
 
     }
+    // 状态筛选函数
+    function handleStatusChange(selectElement) {
+        currentSearchParams.resourcestatus = selectElement.value;
+        currentSearchParams.pageNum = 1; // 重置到第一页
+        searchResources();
+        fetchAllResourceCategoryCounts();
+    }
+    // 排序处理函数
+    function handleSortChange(sortField) {
 
+        // 判断是否是相同的排序字段
+        if (currentSearchParams.orderBy === sortField) {
+            // 相同字段则切换排序方向
+            currentSearchParams.orderDirect = currentSearchParams.orderDirect === 'asc' ? 'desc' : 'asc';
+        } else {
+            // 不同字段则重置为升序
+            currentSearchParams.orderBy = sortField;
+            currentSearchParams.orderDirect = 'asc';
+        }
+        // 更新选项文本以反映排序方向
+        updateSortButtons();
+
+        currentSearchParams.pageNum = 1; // 重置到第一页
+        searchResources();
+        fetchAllResourceCategoryCounts();
+    }
+    // △▽▲▼
+    // 更新排序按钮状态
+    function updateSortButtons() {
+        const fields = ['resourceid', 'resourceprice', 'resourcedate'];
+        fields.forEach(field => {
+            const span = document.getElementById(field + 'Sort');
+            if (field === currentSearchParams.orderBy) {
+                span.textContent = currentSearchParams.orderDirect === 'asc' ? '▲▽' : '△▼';
+            } else {
+                span.textContent = '△▽';
+            }
+        });
+    }
     // 更新分类标签数字的函数
     function updateCategoryBadges(total) {
         // 获取当前激活的分类项

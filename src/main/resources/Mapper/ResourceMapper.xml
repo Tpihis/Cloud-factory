@@ -7,7 +7,12 @@
     <select id="pageSearch"  resultType="com.ls.springmvc.vo.Resource">
         select * from resource
     </select>
-
+    <!--更新资源-->
+    <update id="updateResource" parameterType="com.ls.springmvc.vo.Resource">
+        update resource set resourcename=#{resourcename},resourcedescription=#{resourcedescription},
+        quantity=#{quantity},resourceprice=#{resourceprice},resourcestatus=#{resourcestatus},categoryid=#{categoryid},
+        resourcedate=#{resourcedate},auditstatus=#{auditstatus} where resourceid=#{resourceid}
+    </update>
     <!-- 删除资源 -->
     <delete id="deleteResource" parameterType="Integer">
         delete from resource where resourceid=#{resourceid}
@@ -34,13 +39,13 @@
             <if test="searchKey != null and searchKey != ''">
                 AND resourcename LIKE CONCAT('%', #{searchKey}, '%')
             </if>
-            <if test="resourcestatus != null">
+            <if test="resourcestatus != null and resourcestatus !=''">
                 AND resourcestatus = #{resourcestatus}
             </if>
-            <if test="auditstatus != null">
+            <if test="auditstatus != null and auditstatus !=''">
                 AND auditstatus = #{auditstatus}
             </if>
-            <if test="categoryid != null">
+            <if test="categoryid != null and categoryid !=''">
                 AND categoryid = #{categoryid}
             </if>
         </where>

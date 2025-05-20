@@ -32,7 +32,7 @@ public class SystemController {
     private String baseSavePath  ="D:\\1.study\\javaee\\pro\\upload\\";
 
     //资源图片路径
-    private String baseRsePath  ="D:\\1.study\\javaee\\pro\\upload\\Resources\\";
+    private String baseRsePath  =baseSavePath +"Resources\\";
 
     private String TempPath = null;
 
