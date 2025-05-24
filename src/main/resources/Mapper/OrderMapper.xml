@@ -7,6 +7,12 @@
     <select id="pageSearch"  resultType="com.ls.springmvc.vo.Order">
         select * from `order`
     </select>
+<!--    更新订单信息-->
+    <update id="update" parameterType="com.ls.springmvc.vo.Order">
+        UPDATE `order` SET taskid = #{taskid}, resourceids = #{resourceids}, totalprice = #{totalprice},
+                           quantity = #{quantity}, orderstatus = #{orderstatus}, ordertime = #{ordertime}, completiontime = #{completiontime}
+        WHERE orderid = #{orderid}
+    </update>
     <!-- 根据订单id查询订单 -->
     <select id="findOrderById" parameterType="Integer" resultType="com.ls.springmvc.vo.Order">
         select * from `order` where orderid = #{orderid}

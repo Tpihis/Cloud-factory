@@ -6,6 +6,7 @@ import com.ls.springmvc.service.ResourceService;
 import com.ls.springmvc.service.UserService;
 import com.ls.springmvc.vo.AjaxResponse;
 import com.ls.springmvc.vo.Order;
+import com.ls.springmvc.vo.Resource;
 import com.ls.springmvc.vo.User;
 
 import com.ls.springmvc.vo.page.OrderSearchParam;
@@ -159,5 +160,20 @@ public class TestController {
         Map<String, Object> result = new HashMap<>();
         result.put("data", counts);
         return new AjaxResponse(0, "查询成功", result);
+    }
+    @GetMapping("/page_Search")
+    @ResponseBody
+    public AjaxResponse pageSearch(ResourceSearchParam param) {
+        PageData<Resource> pageData = resourceService.pageSearch(param);
+        if (pageData == null) {
+            ajaxResponse.setCode(-1);
+            ajaxResponse.setMsg("查询失败");
+            ajaxResponse.setObj(null);
+        }else {
+            ajaxResponse.setCode(0);
+            ajaxResponse.setMsg("查询成功");
+            ajaxResponse.setObj(pageData);
+        }
+        return ajaxResponse;
     }
 }

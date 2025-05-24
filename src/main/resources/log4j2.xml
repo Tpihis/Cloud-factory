@@ -57,6 +57,7 @@
         </Root>
         <Logger name="org.apache.ibatis" level="DEBUG"/>
         <Logger name="com.ls.springmvc" level="DEBUG"/>
+        <Logger name="org.springdoc" level="DEBUG"/>
         <!-- 输出mybatis详细日志       -->
                 <Logger name="org.mybatis" level="DEBUG"/>
 

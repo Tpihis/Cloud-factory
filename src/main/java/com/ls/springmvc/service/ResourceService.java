@@ -3,6 +3,7 @@ package com.ls.springmvc.service;
 import com.ls.springmvc.vo.Resource;
 import com.ls.springmvc.vo.page.PageData;
 import com.ls.springmvc.vo.page.ResourceSearchParam;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.List;
@@ -24,4 +25,12 @@ public interface ResourceService {
     List<Map<String, Integer>> getAllResourceCategoryCounts(ResourceSearchParam  param);
 
     boolean updateResource(Resource resource);
+
+    public boolean updateResourceStatus(Integer resourceId, Integer status);
+
+    List<Resource> getResourcesByUserId(Integer userId);
+    // 新增方法：恢复库存
+
+
+    boolean restoreStock(Integer resourceId, int quantity);
 }

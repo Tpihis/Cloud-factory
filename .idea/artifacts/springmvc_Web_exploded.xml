@@ -8,21 +8,29 @@
           <element id="module-output" name="springmvc" />
         </element>
         <element id="directory" name="lib">
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.17.0" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.17.0" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.17.0" />
           <element id="library" level="project" name="Maven: com.google.protobuf:protobuf-java:3.11.4" />
-          <element id="library" level="project" name="Maven: com.sun.activation:jakarta.activation:2.0.0" />
+          <element id="library" level="project" name="Maven: commons-fileupload:commons-fileupload:1.5" />
+          <element id="library" level="project" name="Maven: commons-io:commons-io:2.19.0" />
           <element id="library" level="project" name="Maven: commons-logging:commons-logging:1.2" />
           <element id="library" level="project" name="Maven: io.micrometer:micrometer-commons:1.14.3" />
           <element id="library" level="project" name="Maven: io.micrometer:micrometer-observation:1.14.3" />
-          <element id="library" level="project" name="Maven: jakarta.el:jakarta.el-api:4.0.0" />
-          <element id="library" level="project" name="Maven: jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:2.0.0" />
-          <element id="library" level="project" name="Maven: jakarta.xml.bind:jakarta.xml.bind-api:3.0.0" />
+          <element id="library" level="project" name="Maven: jakarta.el:jakarta.el-api:5.0.0" />
+          <element id="library" level="project" name="Maven: jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:3.0.0" />
           <element id="library" level="project" name="Maven: mysql:mysql-connector-java:8.0.28" />
+          <element id="library" level="project" name="Maven: net.bytebuddy:byte-buddy:1.14.9" />
           <element id="library" level="project" name="Maven: org.apache.commons:commons-dbcp2:2.9.0" />
           <element id="library" level="project" name="Maven: org.apache.commons:commons-pool2:2.11.1" />
+          <element id="library" level="project" name="Maven: org.apache.logging.log4j:log4j-api:2.14.0" />
+          <element id="library" level="project" name="Maven: org.apache.logging.log4j:log4j-core:2.14.0" />
+          <element id="library" level="project" name="Maven: org.apache.logging.log4j:log4j-slf4j-impl:2.14.0" />
           <element id="library" level="project" name="Maven: org.aspectj:aspectjweaver:1.9.22.1" />
-          <element id="library" level="project" name="Maven: org.glassfish.web:jakarta.servlet.jsp.jstl:2.0.0" />
+          <element id="library" level="project" name="Maven: org.glassfish.web:jakarta.servlet.jsp.jstl:3.0.1" />
           <element id="library" level="project" name="Maven: org.mybatis:mybatis-spring:3.0.3" />
           <element id="library" level="project" name="Maven: org.mybatis:mybatis:3.5.13" />
+          <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.25" />
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-acl:6.2.2" />
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-config:6.2.2" />
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-core:6.2.2" />
@@ -39,17 +47,8 @@
           <element id="library" level="project" name="Maven: org.springframework:spring-tx:6.2.2" />
           <element id="library" level="project" name="Maven: org.springframework:spring-web:6.2.2" />
           <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:6.2.2" />
-          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.17.0" />
-          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.17.0" />
-          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.17.0" />
-          <element id="library" level="project" name="Maven: net.bytebuddy:byte-buddy:1.14.9" />
-          <element id="library" level="project" name="Maven: log4j:log4j:1.2.17" />
-          <element id="library" level="project" name="Maven: org.apache.logging.log4j:log4j-api:2.14.0" />
-          <element id="library" level="project" name="Maven: org.apache.logging.log4j:log4j-core:2.14.0" />
-          <element id="library" level="project" name="Maven: org.apache.logging.log4j:log4j-slf4j-impl:2.14.0" />
-          <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.25" />
-          <element id="library" level="project" name="Maven: commons-fileupload:commons-fileupload:1.5" />
-          <element id="library" level="project" name="Maven: commons-io:commons-io:2.19.0" />
+          <element id="library" level="project" name="Maven: com.github.pagehelper:pagehelper:5.1.10" />
+          <element id="library" level="project" name="Maven: com.github.jsqlparser:jsqlparser:2.0" />
         </element>
       </element>
     </root>

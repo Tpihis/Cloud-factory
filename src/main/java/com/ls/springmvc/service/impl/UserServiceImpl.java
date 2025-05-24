@@ -1,11 +1,13 @@
 package com.ls.springmvc.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.ls.springmvc.dao.UserDao;
 import com.ls.springmvc.service.UserService;
 import com.ls.springmvc.vo.AjaxResponse;
 import com.ls.springmvc.vo.ServiceMessage;
 import com.ls.springmvc.vo.User;
 import com.ls.springmvc.vo.page.UserPageParam;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -94,7 +96,15 @@ public class UserServiceImpl implements UserService {
     }
     @Override
     public List<User> pageSearch() {
-        return userDao.pageSearch();
+        int pageNum = 1;
+        int pageSize = 10;
+        PageHelper.startPage(pageNum, pageSize);
+        // 不带分页的查询
+        List<User> list = userDao.pageSearch();
+        // 可以将结果转换为 Page , 然后获取 count 和其他结果值
+        com.github.pagehelper.Page listWithPage = (com.github.pagehelper.Page) list;
+        System.out.println("listCnt:" + listWithPage.getTotal());
+        return list;
     }
 
     // 停用或启用用户

@@ -107,16 +107,22 @@
                 phone=#{phone},
             </if>
             <if test="address != null and address !=''">
-                address=#{address}
+                address=#{address},
             </if>
             <if test="role != null and role !=''">
-                role=#{role}
+                role=#{role},
             </if>
             <if test="status != null and status !=''">
-                status=#{status}
+                status=#{status},
             </if>
             <if test="gender != null and gender !=''">
-                gender=#{gender}
+                gender=#{gender},
+            </if>
+            <if test="age!= null and age!=''">
+                age=#{age},
+            </if>
+            <if test="address!= null and address!=''">
+                address=#{address}
             </if>
         </set>
         <where>

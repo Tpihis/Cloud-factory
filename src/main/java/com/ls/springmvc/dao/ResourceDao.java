@@ -26,4 +26,10 @@ public interface ResourceDao {
     List<Map<String, Integer>> getAllResourceCategoryCounts( ResourceSearchParam  param);
 
     boolean updateResource(Resource resource);
+    int updateResourceStatus(@Param("resourceId") Integer resourceId,
+                             @Param("status") Integer status);
+    List<Resource> getResourcesByUserId(Integer userId);
+
+    // 新增方法：恢复库存
+    int restoreStock(Integer resourceId, Integer quantity);
 }

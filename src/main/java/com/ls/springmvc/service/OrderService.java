@@ -18,4 +18,7 @@ public interface OrderService {
     // 分页模糊查询
     PageData<Order> pageSearch(OrderSearchParam param);
     List<Map<String, Integer>> getAllOrderStatusCounts(OrderSearchParam param);
+
+    public boolean payOrder(Integer orderId);
+    public boolean cancelOrder(Integer orderId);
 }

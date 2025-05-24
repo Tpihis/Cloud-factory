@@ -10,6 +10,7 @@ import com.ls.springmvc.vo.User;
 import com.ls.springmvc.vo.page.OrderSearchParam;
 import com.ls.springmvc.vo.page.PageData;
 import com.ls.springmvc.vo.page.ResourceSearchParam;
+
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,6 +24,7 @@ import java.util.*;
 
 @Controller(value = "userOrderController")
 @RequestMapping(value = "/user/order")
+
 public class OrderController {
     @Autowired
     private OrderService orderService;
@@ -32,6 +34,8 @@ public class OrderController {
     private UserService userService;
     @Autowired
     private AjaxResponse ajaxResponse;
+
+
     @GetMapping("/details")
     public String orderDetails(){
         return "/user/orderDetails";
@@ -153,5 +157,107 @@ public class OrderController {
         Map<String, Object> result = new HashMap<>();
         result.put("data", counts);
         return new AjaxResponse(0, "查询成功", result);
+    }
+    // 支付订单
+    // 支付订单 - 修改后
+    @PostMapping("/pay")
+    @ResponseBody
+    public AjaxResponse payOrder(@RequestBody Map<String, Object> params, Principal principal) {
+        try {
+            Integer orderId = (Integer) params.get("orderId");
+            if(orderId == null) {
+                return new AjaxResponse(400, "订单ID不能为空", null);
+            }
+
+            // 获取当前用户ID
+            User currentUser = userService.findUserByUsername(principal.getName());
+            if(currentUser == null) {
+                return new AjaxResponse(401, "用户未登录", null);
+            }
+            Integer userId = currentUser.getUserid();
+
+            // 验证订单归属和状态
+            Order order = orderService.findOrderById(orderId);
+            if(order == null) {
+                return new AjaxResponse(404, "订单不存在", null);
+            }
+
+            if(!order.getUserid().equals(userId)) {
+                return new AjaxResponse(403, "无权操作此订单", null);
+            }
+
+            if(!"待支付".equals(order.getOrderstatus())) {
+                return new AjaxResponse(400, "订单状态不允许支付", null);
+            }
+
+            // 执行支付逻辑
+            boolean success = orderService.payOrder(orderId);
+            if(success) {
+                return new AjaxResponse(200, "支付成功", null);
+            } else {
+                return new AjaxResponse(500, "支付失败", null);
+            }
+        } catch (Exception e) {
+            return new AjaxResponse(500, "支付处理失败: " + e.getMessage(), null);
+        }
+    }
+
+    // 取消订单 - 修改后
+    @PostMapping("/cancel")
+    @ResponseBody
+    public AjaxResponse cancelOrder(@RequestBody Map<String, Object> params, Principal principal) {
+        try {
+            Integer orderId = (Integer) params.get("orderId");
+            if(orderId == null) {
+                return new AjaxResponse(400, "订单ID不能为空", null);
+            }
+
+            // 获取当前用户ID
+            User currentUser = userService.findUserByUsername(principal.getName());
+            if(currentUser == null) {
+                return new AjaxResponse(401, "用户未登录", null);
+            }
+            Integer userId = currentUser.getUserid();
+
+            // 验证订单归属和状态
+            Order order = orderService.findOrderById(orderId);
+            if(order == null) {
+                return new AjaxResponse(404, "订单不存在", null);
+            }
+
+            if(!order.getUserid().equals(userId)) {
+                return new AjaxResponse(403, "无权操作此订单", null);
+            }
+
+            if(!"待支付".equals(order.getOrderstatus())) {
+                return new AjaxResponse(400, "订单状态不允许取消", null);
+            }
+
+            // 执行取消逻辑
+            boolean success = orderService.cancelOrder(orderId);
+            if(success) {
+                // 恢复库存
+                restoreStock(order);
+                return new AjaxResponse(200, "订单已取消", null);
+            } else {
+                return new AjaxResponse(500, "取消失败", null);
+            }
+        } catch (Exception e) {
+            return new AjaxResponse(500, "取消处理失败: " + e.getMessage(), null);
+        }
+    }
+
+    // 恢复库存的私有方法
+    private void restoreStock(Order order) {
+        try {
+            for (String resourceId : order.getResourceids().split(",")) {
+                if (!resourceId.trim().isEmpty()) {
+                    resourceService.restoreStock(Integer.parseInt(resourceId.trim()), order.getQuantity());
+                }
+            }
+        } catch (Exception e) {
+            // 记录错误日志，但不影响主流程
+            System.err.println("恢复库存失败: " + e.getMessage());
+        }
     }
 }

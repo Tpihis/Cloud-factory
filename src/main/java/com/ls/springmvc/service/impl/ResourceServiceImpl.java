@@ -156,6 +156,39 @@ public class ResourceServiceImpl implements ResourceService {
         } finally {
             return result;
         }
+    }
+    @Override
+    public boolean updateResourceStatus(Integer resourceId, Integer status) {
+        // 参数验证
+        if (resourceId == null || status == null || status < 1 || status > 3) {
+            throw new IllegalArgumentException("参数不合法");
+        }
 
+        try {
+            // 检查资源是否存在
+            Resource resource = resourceDao.getResourceById(resourceId);
+            if (resource == null) {
+                throw new RuntimeException("资源不存在");
+            }
+
+            // 更新资源状态
+            int result = resourceDao.updateResourceStatus(resourceId, status);
+            return result > 0;
+        } catch (Exception e) {
+//            serviceMessage.setMessage("更新状态失败: " + e.getMessage());
+            throw new RuntimeException("更新资源状态失败", e);
+        }
+    }
+    @Override
+    public List<Resource> getResourcesByUserId(Integer userId) {
+        // 调用Mapper中的selectByUserId方法（对应ResourceMapper.xml中的SQL）
+        return resourceDao.getResourcesByUserId(userId);
+    }
+
+
+    @Override
+    @Transactional
+    public boolean restoreStock(Integer resourceId, int quantity) {
+        return resourceDao.restoreStock(resourceId, quantity) > 0;
     }
 }

@@ -34,5 +34,5 @@ public interface OrderDao {
      * @return 包含订单状态和对应数量的 Map
      */
     List<Map<String, Integer>> getAllOrderStatusCounts(OrderSearchParam param);
-
+    int update(Order order);
 }

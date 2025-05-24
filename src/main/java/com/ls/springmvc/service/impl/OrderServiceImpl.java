@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service("orderService")
@@ -79,5 +80,29 @@ public class OrderServiceImpl implements OrderService {
         totalMap.put("count", totalCount);
         countsList.add(totalMap);
         return countsList;
+    }
+    @Override
+    @Transactional
+    public boolean payOrder(Integer orderId) {
+        Order order = orderDao.findOrderById(orderId);
+        if(order != null && "待支付".equals(order.getOrderstatus())) {
+            // 更新订单状态为已支付
+            order.setOrderstatus("已支付");
+            order.setOrdertime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+            return orderDao.update(order) > 0;
+        }
+        return false;
+    }
+
+    @Override
+    @Transactional
+    public boolean cancelOrder(Integer orderId) {
+        Order order = orderDao.findOrderById(orderId);
+        if(order != null && "待支付".equals(order.getOrderstatus())) {
+            // 更新订单状态为已取消
+            order.setOrderstatus("已取消");
+            return orderDao.update(order) > 0;
+        }
+        return false;
     }
 }

@@ -23,11 +23,17 @@
     <bean id="multipartResolver"
           class="org.springframework.web.multipart.support.StandardServletMultipartResolver">
     </bean>
+
+    <!-- 启用注解驱动和静态资源处理 -->
     <!-- 配置视图解析器 -->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/jsp/"/>
         <property name="suffix" value=".jsp"/>
+        <!-- 设置较低的优先级，让其他解析器先处理 -->
+        <property name="order" value="2" />
+
     </bean>
+
 
     <bean id="user" class="com.ls.springmvc.vo.User"/>
 

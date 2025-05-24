@@ -1,44 +1,4 @@
-/*
 
-/!**
- * 显示Toast提示
- * @param {string} message - 要显示的消息内容
- * @param {string} [type='success'] - 提示类型 ('success'或'error')
- * @param {number} [duration=2000] - 显示持续时间(毫秒)
- *!/
-function showToast(message, type = 'success', duration = 2000) {
-    // 移除旧的toast
-    const oldToast = document.getElementById('custom-toast');
-    if (oldToast) oldToast.remove();
-
-    // 创建toast元素
-    const toast = document.createElement('div');
-    toast.id = 'custom-toast';
-    // toast.className = `toast show align-items-center text-white bg-${type === 'error' ? 'danger' : 'success'}`;
-    toast.className = 'toast show align-items-center text-white bg-' + (type === 'error' ? 'danger' : 'success');
-    toast.style.position = 'fixed';
-    toast.style.top = '20px';
-    toast.style.right = '20px';
-    toast.style.zIndex = '9999';
-    toast.style.minWidth = '250px';
-
-
-    toast.innerHTML = '<div class="d-flex">' +
-        '<div class="toast-body">' + message + '</div>' +
-        '<button type="button" class="btn-close btn-close-white me-2 m-auto"' +
-        'onclick="document.getElementById(\'custom-toast\').remove()"></button>' +
-        '</div>';
-
-    document.body.appendChild(toast);
-
-    // 自动消失
-    setTimeout(() => toast.remove(), duration);
-}
-
-// 可选：导出为全局函数
-if (typeof window !== 'undefined') {
-    window.showToast = showToast;
-}*/
 function showToast(message, type = 'success', duration = 2000) {
     // 获取或创建 toast 容器
     let container = document.getElementById('custom-toast-container');
@@ -85,11 +45,4 @@ console.log(toast.innerHTML);
 if (typeof window !== 'undefined') {
     window.showToast = showToast;
 }
-/*document.addEventListener('DOMContentLoaded', function() {
-    const container = document.getElementById('custom-toast-container');
-    if(container) {
-        container.style.position = 'fixed';
-        container.style.top = '20px';
-        container.style.right = '20px';
-    }
-});*/
+

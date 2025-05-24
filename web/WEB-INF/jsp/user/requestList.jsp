@@ -198,54 +198,7 @@
     </style>
 </head>
 <body>
-<!-- 导航栏 -->
-<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-    <div class="container">
-        <a class="navbar-brand" href="#">
-            <i class="bi bi-cloud-fill me-2"></i>云制造资源优化平台
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav me-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="#">首页</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">资源中心</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">制造服务</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">我的订单</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" href="#">资源请求</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">数据分析</a>
-                </li>
-            </ul>
-            <div class="d-flex align-items-center">
-                <div class="dropdown me-3">
-                    <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" id="userDropdown" data-bs-toggle="dropdown">
-                        <img src="https://via.placeholder.com/40" alt="用户头像" class="rounded-circle me-2">
-                        <span>张工程师</span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="#">个人中心</a></li>
-                        <li><a class="dropdown-item" href="#">我的资源</a></li>
-                        <li><a class="dropdown-item" href="#">消息中心</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#">退出登录</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</nav>
+
 
 <!-- 主要内容区 -->
 <div class="container py-4">

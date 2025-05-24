@@ -618,7 +618,7 @@ none–替换的内容不会调整大小。按比例缩小——内容的大小�
         categoryid:'',
         resourcestatus:'',
         orderBy: 'resourceid', // 排序字段
-        orderDirect: 'asc', // 排序类型，'asc'升 或 'desc'降
+        orderDirect: 'ASC', // 排序类型，'asc'升 或 'desc'降
     };
 
     // 跳转到指定页

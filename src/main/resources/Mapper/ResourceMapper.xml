@@ -7,6 +7,10 @@
     <select id="pageSearch"  resultType="com.ls.springmvc.vo.Resource">
         select * from resource
     </select>
+    <!-- 根据用户ID查询资源列表 -->
+    <select id="getResourcesByUserId" resultType="com.ls.springmvc.vo.Resource">
+        SELECT * FROM resource WHERE userid = #{userId}
+    </select>
     <!--更新资源-->
     <update id="updateResource" parameterType="com.ls.springmvc.vo.Resource">
         update resource set resourcename=#{resourcename},resourcedescription=#{resourcedescription},
@@ -32,7 +36,9 @@
                resourceprice, resourcestatus, categoryid, resourcedate,auditstatus
         FROM resource
     </sql>
-
+    <update id="updateResourceStatus">
+        UPDATE resource SET resourcestatus = #{status} WHERE resourceid = #{resourceId}
+    </update>
     <!-- 动态查询条件 -->
     <sql id="dynamicConditions">
         <where>

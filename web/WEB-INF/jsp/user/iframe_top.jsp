@@ -136,6 +136,9 @@
                     <a class="nav-link" href="#" onclick="loadPage('/data/analysis',this)">数据分析</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="loadPage('/user/requestList',this)">请求列表</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="#" onclick="loadPage('/user/orderList',this)">我的订单</a>
                 </li>
             </ul>
