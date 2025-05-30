@@ -1,6 +1,7 @@
 package com.ls.springmvc.controller;
 
 import com.ls.springmvc.service.UserService;
+import com.ls.springmvc.vo.AjaxResponse;
 import com.ls.springmvc.vo.ServiceMessage;
 import com.ls.springmvc.vo.User;
 import jakarta.servlet.http.HttpSession;
@@ -12,12 +13,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+
 
 @Controller
 @RequestMapping("/auth")
@@ -63,6 +62,7 @@ public class AuthController {
                 SecurityContextHolder.getContext()
                         .getAuthentication();
         UserDetails user = (UserDetails) authentication.getPrincipal();
+        String Username =  authentication.getName();
         String username = user.getUsername();
         // 用户名，如 "admin"
         String password = user.getPassword();
@@ -71,11 +71,38 @@ public class AuthController {
         Collection<? extends GrantedAuthority> authorities =
                 user.getAuthorities();
         System.out.println(username);
+        System.out.println(Username);
         System.out.println(password);
         for (GrantedAuthority authority:authorities) {
             System.out.println(authority.getAuthority());
         }
 
+
+
+    }
+    @GetMapping("/getCurrentUser")
+    @ResponseBody
+    public AjaxResponse getCurrentUser(){
+        Authentication authentication =
+                SecurityContextHolder.getContext()
+                        .getAuthentication();
+
+
+        Collection<? extends GrantedAuthority> authorities =
+                authentication.getAuthorities();
+        boolean isAnonymous = false;
+        for (GrantedAuthority authority:authorities) {
+                if(authority.getAuthority().equals("ROLE_ANONYMOUS")){
+                    isAnonymous = true;
+                    break;
+                }
+        }
+        String username = authentication.getName();
+        if(username == "anonymousUser" && isAnonymous){
+            return new AjaxResponse(-1,"未登录",null);
+        }
+        User user = userService.getCurrentUser(authentication);
+        return new  AjaxResponse(0,"获取用户信息成功",user);
     }
 }
 

@@ -27,20 +27,19 @@
 <%--</c:forEach>--%>
 <a href="${pageContext.request.contextPath}/logout">退出</a>
 <a href="${pageContext.request.contextPath}/user/chat">消息</a>
-<a href="javascript:void(0);" onclick="requestURL('/user/chat')">消息</a>
 <%--<a href="${pageContext.request.contextPath}/user/index" onclick="requestURL('/user/index')">iframe</a>--%>
 <a href="javascript:void(0);" onclick="requestURL('/user/index')">iframe</a>
 <%--<a href="${pageContext.request.contextPath}/system/uploadFilePage" onclick="requestURL('/system/uploadFilePage')"> 前往上传页面 </a>--%>
 <a href="javascript:void(0);" onclick="requestURL('/system/uploadFilePage')"> 前往上传页面 </a>
 <a href="${pageContext.request.contextPath}/auth/loginPage">登录</a>
-<div id="toast-container">
+<%--<div id="toast-container">
     <button >
         <span onclick="LshowToast('操作成功','success')">操作成功</span>
     </button>
     <button >
         <span onclick="LshowToast('操作失败','error')" >操作失败</span>
     </button>
-</div>
+</div>--%>
 </body>
 <script>
     function LshowToast(message, type = 'success', duration = 1000) {

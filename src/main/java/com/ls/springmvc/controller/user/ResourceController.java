@@ -1,5 +1,6 @@
 package com.ls.springmvc.controller.user;
 
+import com.ls.springmvc.Utils.TimeUtil;
 import com.ls.springmvc.service.ResourceService;
 import com.ls.springmvc.service.UserService;
 import com.ls.springmvc.vo.AjaxResponse;
@@ -95,13 +96,7 @@ public class ResourceController {
         }
 
         if(resource.getResourcedate() == null || resource.getResourcedate().isEmpty()) {
-            // 获取当前时间
-            LocalDateTime now = LocalDateTime.now();
-            // 定义时间格式
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            // 格式化时间
-            String formattedDateTime = now.format(formatter);
-            resource.setResourcedate(formattedDateTime);
+            resource.setResourcedate(TimeUtil.getCurrentDateTime());
         }
         resource.setAuditstatus("待审");
         resource.setUserid(userid);

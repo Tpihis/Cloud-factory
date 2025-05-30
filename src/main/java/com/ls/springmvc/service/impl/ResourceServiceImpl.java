@@ -1,9 +1,12 @@
 package com.ls.springmvc.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.ls.springmvc.dao.ResourceDao;
 import com.ls.springmvc.service.ResourceService;
 import com.ls.springmvc.vo.Resource;
 import com.ls.springmvc.vo.ServiceMessage;
+import com.ls.springmvc.vo.api.PageResult;
 import com.ls.springmvc.vo.page.PageData;
 import com.ls.springmvc.vo.page.ResourceSearchParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -190,5 +193,30 @@ public class ResourceServiceImpl implements ResourceService {
     @Transactional
     public boolean restoreStock(Integer resourceId, int quantity) {
         return resourceDao.restoreStock(resourceId, quantity) > 0;
+    }
+
+    @Override
+    public PageResult<Resource> list(int page, int size) {
+        // 启动分页（必须在查询方法前调用）
+        PageHelper.startPage(page, size);
+        List<Resource> resources = resourceDao.selectAll();
+        // 通过 PageInfo 获取分页信息
+        PageInfo<Resource> pageInfo = new PageInfo<>(resources);
+        return new PageResult<Resource>(pageInfo.getTotal(), pageInfo.getList());
+    }
+
+    @Override
+    public Resource getById(Integer id) {
+        return resourceDao.selectById(id);
+    }
+
+    @Override
+    public void update(Resource resource) {
+        resourceDao.update(resource);
+    }
+
+    @Override
+    public void delete(Integer id) {
+        resourceDao.delete(id);
     }
 }

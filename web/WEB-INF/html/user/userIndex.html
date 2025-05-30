@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>RESTful API 测试</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .button-group { margin-bottom: 20px; }
+        button { padding: 10px; margin-right: 10px; cursor: pointer; }
+        pre { background: #f4f4f4; padding: 15px; border-radius: 5px; }
+        input { padding: 8px; margin: 5px; width: 200px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>RESTful 接口测试</h2>
+
+    <!-- 操作按钮 -->
+    <div class="button-group">
+        <button onclick="listResources()">分页查询</button>
+        <div>
+            <input type="text" id="resourceId" placeholder="输入资源ID">
+            <button onclick="getResource()">查看单个</button>
+            <button onclick="updateResource()">编辑资源</button>
+            <button onclick="deleteResource()">删除资源</button>
+        </div>
+    </div>
+
+    <!-- 结果显示区域 -->
+    <pre id="result"></pre>
+</div>
+
+<script>
+    // 正确
+    const APP_ROOT = '/api';
+    // 通用结果展示方法
+    function showResult(data) {
+        const resultEl = document.getElementById('result');
+        resultEl.innerHTML = JSON.stringify(data, null, 2);
+    }
+
+    // 1. 分页查询（GET）
+    function listResources() {
+        fetch(APP_ROOT+'/resources?page=1&size=5')
+            .then(response => response.json())
+            .then(data => showResult(data))
+            .catch(error => showResult({ error: error.message }));
+    }
+
+    // 2. 查看单个（GET）
+    function getResource() {
+        const id = document.getElementById('resourceId').value || '1';
+
+        fetch(APP_ROOT+`/resources/${id}`)
+            .then(response => response.json())
+            .then(data => showResult(data))
+            .catch(error => showResult({ error: error.message }));
+    }
+
+    // 3. 编辑资源（PUT）
+    function updateResource() {
+        const id = document.getElementById('resourceId').value || '1';
+        const newData = {
+            name: "新名称_" + Date.now(),
+            description: "修改后的描述"
+        };
+
+        fetch(APP_ROOT+`/resources/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newData)
+        })
+            .then(response => response.json())
+            .then(data => showResult(data))
+            .catch(error => showResult({ error: error.message }));
+    }
+
+    // 4. 删除资源（DELETE）
+    function deleteResource() {
+        const id = document.getElementById('resourceId').value || '1';
+        fetch(APP_ROOT+`/resources/${id}`, {
+            method: 'DELETE'
+        })
+            .then(response => response.json())
+            .then(data => showResult(data))
+            .catch(error => showResult({ error: error.message }));
+    }
+</script>
+</body>
+</html>

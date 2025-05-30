@@ -8,8 +8,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>云制造资源优化平台 - 资源中心 - 任务发布</title>
+    <link href="${pageContext.request.contextPath}/static/Custom/css/toast.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+<%--    引入本地jquery，toast.js/css--%>
+    <script src="${pageContext.request.contextPath}/static/assets/js/jquery.min.js"></script>
+    <script src="${pageContext.request.contextPath}/static/Custom/js/toast.js"></script>
+
     <style>
         :root {
             --primary-color: #3498db;
@@ -184,53 +189,6 @@
 </head>
 
 <body>
-    <!-- 导航栏 -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-        <div class="container">
-            <a class="navbar-brand" href="#">
-                <i class="bi bi-cloud-fill me-2"></i>云制造资源优化平台
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">首页</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#">资源中心</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">制造服务</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">数据分析</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">我的项目</a>
-                    </li>
-                </ul>
-                <div class="d-flex align-items-center">
-                    <div class="dropdown me-3">
-                        <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" id="userDropdown"
-                            data-bs-toggle="dropdown">
-                            <img src="https://via.placeholder.com/40" alt="用户头像" class="rounded-circle me-2">
-                            <span>张工程师</span>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="#">个人中心</a></li>
-                            <li><a class="dropdown-item" href="#">我的收藏</a></li>
-                            <li><a class="dropdown-item" href="#">消息中心</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">退出登录</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </nav>
-
     <!-- 主要内容区 -->
     <div class="container py-4">
         <!-- 面包屑导航 -->
@@ -241,164 +199,62 @@
                 <li class="breadcrumb-item active" aria-current="page">任务发布</li>
             </ol>
         </nav>
-
+        <!--
+             taskid;  //任务ID
+           b userid;  //用户ID
+           f taskname;    //任务名称
+           f taskdescription;//任务描述
+           b taskdate;//任务发布日期
+             completiontime;//完成时间
+           b taskstatus;  //任务状态    待完成/已完成/已取消
+             subtasks;    //子任务列表，用逗号分隔
+           f categoryid; //任务分类ID  1: '设备任务', 2: '工艺任务',3: '设计任务',4: '制造任务'
+           b auditstatus; //审核状态    驳回/通过/待审
+             orderids; //订单ID列表，用逗号分隔
+           -->
         <div class="row">
-            <!-- 左侧边栏 -->
-            <div class="col-lg-3 mb-4">
-                <div class="sidebar">
-                    <!-- 搜索框 -->
-                    <div class="search-box mb-4">
-                        <i class="bi bi-search"></i>
-                        <input type="text" class="form-control" placeholder="搜索资源...">
-                    </div>
-
-                    <!-- 资源分类 -->
-                    <div class="filter-group">
-                        <div class="sidebar-title">资源分类</div>
-                        <div class="list-group">
-                            <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center active">
-                                全部资源
-                                <span class="badge bg-primary rounded-pill">128</span>
-                            </a>
-                            <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                                设备资源
-                                <span class="badge bg-secondary rounded-pill">42</span>
-                            </a>
-                            <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                                工艺知识
-                                <span class="badge bg-secondary rounded-pill">35</span>
-                            </a>
-                            <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                                设计模型
-                                <span class="badge bg-secondary rounded-pill">28</span>
-                            </a>
-                            <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                                制造服务
-                                <span class="badge bg-secondary rounded-pill">23</span>
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- 筛选条件 -->
-                    <div class="filter-group">
-                        <div class="sidebar-title">筛选条件</div>
-                        <div class="mb-3">
-                            <div class="filter-title">资源类型</div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="type1" checked>
-                                <label class="form-check-label" for="type1">3D模型</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="type2" checked>
-                                <label class="form-check-label" for="type2">CAD图纸</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="type3">
-                                <label class="form-check-label" for="type3">工艺文档</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="type4">
-                                <label class="form-check-label" for="type4">设备参数</label>
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            <div class="filter-title">行业领域</div>
-                            <select class="form-select form-select-sm">
-                                <option selected>全部行业</option>
-                                <option>汽车制造</option>
-                                <option>航空航天</option>
-                                <option>电子电器</option>
-                                <option>医疗器械</option>
-                                <option>机械装备</option>
-                            </select>
-                        </div>
-
-                        <div class="mb-3">
-                            <div class="filter-title">上传时间</div>
-                            <select class="form-select form-select-sm">
-                                <option selected>全部时间</option>
-                                <option>最近一周</option>
-                                <option>最近一个月</option>
-                                <option>最近三个月</option>
-                                <option>最近半年</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- 统计信息 -->
-                    <div class="filter-group">
-                        <div class="sidebar-title">资源统计</div>
-                        <div class="stats-card">
-                            <div class="stats-value">128</div>
-                            <div class="stats-label">总资源数</div>
-                        </div>
-                        <div class="stats-card">
-                            <div class="stats-value">42</div>
-                            <div class="stats-label">设备资源</div>
-                        </div>
-                        <div class="stats-card">
-                            <div class="stats-value">35</div>
-                            <div class="stats-label">工艺知识</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <!-- 右侧资源与任务发布页面 -->
             <div class="col-lg-9">
                 <h4 class="section-header">任务发布</h4>
                 <div class="task-form">
                     <div class="card-body">
-                        <form>
+                        <form id="taskPublishform" enctype="multipart/form-data">
                             <div class="row">
                                 <!-- 任务名称 -->
                                 <div class="col-md-6 mb-3">
-                                    <label for="taskName" class="form-label">任务具体名称</label>
-                                    <input type="text" class="form-control" id="taskName" placeholder="请明确填写任务具体名称">
+                                    <label for="taskname" class="form-label">任务名称</label>
+                                    <input type="text" class="form-control" name="taskname" id="taskname" placeholder="请明确填写任务具体名称">
                                 </div>
-                                <!-- 期望完成数量 -->
+                                <!-- 任务所属领域 -->
                                 <div class="col-md-6 mb-3">
-                                    <label for="expectedQuantity" class="form-label">期望完成数量</label>
-                                    <input type="number" class="form-control" id="expectedQuantity" placeholder="请输入期望完成的任务数量">
+                                    <label for="categoryid" class="form-label">任务类别</label>
+                                    <select class="form-select" name="categoryid" id="categoryid">
+                                        <option selected value="0">请选择任务类别</option>
+                                        <option value="1">设备任务</option>
+                                        <option value="2">工艺任务</option>
+                                        <option value="3">设计任务</option>
+                                        <option value="4">制造任务</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="row">
-                                <!-- 任务所属领域 -->
                                 <div class="col-md-6 mb-3">
-                                    <label for="taskField" class="form-label">任务所属领域</label>
-                                    <select class="form-select" id="taskField">
-                                        <option selected>请选择任务所属领域</option>
-                                        <option>设备研发领域</option>
-                                        <option>工艺创新领域</option>
-                                        <option>模型设计领域</option>
-                                        <option>服务提供领域</option>
-                                    </select>
-                                </div>
-                                <!-- 任务预算金额 -->
-                                <div class="col-md-6 mb-3">
-                                    <label for="taskBudgetAmount" class="form-label">任务预算金额</label>
-                                    <input type="number" class="form-control" id="taskBudgetAmount" placeholder="请输入任务的预算金额">
+                                    <label for="completiontime" class="form-label">预期完成时间</label>
+                                    <input type="date" class="form-control" name="completiontime" id="completiontime">
                                 </div>
                             </div>
                             <div class="row">
                                 <!-- 任务详细描述 -->
                                 <div class="col-md-12 mb-3">
-                                    <label for="taskDetail" class="form-label">任务详细说明</label>
-                                    <textarea class="form-control" id="taskDetail" rows="3" placeholder="请详细描述任务的内容、要求等"></textarea>
+                                    <label for="taskdescription" class="form-label">任务详细说明</label>
+                                    <textarea class="form-control" name="taskdescription" id="taskdescription" rows="3" placeholder="请详细描述任务的内容、要求等"></textarea>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <!-- 期望交付时间 -->
-                                <div class="col-md-6 mb-3">
-                                    <label for="expectedDelivery" class="form-label">期望交付时间</label>
-                                    <input type="date" class="form-control" id="expectedDelivery">
-                                </div>
+
                             </div>
                             <!-- 相关资料附件 -->
                             <div class="mb-3">
                                 <label for="relatedFiles" class="form-label">相关资料附件</label>
-                                <input type="file" class="form-control" id="relatedFiles">
+                                <input type="file" class="form-control" name="relatedFiles" id="relatedFiles">
                             </div>
                             <!-- 提交按钮 -->
                             <button type="submit" class="btn btn-primary">发布任务</button>
@@ -412,4 +268,39 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
-</html>    
+</html>
+<script>
+<%--      <form id="taskPublishform">
+            点击提交后，阻止默认事件，收集表单数据，发送ajax请求
+            url = "/user/task/addTask"
+--%>
+        $("#taskPublishform").submit(function (event) {
+            event.preventDefault(); // 阻止表单默认提交行为
+            // 收集表单数据
+            var formData = new FormData(this);
+
+            // 去除资料附件数据
+            formData.delete("relatedFiles");
+
+            // 发送ajax请求
+            $.ajax({
+                url: "${pageContext.request.contextPath}/user/task/addTask",
+                type: "POST",
+                data: formData,
+                processData: false,  // 禁止jQuery处理数据
+                contentType: false,  // 让浏览器自动设置Content-Type
+                success: function (response) {
+                    // 处理成功响应
+                    if (response.code === 200) {
+                        showToast("发布成功",'success');
+                    } else {
+                        showToast("发布失败",'error');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    // 处理错误响应
+                    showToast('请求失败','error');
+                }
+            });
+        });
+</script>

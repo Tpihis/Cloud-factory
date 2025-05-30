@@ -86,24 +86,15 @@ public class UserController {
     }
     @GetMapping("/profile")
     public String profile(Model model, Principal principal) {
-        // 确认Principal是否为空的日志输出
-        System.out.println("检查Principal之前，principal的值为: " + principal);
+
         if (principal == null) {
             return "redirect:/login?error=not_logged_in";
         }
         String username = principal.getName();
         try {
-            // 确认获取用户对象前后的日志输出
-            System.out.println("查询用户之前，用户名为:" + username);
             User user = userService.findUserByUsername(username);
-            System.out.println("查询用户之后，用户对象为: " + user);
             if (user != null) {
-                // 确认添加用户对象到模型前后的日志输出
-                System.out.println("将用户添加到模型之前");
                 model.addAttribute("user", user);
-                System.out.println("将用户添加到模型之后");
-                // 查看模型中是否正确存入用户对象
-                System.out.println("模型中的'用户'属性值为: " + model.getAttribute("user"));
             }
             return "user/personalCenter";
         } catch (UsernameNotFoundException e) {

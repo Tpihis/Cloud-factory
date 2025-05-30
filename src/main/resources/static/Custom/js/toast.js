@@ -25,7 +25,7 @@ function showToast(message, type = 'success', duration = 2000) {
                 onclick="this.closest('.toast').classList.add('fade-out')"></button>
         </div>
     `;
-console.log(toast.innerHTML);
+// console.log(toast.innerHTML);
     // 添加到容器中
     container.appendChild(toast);
 

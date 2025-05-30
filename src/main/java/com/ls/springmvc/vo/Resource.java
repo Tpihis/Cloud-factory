@@ -15,4 +15,5 @@ public class Resource {
     private Integer     categoryid;         //资源分类id  1: '设备资源', 2: '工艺知识',3: '设计模型',4: '制造服务'
     private String      resourcedate;       //资源发布日期
     private String      auditstatus;        //审核状态 驳回/通过/待审
+    private User        user;                //用户信息
 }

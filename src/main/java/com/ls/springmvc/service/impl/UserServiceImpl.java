@@ -9,7 +9,9 @@ import com.ls.springmvc.vo.User;
 import com.ls.springmvc.vo.page.UserPageParam;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -145,6 +147,16 @@ public class UserServiceImpl implements UserService {
             return null;
         }
         return userDao.findUserByUsername(principal.getName()).getUserid();
+    }
+
+    @Override
+    public User getCurrentUser(Authentication authentication) {
+
+        if(authentication == null) {
+            // 未登录，返回null或抛出异常
+            return null;
+        }
+        return userDao.findUserByUsername(authentication.getName());
     }
 
     @Override

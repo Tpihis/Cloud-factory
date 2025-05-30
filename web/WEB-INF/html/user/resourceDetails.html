@@ -1,6 +1,3 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="zh-CN">
 
@@ -8,13 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>云制造资源优化平台 - 资源详情</title>
-    <link href="${pageContext.request.contextPath}/static/Custom/css/toast.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="${pageContext.request.contextPath}/static/assets/js/jquery.min.js"></script>
-    <script src="${pageContext.request.contextPath}/static/Custom/js/toast.js"></script>
-
+    <script src="/static/Custom/js/toast.js"></script>
+    <link href="/static/Custom/css/toast.css" rel="stylesheet">
+    <script src="/static/assets/js/jquery.min.js"></script>
     <style>
         :root {
             --primary-color: #3498db;
@@ -325,7 +321,6 @@
             </ol>
         </nav>
         <div class="row">
-
             <!-- 右侧资源详情内容 -->
             <div class="col-lg-9 mb-4 right-content">
                 <!-- 资源详情卡片 -->
@@ -334,7 +329,7 @@
         </div>
     </div>
 </body>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </html>
 <script>
 
@@ -353,7 +348,7 @@
         }
 
         $.ajax({
-            url: '${pageContext.request.contextPath}/user/resource/' + resourceId,
+            url: '/user/resource/' + resourceId,
             type: 'GET',
             dataType: 'json',
             success: function(response) {
@@ -472,7 +467,7 @@
 
         // 发送AJAX请求
         $.ajax({
-            url: '${pageContext.request.contextPath}/user/order/create',
+            url: '/user/order/create',
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({
@@ -482,10 +477,9 @@
             }),
             success: function(response) {
                 if(response.code === 200) { // 假设200表示成功
-                    // 让父iframe调用showToast方法
-                    window.parent.showToast("购买成功","success");
+                    showToast("购买成功","success")
                     // 跳转到订单详情页面
-                    window.location.href = '${pageContext.request.contextPath}/user/order/detail?id=' + response.obj.orderid;
+                    window.location.href = '/user/order/details?id=' + response.obj.orderid;
                 } else {
                     alert('创建订单失败: ' + response.msg);
                 }

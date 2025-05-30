@@ -2,8 +2,7 @@ package com.ls.springmvc.dao;
 
 import com.ls.springmvc.vo.Resource;
 import com.ls.springmvc.vo.page.ResourceSearchParam;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 import java.util.Map;
@@ -32,4 +31,16 @@ public interface ResourceDao {
 
     // 新增方法：恢复库存
     int restoreStock(Integer resourceId, Integer quantity);
+
+    @Select("SELECT * FROM resource")
+    List<Resource> selectAll();
+
+    @Select("SELECT * FROM resource WHERE resourceid = #{resourceid}")
+    Resource selectById(Integer id);
+
+    @Update("UPDATE resource SET resourcename=#{resourcename}, resourcedescription=#{resourcedescription} WHERE resourceid=#{resourceid}")
+    void update(Resource resource);
+
+    @Delete("DELETE FROM resource WHERE resourceid = #{resourceid}")
+    void delete(Integer id);
 }

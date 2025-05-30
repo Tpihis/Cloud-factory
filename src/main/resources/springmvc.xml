@@ -24,23 +24,39 @@
           class="org.springframework.web.multipart.support.StandardServletMultipartResolver">
     </bean>
 
-    <!-- 启用注解驱动和静态资源处理 -->
     <!-- 配置视图解析器 -->
-    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/jsp/"/>
         <property name="suffix" value=".jsp"/>
         <!-- 设置较低的优先级，让其他解析器先处理 -->
-        <property name="order" value="2" />
+        <property name="order" value="1" />
+    </bean>
+    <!-- 配置 Thymeleaf 模板解析器 -->
+    <bean id="templateResolver" class="org.thymeleaf.spring6.templateresolver.SpringResourceTemplateResolver">
+        <property name="prefix" value="/WEB-INF/html/" />
+        <property name="suffix" value=".html" />
+        <property name="templateMode" value="HTML" />
+        <property name="characterEncoding" value="UTF-8" />
+        <property name="cacheable" value="false" />
+    </bean>
 
+    <!-- 配置 Thymeleaf 模板引擎 -->
+    <bean id="templateEngine" class="org.thymeleaf.spring6.SpringTemplateEngine">
+        <property name="templateResolver" ref="templateResolver" />
+    </bean>
+
+    <!-- 配置 Thymeleaf 视图解析器 -->
+    <bean id="thymeleafViewResolver" class="org.thymeleaf.spring6.view.ThymeleafViewResolver">
+        <property name="templateEngine" ref="templateEngine" />
+        <property name="characterEncoding" value="UTF-8" />
+        <property name="order" value="2" />
     </bean>
 
 
     <bean id="user" class="com.ls.springmvc.vo.User"/>
 
     <!-- 配置数据源 -->
-<!--    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">-->
     <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
-<!--    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">-->
         <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
         <property name="url" value="jdbc:mysql://localhost:3306/springmvc?characterEncoding=utf8"/>
         <property name="username" value="root"/>

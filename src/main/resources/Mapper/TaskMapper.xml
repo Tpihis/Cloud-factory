@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ls.springmvc.dao.TaskDao">
+
+    <!--
+      taskid;  //任务ID
+      userid;  //用户ID
+      taskname;    //任务名称
+      taskdescription;//任务描述
+      taskdate;//任务发布日期
+      completiontime;//完成时间
+      taskstatus;  //任务状态    待完成/已完成/已取消
+      subtasks;    //子任务列表，用逗号分隔
+      categoryid; //任务分类ID  1: '设备任务', 2: '工艺任务',3: '设计任务',4: '制造任务'
+      auditstatus; //审核状态    驳回/通过/待审
+      orderids; //订单ID列表，用逗号分隔
+    -->
+    <!-- 动态查询条件 -->
+    <sql id="dynamicConditions">
+        <where>
+            <if test="searchKey != null and searchKey != ''">
+                AND taskname LIKE CONCAT('%', #{searchKey}, '%')
+            </if>
+            <if test="taskstatus != null and taskstatus !=''">
+                AND taskstatus = #{taskstatus}
+            </if>
+            <if test="auditstatus != null and auditstatus !=''">
+                AND auditstatus = #{auditstatus}
+            </if>
+            <if test="categoryid != null and categoryid !=''">
+                AND categoryid = #{categoryid}
+            </if>
+            <if test="userid!= null and userid!=''">
+                AND userid = #{userid}
+            </if>
+        </where>
+    </sql>
+
+<!--根据userid查找当前用户的任务-->
+    <select id="findTaskByUserId" parameterType="int" resultType="com.ls.springmvc.vo.Task">
+        select * from task where userid=#{userid}
+    </select>
+<!--增删改查-->
+<!--addtask-->
+    <insert id="addTask" parameterType="com.ls.springmvc.vo.Task" useGeneratedKeys="true" keyProperty="taskid">
+        insert into `task`(userid,taskname,taskdescription,taskdate,completiontime,taskstatus,subtasks,categoryid,auditstatus,orderids)
+    values(#{userid},#{taskname},#{taskdescription},#{taskdate},#{completiontime},#{taskstatus},#{subtasks},#{categoryid},#{auditstatus},#{orderids})
+    </insert>
+    <delete id="deleteTask" parameterType="int">
+        delete from `task` where taskid=#{taskid}
+    </delete>
+<!--  更新任务时，判断每一个任务属性是否为空-->
+    <update id="updateTask" parameterType="com.ls.springmvc.vo.Task">
+        update `task`
+        <set>
+            <if test="taskname!= null and taskname!=''">
+                taskname=#{taskname},
+            </if>
+            <if test="taskdescription!= null and taskdescription!=''">
+                taskdescription=#{taskdescription},
+            </if>
+            <if test="completiontime!= null and completiontime!=''">
+                completiontime=#{completiontime},
+            </if>
+            <if test="taskstatus!= null and taskstatus!=''">
+                taskstatus=#{taskstatus},
+            </if>
+            <if test="subtasks!= null and subtasks!=''">
+                subtasks=#{subtasks},
+            </if>
+            <if test="categoryid!= null and categoryid!=''">
+                categoryid=#{categoryid},
+            </if>
+            <if test="auditstatus!= null and auditstatus!=''">
+                auditstatus=#{auditstatus},
+            </if>
+        </set>
+        <where>
+            taskid = #{taskid}
+        </where>
+    </update>
+    <select id="findTaskById" parameterType="int" resultType="com.ls.springmvc.vo.Task">
+        select * from `task` where taskid=#{taskid}
+    </select>
+<!--    查找全部-->
+    <select id="getTaskList" resultType="com.ls.springmvc.vo.Task">
+        select * from `task`
+        <include refid="dynamicConditions"/>
+        <if test="orderBy != null and orderDirect != null">
+            ORDER BY ${orderBy} ${orderDirect}
+        </if>
+    </select>
+</mapper>

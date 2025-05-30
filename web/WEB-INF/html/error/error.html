@@ -1,0 +1,126 @@
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERROR!</title>
+    <link rel="stylesheet" href="/static/Custom/css/error.css">
+    <style>
+        /* 新增的错误信息面板样式 */
+        .error-panel {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 15px;
+            max-height: 40vh;
+            overflow-y: auto;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            border-top: 1px solid #444;
+        }
+
+        .error-panel.visible {
+            transform: translateY(0);
+        }
+
+        .error-toggle {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #35ad4f;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px 5px 0 0;
+            cursor: pointer;
+            z-index: 1001;
+            font-family: 'Exo 2', sans-serif;
+        }
+
+        .error-detail {
+            margin-bottom: 10px;
+        }
+
+        .stack-trace {
+            font-family: monospace;
+            font-size: 12px;
+            color: #ddd;
+            margin-top: 10px;
+        }
+
+        pre {
+            margin: 0;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="cow" onclick="toggleErrorPanel()">
+        <div class="head">
+            <div class="face">
+            </div>
+        </div>
+        <div class="leg f l"></div>
+        <div class="leg f r"></div>
+        <div class="leg b l"></div>
+        <div class="leg b r"></div>
+        <div class="tail"></div>
+    </div>
+
+    <div class="well">
+        <a href="/" class="home-btn">首页</a>
+    </div>
+    <div class="text-box">
+        <h1 onclick="toggleErrorPanel()"><c:out value="${status}"/></h1>
+        <p>这里不准停牛</p>
+    </div>
+    <!-- 错误信息切换按钮 -->
+<%--    <div class="error-toggle" onclick="toggleErrorPanel()">显示错误详情</div>--%>
+
+    <!-- 错误信息面板 -->
+    <div class="error-panel" id="errorPanel">
+        <h3>⚠️ <c:out value="${error}"/></h3>
+
+        <div class="error-detail">
+            <p><strong>状态码:</strong> <c:out value="${status}"/></p>
+            <p><strong>错误类型:</strong> <c:out value="${exception}"/></p>
+            <p><strong>错误信息:</strong> <c:out value="${message}"/></p>
+            <p><strong>请求URL:</strong> <c:out value="${url}"/></p>
+            <p><strong>发生时间:</strong> <c:out value="${timestamp}"/></p>
+        </div>
+
+        <!-- 只在开发环境显示堆栈跟踪 -->
+        <c:if test="${not empty stackTrace}">
+            <div class="stack-trace">
+                <h4>堆栈跟踪:</h4>
+                <pre><c:forEach items="${stackTrace}" var="trace"><c:out value="${trace}"/>&#13;&#10;</c:forEach></pre>
+            </div>
+        </c:if>
+    </div>
+</body>
+<script>
+    function toggleErrorPanel() {
+        const panel = document.getElementById('errorPanel');
+        const toggleBtn = document.querySelector('.error-toggle');
+
+        panel.classList.toggle('visible');
+
+        if (panel.classList.contains('visible')) {
+            toggleBtn.textContent = '隐藏错误详情';
+        } else {
+            toggleBtn.textContent = '显示错误详情';
+        }
+    }
+
+    // 开发环境默认显示错误面板
+/*    if (window.location.href.includes('localhost') || window.location.href.includes('127.0.0.1')) {
+        document.addEventListener('DOMContentLoaded', function() {
+            toggleErrorPanel();
+        });
+    }*/
+</script>
+</html>
