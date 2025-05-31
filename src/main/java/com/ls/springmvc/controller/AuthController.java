@@ -76,9 +76,6 @@ public class AuthController {
         for (GrantedAuthority authority:authorities) {
             System.out.println(authority.getAuthority());
         }
-
-
-
     }
     @GetMapping("/getCurrentUser")
     @ResponseBody

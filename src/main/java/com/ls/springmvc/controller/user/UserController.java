@@ -7,6 +7,7 @@ import com.ls.springmvc.vo.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -141,9 +142,9 @@ public class UserController {
                 ajaxResponse.setMsg("用户不存在");
                 return ajaxResponse;
             }
-
-            String currentPassword = params.get("currentPassword");
-            String newPassword = params.get("newPassword");
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            String currentPassword = encoder.encode(params.get("currentPassword")) ;
+            String newPassword = encoder.encode(params.get("newPassword"));
 
             // 验证当前密码是否正确
             if(!user.getPassword().equals(currentPassword)) {

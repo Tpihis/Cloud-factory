@@ -15,9 +15,6 @@
     <script src="${pageContext.request.contextPath}/static/assets/js/jquery.min.js"></script>
     <script src="${pageContext.request.contextPath}/static/Custom/js/toast.js"></script>
 
-
-
-
     <style>
         :root {
             --primary-color: #3498db;
@@ -77,7 +74,7 @@
         .profile-header {
             display: flex;
             align-items: center;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             padding-bottom: 20px;
             border-bottom: 1px solid #eee;
         }
@@ -219,7 +216,6 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
         }
 
         th, td {
@@ -297,7 +293,7 @@
             font-weight: normal;
         }
 
-        .bg-warning {
+        .bg-warning,.status-1,.audit-待审{
             background-color: #ffc107 !important;
         }
 
@@ -309,8 +305,12 @@
             background-color: #6c757d !important;
         }
 
-        .bg-success {
+        .bg-success,.status-2 , .audit-通过{
             background-color: #198754 !important;
+        }
+
+        .status-3,.audit-驳回{
+        background-color: #dc3545!important;
         }
 
         .bg-info {
@@ -321,6 +321,8 @@
             color: #212529 !important;
         }
 
+
+
         /* 操作按钮样式 */
         .btn-primary {
             background-color: #0d6efd;
@@ -330,6 +332,18 @@
         .btn-danger {
             background-color: #dc3545;
             color: white;
+        }
+
+        .btn-publish-container {
+            position: relative;
+            width: 50%;
+            height: 100%;
+        }
+        .btn-publish{
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
         }
     </style>
 </head>
@@ -354,15 +368,10 @@
                 <div class="d-flex align-items-center mb-4">
                     <img src="/images/default-avatar.png" alt="用户头像" class="rounded-circle me-3" style="width: 60px; height: 60px;">
                     <div>
-                        <h6 class="mb-0">
-<%--                            <c:out value="${user.username}" default="未登录"/>--%>
+                        <h6 class="mb-0" id="sidebarName">
                                 未登录
                         </h6>
-                        <small class="text-muted">
-                            <%--<c:choose>
-                                <c:when test="${user.role == 1}">管理员</c:when>
-                                <c:otherwise>普通用户</c:otherwise>
-                            </c:choose>--%>
+                        <small class="text-muted" id="sidebarRole">
                                 普通用户
                         </small>
                     </div>
@@ -392,12 +401,6 @@
                         账户设置
                         <i class="bi bi-gear-fill"></i>
                     </a>
-<%--                    <c:if test="${user.role == 1}">
-                        <a href="#admin" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" onclick="switchTab('admin')">
-                            管理员面板
-                            <i class="bi bi-shield-fill"></i>
-                        </a>
-                    </c:if>--%>
                 </div>
 
                 <!-- 统计信息 -->
@@ -452,7 +455,18 @@
                 </div>
 
                 <div id="basic" class="tab-content active">
-                    <h4 class="section-header">基本信息</h4>
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h4 class="section-header">基本信息</h4>
+                        <!-- 资源管理功能按钮 -->
+                        <div class="btn-publish-container" >
+                            <button class="btn-publish btn-edit" id="editProfileBtn" onclick="enableEdit()">编辑资料</button>
+                            <div class="btn-publish edit-buttons" id="editButtons">
+                                <button class="btn-save" onclick="saveProfile()">保存</button>
+                                <button class="btn-cancel" onclick="cancelEdit()">取消</button>
+                            </div>
+                        </div>
+                    </div>
                     <div class="info-grid">
                         <!-- 第一列 -->
                         <div class="info-column">
@@ -508,16 +522,20 @@
                         <div class="info-value" id="roleField">加载中...</div>
                     </div>
 
-                    <button class="btn-edit" id="editProfileBtn" onclick="enableEdit()">编辑资料</button>
-                    <div class="edit-buttons" id="editButtons">
-                        <button class="btn-save" onclick="saveProfile()">保存</button>
-                        <button class="btn-cancel" onclick="cancelEdit()">取消</button>
-                    </div>
+
                 </div>
 
                 <!-- 我的资源标签页 -->
                 <div id="resources" class="tab-content">
-                    <h4 class="section-header">我的资源管理</h4>
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h4 class="section-header">我的资源管理</h4>
+                        <!-- 资源管理功能按钮 -->
+                        <div class="btn-publish-container" >
+                            <button class="btn-publish btn btn-primary"
+                                    onclick="location.href='${pageContext.request.contextPath}/user/resource/publish'">发布新资源</button>
+                        </div>
+                    </div>
                     <!-- 新增一个容器div，用于包裹表格，并添加样式类scrollable-container -->
                     <div class="scrollable-container">
                         <!-- 资源状态管理表格 -->
@@ -539,10 +557,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <!-- 资源管理功能按钮 -->
-                    <div class="mt-4">
-                        <button class="btn btn-primary" onclick="location.href='${pageContext.request.contextPath}/user/resource/publish'">发布新资源</button>
-                    </div>
+
                 </div>
 
                 <div id="orders" class="tab-content">
@@ -578,30 +593,27 @@
                 </div>
 
                 <div id="settings" class="tab-content">
-                    <h4 class="section-header">账户安全</h4>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h4 class="section-header">账户安全</h4>
+                        <!-- 资源管理功能按钮 -->
+                        <div class="btn-publish-container" >
+                            <button class="btn-publish btn-save mt-3" onclick="changePassword()">确认修改</button>
+                        </div>
+                    </div>
+
                     <div class="info-item">
                         <div class="info-label">修改密码</div>
                         <input type="password" id="newPassword" placeholder="新密码" class="form-control mb-2">
                         <input type="password" id="confirmPassword" placeholder="确认密码" class="form-control">
-                        <button class="btn-save mt-3" onclick="changePassword()">确认修改</button>
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<%--script里面不可以用el，body里面可以，js里面要用字符串拼接的形式！！！！！！！！！！--%>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    // 修改：简化JavaScript逻辑，直接从DOM获取值
-    document.addEventListener('DOMContentLoaded', function() {
-        // 移除冗余的强制设置逻辑，直接依赖EL表达式渲染
-        console.log("页面渲染的用户信息:", {
-            username: document.getElementById('usernameValue').textContent,
-            email: document.getElementById('emailValue').textContent,
-            phone: document.getElementById('phoneValue').textContent
-        });
-    });
 
     // 切换标签页
     function switchTab(tabId) {
@@ -672,7 +684,7 @@
         }
 
         // AJAX请求保存数据
-        fetch('${pageContext.request.contextPath}/user/updateProfile', {
+        fetch('/user/updateProfile', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -749,13 +761,16 @@
 
     // 在页面加载完成后获取用户信息
     document.addEventListener('DOMContentLoaded', function() {
-        fetch('${pageContext.request.contextPath}/user/profileInfo')  // 后端API接口
+        fetch('/user/profileInfo')  // 后端API接口
             .then(response => response.json())
             .then(data => {
                 if(data.code === 0) {
 
                     const user = data.obj;
-                    console.log('获取到的用户信息:', user);
+                    //更新侧边栏信息
+                    document.getElementById('sidebarName').textContent = user.username || '未登录';
+                    document.getElementById('sidebarRole').textContent = user.role == 1? '管理员' : '普通用户';
+
                     // 更新顶部用户信息
                     document.getElementById('usernameValue').textContent = user.username || '无';
                     document.getElementById('registerTimeValue').textContent = user.time || '未记录';
@@ -801,7 +816,6 @@
                 }
             })
             .catch(error => {
-                console.error('请求失败:', error);
                 // 设置默认错误显示
                 document.querySelectorAll('.info-value').forEach(el => {
                     el.textContent = '获取失败';
@@ -811,12 +825,7 @@
 
 
     document.addEventListener('DOMContentLoaded', function() {
-        console.log('页面加载完成，检查元素是否存在...');
-        console.log('resourceTableBody:', document.getElementById('resourceTableBody'));
-        console.log('testResourceBtn:', document.getElementById('testResourceBtn'));
-
         loadResources();
-        /*document.getElementById('testResourceBtn')?.addEventListener('click', testResourceAPI);*/
     });
 
     function loadResources() {
@@ -832,12 +841,11 @@
             .then(response => {
                 console.log('原始响应:', response);
                 if (!response.ok) {
-                    throw new Error(`HTTP错误! 状态码: ${response.status}`);
+                    throw new Error('HTTP错误! 状态码: ' + response.status);
                 }
                 return response.json();
             })
             .then(data => {
-                console.log('解析后的数据:', data);
                 if (data.code === 0 || data.code === 200) { // 兼容两种响应码
                     const resources = data.obj || data.data; // 兼容不同字段名
                     if (resources && resources.length > 0) {
@@ -851,7 +859,6 @@
                 }
             })
             .catch(error => {
-                console.error('资源加载错误详情:', error);
                 showError('resourceTableBody', '加载失败: ' + error.message);
             });
     }
@@ -877,31 +884,9 @@
         }
     }
 
-/*    function testResourceAPI() {
-        const resultElement = document.getElementById('resourceData');
-        resultElement.textContent = '请求中...';
 
-        fetch('/user/resource/byUser')
-            .then(response => {
-                if(!response.ok) throw new Error('HTTP错误: ' + response.status);
-                return response.json();
-            })
-            .then(data => {
-                if(data.code === 0) {
-                    resultElement.textContent = JSON.stringify(data.obj, null, 2);
-                    alert(`测试成功，获取到${data.obj.length}条资源数据`);
-                } else {
-                    throw new Error(data.msg || '服务器返回错误');
-                }
-            })
-            .catch(error => {
-                resultElement.textContent = '错误: ' + error.message;
-                alert('测试失败: ' + error.message);
-            });
-    }*/
     // 渲染资源表格
     function renderResources(resources) {
-        console.log('接收到的资源数据:', resources); // 调试输出
 
         const tbody = document.getElementById('resourceTableBody');
         if (!tbody) {
@@ -940,14 +925,17 @@
             // 状态
             const statusCell = document.createElement('td');
             const statusSpan = document.createElement('span');
-            statusSpan.className = 'status-' + resource.resourcestatus;
+            // statusSpan.className = 'badge status-' + resource.resourcestatus;
             statusSpan.textContent = getStatusName(resource.resourcestatus);
             statusCell.appendChild(statusSpan);
             row.appendChild(statusCell);
 
             // 审核状态
             const auditCell = document.createElement('td');
-            auditCell.textContent = resource.auditstatus;
+            const auditSpan = document.createElement('span');
+            auditSpan.className = 'badge audit-' + resource.auditstatus;
+            auditSpan.textContent = resource.auditstatus;
+            auditCell.appendChild(auditSpan);
             row.appendChild(auditCell);
 
             // 发布日期
@@ -960,7 +948,8 @@
 
             // 详情按钮
             const detailBtn = document.createElement('button');
-            detailBtn.className = 'action-btn btn-view me-2';
+            // detailBtn.className = 'action-btn btn-view me-2';
+            detailBtn.className = 'btn btn-sm btn-outline-primary me-2';
             detailBtn.innerHTML = '<i class="bi bi-eye"></i> 详情';
             detailBtn.onclick = function() { viewResource(resource.resourceid); };
             actionCell.appendChild(detailBtn);
@@ -968,6 +957,7 @@
             // 删除按钮
             const deleteBtn = document.createElement('button');
             deleteBtn.className = 'action-btn btn-delete';
+            deleteBtn.className = 'btn btn-sm btn-danger';
             deleteBtn.innerHTML = '<i class="bi bi-trash"></i> 删除';
             deleteBtn.onclick = function() { deleteResource(resource.resourceid); };
             actionCell.appendChild(deleteBtn);
@@ -1016,7 +1006,7 @@
                         loadResources();
                         showToast('删除成功','success');
                     } else {
-                        alert('删除失败: ' + data.msg);
+                        showToast('删除失败:'+ data.msg,'error');
                     }
                 });
         }
@@ -1034,15 +1024,14 @@
 
         showLoading('orderTableBody', '正在加载订单...');
 
-        fetch('${pageContext.request.contextPath}/user/order/list', {
+        fetch('/user/order/list', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '${_csrf.token}'
             }
         })
             .then(response => {
-                if (!response.ok) throw new Error(`HTTP错误! 状态码: ${response.status}`);
+                if (!response.ok) throw new Error('HTTP错误! 状态码:'+ response.status);
                 return response.json();
             })
             .then(data => {
@@ -1152,17 +1141,16 @@
 
     // 查看订单详情
     function viewOrderDetails(orderId) {
-        window.location.href = '${pageContext.request.contextPath}/user/order/detail?id=' + orderId;
+        window.location.href = '/user/order/detail?id=' + orderId;
     }
 
     // 支付订单函数 - 字符串拼接版
     function payOrder(orderId) {
         if (confirm('确定要支付此订单吗？')) {
-            fetch('${pageContext.request.contextPath}/user/order/pay', {
+            fetch('/user/order/pay', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '${_csrf.token}'
                 },
                 body: '{"orderId":' + orderId + '}'
             })
@@ -1197,11 +1185,10 @@
     // 取消订单函数 - 字符串拼接版
     function cancelOrder(orderId) {
         if (confirm('确定要取消此订单吗？')) {
-            fetch('${pageContext.request.contextPath}/user/order/cancel', {
+            fetch('/user/order/cancel', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '${_csrf.token}'
                 },
                 body: '{"orderId":' + orderId + '}'
             })

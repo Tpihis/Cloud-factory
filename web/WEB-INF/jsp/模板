@@ -1,0 +1,14 @@
+// 原模板字符串
+`<li class="page-item ${active}">...</li>`
+
+// 字符串拼接替代
+'<li class="page-item ' + active + '">...</li>'
+
+//个人中心按钮模板
+<div class="d-flex justify-content-between align-items-center">
+    <h4 class="section-header">模块标题</h4>
+    <!-- 资源管理功能按钮 -->
+    <div class="btn-publish-container" >
+        <button class="btn-publish" >按钮</button>
+    </div>
+</div>

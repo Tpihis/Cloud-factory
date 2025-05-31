@@ -159,6 +159,7 @@
                         <li><a class="dropdown-item" href="#" onclick="loadPage('/user/personalCenter',this)">个人中心</a></li>
                         <li><a class="dropdown-item" href="#">我的收藏</a></li>
                         <li><a class="dropdown-item" href="#" onclick="loadPage('/user/chat',this)">消息中心</a></li>
+                        <li id="admin"> </li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="${pageContext.request.contextPath}/logout">退出登录</a></li>
                     </ul>
@@ -179,13 +180,24 @@
     //设置当前活动菜单项
     function setActive(element) {
         // 移除所有导航链接的active类
-        document.querySelectorAll('.nav-link').forEach(link => {
+        document.querySelectorAll('.nav-link,.dropdown-item').forEach(link => {
             link.classList.remove('active');
         });
         // 为当前点击的链接添加active类
         element.classList.add('active');
     }
 
+//  发送请求到后端获取当前用户的角色
+    $.ajax({
+        url: "${pageContext.request.contextPath}/auth/getCurrentUser",
+        type: "GET",
+        success: function (response) {
+            const userRole = response.obj.role;
+            if (userRole === 1) {
+                document.getElementById('admin').innerHTML = '<a class="dropdown-item" href="/admin/index">管理员中心</a>';
+            }
+        }
+    })
 </script>
 </html>
 
