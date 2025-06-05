@@ -34,6 +34,9 @@
         <script type="text/javascript" src="${pageContext.request.contextPath}/static/Widget/zTree/js/jquery.ztree.all-3.5.min.js"></script>
         <script src="${pageContext.request.contextPath}/static/js/lrtk.js" type="text/javascript" ></script>
 <title>产品列表</title>
+<style>
+    #products_list .this_table_menu_list{ overflow:auto;}
+</style>
 </head>
 <body>
 <div class=" page-content clearfix">
@@ -56,7 +59,7 @@
 
      <!--产品列表展示-->
      <div class="h_products_list clearfix" id="products_list">
-       <div id="scrollsidebar" class="left_Treeview">
+      <%-- <div id="scrollsidebar" class="left_Treeview">
         <div class="show_btn" id="rightArrow"><span></span></div>
         <div class="widget-box side_content" >
          <div class="side_title"><a title="隐藏" class="close_btn"><span></span></a></div>
@@ -66,8 +69,8 @@
         </div>
        </div>
       </div>  
-     </div>
-         <div class="table_menu_list" id="testIframe">
+     </div>--%>
+         <div class="this_table_menu_list" id="testIframe">
        <table class="table table-striped table-bordered table-hover" id="sample-table" width="100%">
 		<thead>
 		 <tr>

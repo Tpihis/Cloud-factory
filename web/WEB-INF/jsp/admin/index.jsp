@@ -200,7 +200,7 @@
                     },
                     function(){
                         $.post('${pageContext.request.contextPath}/logout', function() {
-                            location.href = "auth/loginPage";
+                            location.href = "/auth/loginPage";
                         });
                     });
 
@@ -332,10 +332,18 @@
             </div><!-- #sidebar-shortcuts -->
             <ul class="nav nav-list" id="nav_list">
                 <li class="home"><a href="javascript:void(0)" name="${pageContext.request.contextPath}/admin/home" class="iframeurl" title=""><i class="icon-dashboard"></i><span class="menu-text"> 系统首页 </span></a></li>
-                <li><a href="#" class="dropdown-toggle"><i class="icon-desktop"></i><span class="menu-text">资源管理 </span><b class="arrow icon-angle-down"></b></a>
+                <li>
+                    <a href="#" class="dropdown-toggle"><i class="icon-desktop"></i><span class="menu-text">资源管理 </span><b class="arrow icon-angle-down"></b></a>
                     <ul class="submenu">
 <%--                        <li class="home"><a href="javascript:void(0)" name="${pageContext.request.contextPath}/admin/user/list"  title="用户列表" class="iframeurl"><i class="icon-double-angle-right"></i>用户列表</a></li>--%>
-                        <li class="home"><a href="javascript:void(0)" name="${pageContext.request.contextPath}/admin/resource/list"  title="资源类表" class="iframeurl"><i class="icon-double-angle-right"></i>资源类表</a></li>
+                        <li class="home"><a href="javascript:void(0)" name="${pageContext.request.contextPath}/admin/resource/list"  title="资源列表" class="iframeurl"><i class="icon-double-angle-right"></i>资源列表</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-toggle"><i class="icon-tasks"></i><span class="menu-text">任务管理 </span><b class="arrow icon-angle-down"></b></a>
+                    <ul class="submenu">
+                        <%--                        <li class="home"><a href="javascript:void(0)" name="${pageContext.request.contextPath}/admin/user/list"  title="用户列表" class="iframeurl"><i class="icon-double-angle-right"></i>用户列表</a></li>--%>
+                        <li class="home"><a href="javascript:void(0)" name="${pageContext.request.contextPath}/admin/task/list"  title="任务列表" class="iframeurl"><i class="icon-double-angle-right"></i>任务列表</a></li>
                     </ul>
                 </li>
                 <li>

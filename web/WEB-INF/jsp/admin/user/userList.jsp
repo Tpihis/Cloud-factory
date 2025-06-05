@@ -165,7 +165,6 @@
           dataType: "json",
           success: function(data) {
               updateTotalCount(data); // 成功获取数据后自动渲染
-              console.log(data);
           },
           error: function(jqXHR, textStatus, errorThrown) {
               console.error("加载用户数据失败:", textStatus, errorThrown);
@@ -637,7 +636,4 @@
         range: '~',
         format: 'yyyy-MM-dd HH:mm:ss'
     });
-
-
-
 </script>

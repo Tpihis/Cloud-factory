@@ -4,6 +4,7 @@
     <option name="state">
       <map>
         <entry key="file://$PROJECT_DIR$/web/WEB-INF/jsp/admin/resource/resourceAdd.jsp" value="file://$PROJECT_DIR$/web/WEB-INF/jsp/admin/resource" />
+        <entry key="file://$PROJECT_DIR$/web/WEB-INF/jsp/admin/task/taskList.jsp" value="file://$PROJECT_DIR$/web/WEB-INF/jsp/admin/task" />
         <entry key="file://$PROJECT_DIR$/web/WEB-INF/jsp/admin/user/userList.jsp" value="file://$PROJECT_DIR$/web/WEB-INF/jsp/admin/user" />
         <entry key="file://$PROJECT_DIR$/web/WEB-INF/jsp/login.jsp" value="file://$PROJECT_DIR$/web/WEB-INF/jsp" />
         <entry key="file://$PROJECT_DIR$/web/WEB-INF/jsp/register.jsp" value="file://$PROJECT_DIR$/web/WEB-INF/jsp" />

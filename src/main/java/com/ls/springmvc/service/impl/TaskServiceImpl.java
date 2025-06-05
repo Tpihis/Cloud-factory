@@ -46,6 +46,5 @@ public class TaskServiceImpl implements TaskService {
         // 通过 PageInfo 获取分页信息
         PageInfo<Task> pageInfo = new PageInfo<>(tasks);
         return new PageResult<Task>(pageInfo.getTotal(), pageInfo.getList());
-
     }
 }

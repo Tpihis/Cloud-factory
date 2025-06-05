@@ -2,6 +2,7 @@ package com.ls.springmvc.dao;
 
 import com.ls.springmvc.vo.Task;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -14,4 +15,5 @@ public interface TaskDao {
     public Task findTaskById(int id);
     //分页查询
     public List<Task> getTaskList();
+
 }
