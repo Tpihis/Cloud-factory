@@ -37,10 +37,10 @@ public class UserController {
         return "chat";
     }
 
-    @GetMapping("/index")
-    public String iframe(){
-        return "user/iframe_top";
-    }
+//    @GetMapping("/index")
+//    public String iframe(){
+//        return "user/iframe_top";
+//    }
 
     @GetMapping("/orderList")
     public String orderList(){

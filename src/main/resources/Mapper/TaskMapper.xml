@@ -42,6 +42,12 @@
     <select id="findTaskByUserId" parameterType="int" resultType="com.ls.springmvc.vo.Task">
         select * from task where userid=#{userid}
     </select>
+<!--new-->
+    <select id="findByUserId" resultType="com.ls.springmvc.vo.Task">
+        SELECT * FROM task WHERE userid = #{userId}
+        ORDER BY taskdate DESC
+    </select>
+
 <!--增删改查-->
 <!--addtask-->
     <insert id="addTask" parameterType="com.ls.springmvc.vo.Task" useGeneratedKeys="true" keyProperty="taskid">
@@ -92,5 +98,34 @@
             ORDER BY ${orderBy} ${orderDirect}
         </if>
     </select>
-
+<!--new-->
+    <!-- 获取任务总数 -->
+    <select id="getTaskCount" parameterType="map" resultType="int">
+        SELECT COUNT(*) FROM task
+        <include refid="dynamicConditions"/>
+    </select>
+    <!-- 优化后的状态统计（移除重复查询） -->
+    <select id="getTaskStatusCounts" parameterType="map" resultType="map">
+        SELECT
+        taskstatus AS taskStatus,
+        COUNT(*) AS count
+        FROM task
+        <include refid="dynamicConditions"/>
+        GROUP BY taskstatus
+    </select>
+    <!-- 获取任务状态统计 -->
+    <!--    <select id="getTaskStatusCounts" parameterType="map" resultType="map">
+            SELECT
+            taskstatus AS taskStatus,
+            COUNT(*) AS count
+            FROM task
+            <include refid="dynamicConditions"/>
+            GROUP BY taskstatus
+            UNION ALL
+            SELECT
+            '全部' AS taskStatus,
+            COUNT(*) AS count
+            FROM task
+            <include refid="dynamicConditions"/>
+        </select>-->
 </mapper>

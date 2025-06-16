@@ -33,6 +33,8 @@ public class SystemController {
 
     //资源图片路径
     private String baseRsePath  =baseSavePath +"Resources\\";
+    //个人图片路径
+    private String baseUserPath  =baseSavePath +"Users\\";
 
     private String TempPath = null;
 
@@ -55,10 +57,36 @@ public class SystemController {
              throw new RuntimeException("用户未登录");
         }
 
-        String userPath = baseSavePath + userid + "\\";
+        String userPath = baseUserPath + userid + "\\";
         new File(userPath).mkdirs();
         return userPath;
     }
+    // 获取用户图片
+    @GetMapping("/userImage")
+    public void getUserImage(Principal principal,
+//                             @RequestParam("userId") String userId,
+                             HttpServletResponse response) throws IOException {
+        /*String userPath = null;
+        if(principal == null){
+             userPath = baseUserPath + userId + "\\";
+        }else {
+             userPath = baseUserPath + userService.findUserByUsername(principal.getName()).getUserid() + "\\";
+        }*/
+        String userPath = baseUserPath + userService.findUserByUsername(principal.getName()).getUserid() + "\\";
+        File userDirectory = new File(userPath);
+        List<Map<String, Object>> fileList = new ArrayList<>();
+        // 递归遍历所有子文件夹
+        scanDirectory(userDirectory, fileList);
+        String filePath = userPath + fileList.get(0).get("name");
+        File file = new File(filePath); // 创建上传目录的File对象
+        // 设置图片响应类型
+        response.setContentType(MediaType.IMAGE_JPEG_VALUE);
+        try (InputStream is = new FileInputStream(file);
+             OutputStream os = response.getOutputStream()) {
+            IOUtils.copy(is, os);
+             }
+    }
+
 
     //为资源创建独立文件夹
     private String getResourceSavePath(String resourceId) {

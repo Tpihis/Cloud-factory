@@ -36,7 +36,7 @@ public class AuthController {
         if(error){
             model.addAttribute("msg","用户名和密码错误");
         }
-        return "login";
+        return "signup_in";
     }
 
 
@@ -50,10 +50,10 @@ public class AuthController {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         user.setPassword(encoder.encode(user.getPassword()));
         if(userService.registerUser(user)){
-            return "login";
+            return "signup_in";
         }
 
-        return "register";
+        return "signup_in";
     }
 
     @GetMapping("/getUserInfo")

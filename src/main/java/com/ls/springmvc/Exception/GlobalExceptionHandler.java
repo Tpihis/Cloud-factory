@@ -26,7 +26,7 @@ public class GlobalExceptionHandler implements AccessDeniedHandler{
      * @param response HTTP响应
      * @return 错误页面视图名
      */
-    @ExceptionHandler(Exception.class)
+//    @ExceptionHandler(Exception.class)
     public String handleAllExceptions(Exception ex, Model model,
                                       HttpServletRequest request,
                                       HttpServletResponse response) {

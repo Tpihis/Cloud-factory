@@ -1,4 +1,10 @@
 
+/**
+ * 显示自定义的 toast 消息
+ * @param {string} message 要显示的消息
+ * @param {'success'|'error'} [type='success'] 消息类型
+ * @param {number} [duration=2000] 消息显示时间（毫秒）
+ */
 function showToast(message, type = 'success', duration = 2000) {
     // 获取或创建 toast 容器
     let container = document.getElementById('custom-toast-container');

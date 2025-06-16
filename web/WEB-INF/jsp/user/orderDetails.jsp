@@ -171,201 +171,8 @@
     </div>
 
     <!-- 订单详情主容器 -->
-    <%--<div class="order-detail-container">
-        <h2 class="mb-4">订单详情 #ORD20250423001</h2>
-
-        <!-- 基本信息部分 -->
-        <div class="order-section">
-            <h3 class="section-title">
-                <i class="bi bi-info-circle"></i>基本信息
-            </h3>
-            <div class="detail-row">
-                <div class="detail-label">订单号：</div>
-                <div class="detail-value">ORD20250423001</div>
-            </div>
-            <div class="detail-row">
-                <div class="detail-label">创建时间：</div>
-                <div class="detail-value">2025-04-23 12:42:00</div>
-            </div>
-            <div class="detail-row">
-                <div class="detail-label">客户名称：</div>
-                <div class="detail-value">张三</div>
-            </div>
-            <div class="detail-row">
-                <div class="detail-label">联系电话：</div>
-                <div class="detail-value">138-2584-1998</div>
-            </div>
-            <div class="detail-row">
-                <div class="detail-label">订单状态：</div>
-                <div class="detail-value status-completed">已完成</div>
-            </div>
-            <div class="detail-row">
-                <div class="detail-label">收货地址：</div>
-                <div class="detail-value">北京市海淀区中关村大街1号院</div>
-            </div>
-            <div class="detail-row">
-                <div class="detail-label">邮编：</div>
-                <div class="detail-value">100084</div>
-            </div>
-            <div class="detail-row">
-                <div class="detail-label">承运人：</div>
-                <div class="detail-value">李四</div>
-            </div>
-            <div class="detail-row">
-                <div class="detail-label">承运人电话：</div>
-                <div class="detail-value">138-1234-5678</div>
-            </div>
-        </div>
-
-        <!-- 产品和服务详情部分 -->
-        <div class="order-section">
-            <h3 class="section-title">
-                <i class="bi bi-box-seam"></i>产品和服务详情
-            </h3>
-            <table class="product-table">
-                <thead>
-                    <tr>
-                        <th>资源名称</th>
-                        <th>规格描述</th>
-                        <th>数量</th>
-                        <th>资源类型</th>
-                        <th>生效时间</th>
-                        <th>失效时间</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>云计算资源A</td>
-                        <td>CPU: 4核, 内存: 16GB, 存储: 500GB</td>
-                        <td>1</td>
-                        <td>包月</td>
-                        <td>2025-04-23</td>
-                        <td>2025-05-23</td>
-                    </tr>
-                    <tr>
-                        <td>数据存储服务B</td>
-                        <td>容量: 1TB, 备份: 每日</td>
-                        <td>1</td>
-                        <td>包年</td>
-                        <td>2025-04-23</td>
-                        <td>2026-04-23</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <!-- 金额信息部分 -->
-        <div class="order-section">
-            <h3 class="section-title">
-                <i class="bi bi-cash-stack"></i>金额信息
-            </h3>
-            <div class="price-detail">
-                <span class="price-label">原价：</span>
-                <span class="price-value">¥5000.00</span>
-            </div>
-            <div class="price-detail">
-                <span class="price-label">优惠金额：</span>
-                <span class="price-value">-¥500.00</span>
-            </div>
-            <div class="price-detail total-price">
-                <span class="price-label">实际支付金额：</span>
-                <span class="price-value">¥4500.00</span>
-            </div>
-        </div>--%>
-    <!-- 订单详情主容器 -->
-    <div class="order-detail-container">
-        <h2 class="mb-4">订单详情 #${order.orderid}</h2>
-
-        <!-- 基本信息部分 -->
-        <div class="order-section">
-            <h3 class="section-title">
-                <i class="bi bi-info-circle"></i>基本信息
-            </h3>
-            <div class="detail-row">
-                <div class="detail-label">订单号：</div>
-                <div class="detail-value">${order.orderid}</div>
-            </div>
-            <div class="detail-row">
-                <div class="detail-label">创建时间：</div>
-                <div class="detail-value">${order.ordertime}</div>
-            </div>
-            <div class="detail-row">
-                <div class="detail-label">客户名称：</div>
-                <div class="detail-value">${user.username}</div>
-            </div>
-            <div class="detail-row">
-                <div class="detail-label">联系电话：</div>
-                <div class="detail-value">${user.phone}</div>
-            </div>
-            <div class="detail-row">
-                <div class="detail-label">订单状态：</div>
-                <div class="detail-value status-${order.orderstatus}">${order.orderstatus}</div>
-            </div>
-            <div class="detail-row">
-                <div class="detail-label">收货地址：</div>
-                <div class="detail-value">${user.address}</div>
-            </div>
-            <div class="detail-row">
-                <div class="detail-label">邮箱：</div>
-                <div class="detail-value">${user.email}</div>
-            </div>
-        </div>
-
-        <!-- 产品和服务详情部分 -->
-        <div class="order-section">
-            <h3 class="section-title">
-                <i class="bi bi-box-seam"></i>产品和服务详情
-            </h3>
-            <table class="product-table">
-                <thead>
-                <tr>
-                    <th>资源名称</th>
-                    <th>规格描述</th>
-                    <th>数量</th>
-                    <th>资源类型</th>
-                    <th>单价</th>
-                </tr>
-                </thead>
-                <tbody>
-                <c:forEach items="${resources}" var="resource">
-                    <tr>
-                        <td>${resource.resourcename}</td>
-                        <td>${resource.resourcedescription}</td>
-                        <td>${order.quantity}</td>
-                        <td>
-                            <c:choose>
-                                <c:when test="${resource.categoryid == 1}">设备资源</c:when>
-                                <c:when test="${resource.categoryid == 2}">工艺知识</c:when>
-                                <c:when test="${resource.categoryid == 3}">设计模型</c:when>
-                                <c:when test="${resource.categoryid == 4}">制造服务</c:when>
-                                <c:otherwise>未知类型</c:otherwise>
-                            </c:choose>
-                        </td>
-                        <td>¥${resource.resourceprice}</td>
-                    </tr>
-                </c:forEach>
-                </tbody>
-            </table>
-        </div>
-
-        <!-- 金额信息部分 -->
-        <div class="order-section">
-            <h3 class="section-title">
-                <i class="bi bi-cash-stack"></i>金额信息
-            </h3>
-            <div class="price-detail">
-                <span class="price-label">原价：</span>
-                <span class="price-value">¥${order.totalprice}</span>
-            </div>
-            <div class="price-detail">
-                <span class="price-label">优惠金额：</span>
-                <span class="price-value">-¥0.00</span>
-            </div>
-            <div class="price-detail total-price">
-                <span class="price-label">实际支付金额：</span>
-                <span class="price-value">¥${order.totalprice}</span>
-            </div>
-        </div>
+    <div class="order-detail-container" id="orderContainer">
+<%--        js渲染--%>
     </div>
 
         <!-- 操作记录部分 -->
@@ -413,6 +220,128 @@
     document.querySelector('.back-btn').addEventListener('click', function() {
         window.history.back();
     });
+
+    //页面加载完成获取连接中的Id，并发送请求
+    document.addEventListener('DOMContentLoaded', function() {
+        var orderId = getResourceIdFromUrl();
+        //发送请求并渲染数据
+        if (orderId) {
+            fetchOrderDetail(orderId);
+        }
+    });
+
+    function getResourceIdFromUrl() {
+        var urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get('id');
+    }
+    function fetchOrderDetail(orderId) {
+        fetch('/api/order/detail?id=' + orderId)
+            .then(response => response.json())
+            .then(data => {
+                if (data.code === 200) {
+                    renderOrderDetail(data.obj);
+                } else {
+                    document.getElementById('orderContainer').innerHTML =
+                        '<div class="alert alert-danger">' + data.msg + '</div>';
+                }
+            })
+            .catch(error => {
+                document.getElementById('orderContainer').innerHTML =
+                    '<div class="alert alert-danger">请求失败: ' + error.message + '</div>';
+            });
+    }
+
+    function renderOrderDetail(orderData) {
+        const { order, user, resources } = orderData;
+
+        // 分类映射
+        const categoryMap = {
+            1: "设备资源",
+            2: "工艺知识",
+            3: "设计模型",
+            4: "制造服务"
+        };
+
+        // 生成资源表格行
+        let resourceRows = '';
+        resources.forEach(resource => {
+            resourceRows += '<tr>' +
+                '<td>' + resource.resourcename + '</td>' +
+                '<td>' + resource.resourcedescription + '</td>' +
+                '<td>' + order.quantity + '</td>' +
+                '<td>' + (categoryMap[resource.categoryid] || '未知类型') + '</td>' +
+                '<td>¥' + resource.resourceprice + '</td>' +
+                '</tr>';
+        });
+        // 拼接完整HTML
+        const html = '<h2 class="mb-4">订单详情 #' + order.orderid + '</h2>' +
+            '<!-- 基本信息部分 -->' +
+            '<div class="order-section">' +
+            '<h3 class="section-title"><i class="bi bi-info-circle"></i>基本信息</h3>' +
+            '<div class="detail-row">' +
+            '<div class="detail-label">订单号：</div>' +
+            '<div class="detail-value">' + order.orderid + '</div>' +
+            '</div>' +
+            '<div class="detail-row">' +
+            '<div class="detail-label">创建时间：</div>' +
+            '<div class="detail-value">' + order.ordertime + '</div>' +
+            '</div>' +
+            '<div class="detail-row">' +
+            '<div class="detail-label">客户名称：</div>' +
+            '<div class="detail-value">' + user.username + '</div>' +
+            '</div>' +
+            '<div class="detail-row">' +
+            '<div class="detail-label">联系电话：</div>' +
+            '<div class="detail-value">' + user.phone + '</div>' +
+            '</div>' +
+            '<div class="detail-row">' +
+            '<div class="detail-label">订单状态：</div>' +
+            '<div class="detail-value status-' + order.orderstatus + '">' + order.orderstatus + '</div>' +
+            '</div>' +
+            '<div class="detail-row">' +
+            '<div class="detail-label">收货地址：</div>' +
+            '<div class="detail-value">' + user.address + '</div>' +
+            '</div>' +
+            '<div class="detail-row">' +
+            '<div class="detail-label">邮箱：</div>' +
+            '<div class="detail-value">' + user.email + '</div>' +
+            '</div>' +
+            '</div>' +
+            '<!-- 产品和服务详情部分 -->' +
+            '<div class="order-section">' +
+            '<h3 class="section-title"><i class="bi bi-box-seam"></i>产品和服务详情</h3>' +
+            '<table class="product-table">' +
+            '<thead>' +
+            '<tr>' +
+            '<th>资源名称</th>' +
+            '<th>规格描述</th>' +
+            '<th>数量</th>' +
+            '<th>资源类型</th>' +
+            '<th>单价</th>' +
+            '</tr>' +
+            '</thead>' +
+            '<tbody>' + resourceRows + '</tbody>' +
+            '</table>' +
+            '</div>' +
+            '<!-- 金额信息部分 -->' +
+            '<div class="order-section">' +
+            '<h3 class="section-title"><i class="bi bi-cash-stack"></i>金额信息</h3>' +
+            '<div class="price-detail">' +
+            '<span class="price-label">原价：</span>' +
+            '<span class="price-value">¥' + order.totalprice + '</span>' +
+            '</div>' +
+            '<div class="price-detail">' +
+            '<span class="price-label">优惠金额：</span>' +
+            '<span class="price-value">-¥0.00</span>' +
+            '</div>' +
+            '<div class="price-detail total-price">' +
+            '<span class="price-label">实际支付金额：</span>' +
+            '<span class="price-value">¥' + order.totalprice + '</span>' +
+            '</div>' +
+            '</div>';
+
+        document.getElementById('orderContainer').innerHTML = html;
+    }
 </script>
 </body>
 </html>

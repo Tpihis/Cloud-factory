@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>文件上传下载示例</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="container">
+    <!-- 多文件上传 -->
+    <div class="upload-section">
+        <h2>多文件上传</h2>
+        <input type="file" id="multipleFiles" multiple>
+        <button onclick="uploadMultiple()">上传文件</button>
+        <div id="multipleResult"></div>
+    </div>
+    <br>
+    <a href="/filesPage">文件管理系统</a>
+    <br>
+    <a href="/user/mine">个人中心</a>
+</div>
+
+<script>
+    function uploadMultiple() {
+        const fileInput = document.getElementById('multipleFiles');
+        const resultDiv = document.getElementById('multipleResult');
+
+        if (!fileInput.files.length) {
+            resultDiv.innerHTML = '<p style="color:red">请选择文件</p>';
+            return;
+        }
+
+        const formData = new FormData();
+        for (let i = 0; i < fileInput.files.length; i++) {
+            formData.append('files', fileInput.files[i]);
+        }
+
+        fetch('/api/system/files/upload', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    resultDiv.innerHTML = `<p>上传成功! 共 ${data.fileNames.length} 个文件:</p>`;
+                    data.fileNames.forEach(name => {
+                        resultDiv.innerHTML += `<p>${name}</p>`;
+                    });
+                } else {
+                    resultDiv.innerHTML = `<p style="color:red">${data.message}</p>`;
+                }
+            })
+            .catch(error => {
+                resultDiv.innerHTML = `<p style="color:red">请求失败: ${error}</p>`;
+            });
+    }
+</script>
+</body>
+</html>

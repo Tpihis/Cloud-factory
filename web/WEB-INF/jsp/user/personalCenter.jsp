@@ -310,7 +310,7 @@
         }
 
         .status-3,.audit-驳回{
-        background-color: #dc3545!important;
+            background-color: #dc3545!important;
         }
 
         .bg-info {
@@ -369,14 +369,13 @@
                     <img src="/images/default-avatar.png" alt="用户头像" class="rounded-circle me-3" style="width: 60px; height: 60px;">
                     <div>
                         <h6 class="mb-0" id="sidebarName">
-                                未登录
+                            未登录
                         </h6>
                         <small class="text-muted" id="sidebarRole">
-                                普通用户
+                            普通用户
                         </small>
                     </div>
                 </div>
-
 
                 <!-- 个人中心菜单 -->
                 <div class="sidebar-title">个人中心</div>
@@ -392,6 +391,10 @@
                     <a href="#orders" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" onclick="switchTab('orders')">
                         我的订单
                         <i class="bi bi-receipt"></i>
+                    </a>
+                    <a href="#tasks" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" onclick="switchTab('tasks')">
+                        我的任务
+                        <i class="bi bi-list-task"></i>
                     </a>
                     <a href="#messages" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" onclick="switchTab('messages')">
                         消息通知
@@ -587,30 +590,132 @@
                     </div>
                 </div>
 
-                <div id="messages" class="tab-content">
-                    <h4 class="section-header">消息通知</h4>
-                    <div class="alert alert-info">暂无未读消息</div>
-                </div>
-
-                <div id="settings" class="tab-content">
+                <!-- 我的任务标签页 -->
+                <div id="tasks" class="tab-content">
                     <div class="d-flex justify-content-between align-items-center">
-                        <h4 class="section-header">账户安全</h4>
-                        <!-- 资源管理功能按钮 -->
-                        <div class="btn-publish-container" >
-                            <button class="btn-publish btn-save mt-3" onclick="changePassword()">确认修改</button>
+                        <h4 class="section-header">我的任务管理</h4>
+                        <!-- 任务管理功能按钮 -->
+                        <div class="btn-publish-container">
+                            <button class="btn-publish btn btn-primary"
+                                    onclick="location.href='${pageContext.request.contextPath}/user/task/publish'">创建新任务</button>
                         </div>
                     </div>
-
-                    <div class="info-item">
-                        <div class="info-label">修改密码</div>
-                        <input type="password" id="newPassword" placeholder="新密码" class="form-control mb-2">
-                        <input type="password" id="confirmPassword" placeholder="确认密码" class="form-control">
-
+                    <!-- 任务列表表格 -->
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead class="table-light">
+                            <tr>
+                                <th>任务名称</th>
+<%--                                <th>任务描述</th>--%>
+                                <th>分类</th>
+                                <th>发布日期</th>
+                                <th>完成时间</th>
+                                <th>任务状态</th>
+                                <th>审核状态</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody id="taskTableBody">
+                            <!-- 任务数据将通过JavaScript动态加载 -->
+                            </tbody>
+                        </table>
+                        <!-- 编辑任务模态框 -->
+                        <div class="modal fade" id="editTaskModal" tabindex="-1" aria-labelledby="editTaskModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="editTaskModalLabel">编辑任务</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <form id="editTaskForm">
+                                        <div class="modal-body">
+                                            <input type="hidden" id="editTaskId">
+                                            <div class="mb-3">
+                                                <label class="form-label">任务名称</label>
+                                                <input type="text" class="form-control" id="editTaskName" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">任务描述</label>
+                                                <textarea class="form-control" id="editTaskDescription" rows="3" required></textarea>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">任务分类</label>
+                                                <select class="form-control" id="editCategoryId" required>
+                                                    <option value="1">设备任务</option>
+                                                    <option value="2">工艺任务</option>
+                                                    <option value="3">设计任务</option>
+                                                    <option value="4">制造任务</option>
+                                                </select>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">发布日期</label>
+                                                <input type="datetime-local" class="form-control" id="editTaskDate" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">审核状态</label>
+                                                <select class="form-control" id="editAuditStatus" required>
+                                                    <option value="待审">待审</option>
+                                                    <option value="通过">通过</option>
+                                                    <option value="驳回">驳回</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                                            <button type="button" class="btn btn-primary" onclick="saveEditedTask()">保存修改</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+<%--                    <div id="loadingIndicator" style="display: none;">--%>
+<%--                        <div class="spinner-border text-primary" role="status">--%>
+<%--                            <span class="visually-hidden">加载中...</span>--%>
+<%--                        </div>--%>
+<%--                    </div>--%>
+                    <!-- 分页控件 -->
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-center" id="pagination">
+                            <!-- 分页将通过JavaScript动态生成 -->
+                        </ul>
+                    </nav>
+                </div>
+
+                <!-- 任务详情模态框 -->
+                <div class="modal fade" id="taskDetailModal" tabindex="-1" aria-hidden="true">
+                    <!-- 模态框内容... -->
+                </div>
+
+                <!-- 添加/编辑任务模态框 -->
+                <div class="modal fade" id="taskFormModal" tabindex="-1" aria-hidden="true">
+                    <!-- 模态框内容... -->
+                </div>
+            </div>
+            <div id="messages" class="tab-content">
+                <h4 class="section-header">消息通知</h4>
+                <div class="alert alert-info">暂无未读消息</div>
+            </div>
+
+            <div id="settings" class="tab-content">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h4 class="section-header">账户安全</h4>
+                    <!-- 资源管理功能按钮 -->
+                    <div class="btn-publish-container" >
+                        <button class="btn-publish btn-save mt-3" onclick="changePassword()">确认修改</button>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-label">修改密码</div>
+                    <input type="password" id="newPassword" placeholder="新密码" class="form-control mb-2">
+                    <input type="password" id="confirmPassword" placeholder="确认密码" class="form-control">
+
                 </div>
             </div>
         </div>
     </div>
+</div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
@@ -1236,6 +1341,340 @@
 
         // 监听订单标签页点击事件
         document.querySelector('a[href="#orders"]').addEventListener('click', loadOrders);
+    });
+
+    // 加载任务数据
+    // 全局变量
+    let currentPage = 1;
+    const pageSize = 10; // 每页显示的任务数量
+    let totalTasks = 0; // 总任务数
+    let currentTasks = [];
+    // 页面加载完成后初始化
+    document.addEventListener('DOMContentLoaded', function() {
+        initializePage();
+    });
+
+    // 初始化页面
+    function initializePage() {
+        loadTasks(1); // 默认加载第一页
+
+    }
+
+    // 修改loadTasks函数，添加分页参数
+    function loadTasks(page = 1, taskStatus = '', taskCategory = '', auditStatus = '') {
+        showLoading();
+        currentPage = page;
+
+        let url = '/user/task/taskList';
+        // let url = '/user/task/getTaskList';
+        const params = {
+            pageNum: page,
+            pageSize: pageSize,
+            searchKey: '',
+            taskStatus: taskStatus,
+            categoryid: taskCategory,
+            auditstatus: auditStatus,
+            sortField: 'taskid',
+            sortOrder: 'asc'
+        };
+
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(params)
+        })
+            .then(response => {
+                if (!response.ok) throw new Error('HTTP错误! 状态码:'+ response.status);
+                return response.json();
+            })
+            .then(data => {
+                if (data.code === 200 || data.code === 0) {
+                    const result = data.obj || data.data;
+                    currentTasks = result.list || [];
+                    totalTasks = result.total || 0;
+                    renderTasks(currentTasks);
+                    renderPagination(totalTasks, currentPage, pageSize);
+                } else {
+                    throw new Error(data.msg || '获取任务列表失败');
+                }
+            })
+            .catch(error => {
+                showError('加载失败: ' + error.message);
+            })
+            .finally(() => {
+                hideLoading();
+            });
+    }
+
+    // 渲染分页控件
+    function renderPagination(totalItems, currentPage, pageSize) {
+        const pagination = document.getElementById('pagination');
+        if (!pagination) return;
+
+        pagination.innerHTML = '';
+        const totalPages = Math.ceil(totalItems / pageSize);
+
+        // 上一页按钮
+        const prevLi = document.createElement('li');
+        prevLi.className = 'page-item' + (currentPage === 1 ? ' disabled' : '');
+        const prevLink = document.createElement('a');
+        prevLink.className = 'page-link';
+        prevLink.href = '#';
+        prevLink.innerHTML = '上一页';
+        prevLink.onclick = (e) => {
+            e.preventDefault();
+            if (currentPage > 1) loadTasks(currentPage - 1);
+        };
+        prevLi.appendChild(prevLink);
+        pagination.appendChild(prevLi);
+
+        // 页码按钮
+        const startPage = Math.max(1, currentPage - 2);
+        const endPage = Math.min(totalPages, currentPage + 2);
+
+        for (let i = startPage; i <= endPage; i++) {
+            const pageLi = document.createElement('li');
+            pageLi.className = 'page-item' + (i === currentPage ? ' active' : '');
+            const pageLink = document.createElement('a');
+            pageLink.className = 'page-link';
+            pageLink.href = '#';
+            pageLink.textContent = i;
+            pageLink.onclick = (e) => {
+                e.preventDefault();
+                loadTasks(i);
+            };
+            pageLi.appendChild(pageLink);
+            pagination.appendChild(pageLi);
+        }
+
+        // 下一页按钮
+        const nextLi = document.createElement('li');
+        nextLi.className = 'page-item' + (currentPage === totalPages ? ' disabled' : '');
+        const nextLink = document.createElement('a');
+        nextLink.className = 'page-link';
+        nextLink.href = '#';
+        nextLink.innerHTML = '下一页';
+        nextLink.onclick = (e) => {
+            e.preventDefault();
+            if (currentPage < totalPages) loadTasks(currentPage + 1);
+        };
+        nextLi.appendChild(nextLink);
+        pagination.appendChild(nextLi);
+    }
+
+
+    // 渲染任务表格
+    function renderTasks(tasks) {
+        const tbody = document.getElementById('taskTableBody');
+        tbody.innerHTML = '';
+
+        if (!tasks || tasks.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="8" class="text-center">暂无任务数据</td></tr>';
+            return;
+        }
+
+        tasks.forEach(task => {
+            const row = document.createElement('tr');
+
+            // 任务名称
+            row.appendChild(createTableCell(task.taskname || '无'));
+
+            // 任务描述
+            // row.appendChild(createTableCell(task.taskdescription || '无'));
+
+            // 分类
+            row.appendChild(createTableCell(getTaskCategoryName(task.categoryid)));
+
+            // 发布日期
+            row.appendChild(createTableCell(formatDate(task.taskdate)));
+
+            // 完成时间
+            row.appendChild(createTableCell(formatDate(task.completiontime)));
+
+            // 任务状态
+            const statusCell = document.createElement('td');
+            const statusBadge = document.createElement('span');
+            statusBadge.className = 'badge ' + getTaskStatusClass(task.taskstatus);
+            statusBadge.textContent = task.taskstatus || '无状态';
+            statusCell.appendChild(statusBadge);
+            row.appendChild(statusCell);
+
+            // 审核状态
+            const auditCell = document.createElement('td');
+            const auditBadge = document.createElement('span');
+            auditBadge.className = 'badge ' + getAuditStatusClass(task.auditstatus);
+            auditBadge.textContent = task.auditstatus || '无状态';
+            auditCell.appendChild(auditBadge);
+            row.appendChild(auditCell);
+
+            // 操作
+            const actionCell = document.createElement('td');
+            actionCell.className = 'text-nowrap';
+
+            // 详情按钮
+            const detailBtn = document.createElement('button');
+            detailBtn.className = 'btn btn-sm btn-outline-primary me-2';
+            detailBtn.innerHTML = '<i class="bi bi-eye"></i> 查看';
+            detailBtn.onclick = () => viewTaskDetail(task.taskid);
+            actionCell.appendChild(detailBtn);
+
+            // 删除按钮
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'btn btn-sm btn-outline-danger';
+            deleteBtn.innerHTML = '<i class="bi bi-trash"></i> 删除';
+            deleteBtn.onclick = () => confirmDeleteTask(task.taskid);
+            actionCell.appendChild(deleteBtn);
+
+            row.appendChild(actionCell);
+            tbody.appendChild(row);
+        });
+    }
+    // 修改confirmDeleteTask函数
+    function confirmDeleteTask(taskId) {
+        if (!taskId) {
+            showToast('无效的任务ID', 'error');
+            return;
+        }
+
+        // 使用浏览器原生confirm对话框
+        if (confirm('您确定要删除此任务吗？此操作不可撤销！')) {
+            deleteTask(taskId);
+        }
+    }
+    function deleteTask(taskId) {
+        showLoading();
+
+        // 创建FormData对象确保参数正确编码
+        const formData = new URLSearchParams();
+        formData.append('taskId', taskId);
+
+        fetch('/user/task/deleteTask', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: formData
+        })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => {
+                        throw new Error(text || '删除失败');
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.code === 200 || data.code === 0) {
+                    showToast('任务删除成功', 'success');
+                    loadTasks();
+                } else {
+                    throw new Error(data.msg || '删除任务失败');
+                }
+            })
+            .catch(error => {
+                console.error('删除任务错误:', error);
+                showToast('删除失败: ' + error.message, 'error');
+            })
+            .finally(() => {
+                hideLoading();
+            });
+    }
+    // 显示成功消息
+    function showSuccess(message) {
+        Swal.fire({
+            title: '成功',
+            text: message,
+            icon: 'success',
+            confirmButtonText: '确定'
+        });
+    }
+
+    // 显示错误消息
+    function showError(message) {
+        Swal.fire({
+            title: '错误',
+            text: message,
+            icon: 'error',
+            confirmButtonText: '确定'
+        });
+    }
+
+    // 显示加载指示器
+    function showLoading() {
+        // 实现加载指示器显示逻辑
+
+    }
+
+    // 隐藏加载指示器
+    function hideLoading() {
+        // 实现加载指示器隐藏逻辑
+
+    }
+    // 辅助函数：创建表格单元格
+    function createTableCell(content) {
+        const cell = document.createElement('td');
+        cell.textContent = content;
+        return cell;
+    }
+
+    // 获取任务分类名称
+    function getTaskCategoryName(categoryId) {
+        const categories = {
+            1: '设备任务',
+            2: '工艺任务',
+            3: '设计任务',
+            4: '制造任务'
+        };
+        return categories[categoryId] || '未知分类';
+    }
+
+    // 获取任务状态对应的CSS类
+    function getTaskStatusClass(status) {
+        if (!status) return 'bg-secondary';
+        switch (status.toLowerCase()) {
+            case '待完成': return 'bg-warning text-dark';
+            case '已完成': return 'bg-success';
+            case '已取消': return 'bg-secondary';
+            default: return 'bg-info';
+        }
+    }
+
+    // 获取审核状态对应的CSS类
+    function getAuditStatusClass(status) {
+        if (!status) return 'bg-secondary';
+        switch (status.toLowerCase()) {
+            case '待审': return 'bg-warning text-dark';
+            case '通过': return 'bg-success';
+            case '驳回': return 'bg-danger';
+            default: return 'bg-info';
+        }
+    }
+
+    // 日期格式化
+    function formatDate(dateString) {
+        if (!dateString) return '无';
+        try {
+            const date = new Date(dateString);
+            return date.toLocaleString();
+        } catch (e) {
+            return dateString;
+        }
+    }
+    function viewTaskDetail(taskId) {
+        window.location.href = '/user/task/detailView?taskId=' + taskId;
+    }
+
+    // 页面加载完成后初始化
+    document.addEventListener('DOMContentLoaded', function() {
+        // 如果当前是任务标签页，则加载任务数据
+        if (window.location.hash === '#tasks') loadTasks();
+
+        // 监听任务标签页点击事件
+        document.querySelector('a[href="#tasks"]').addEventListener('click', function() {
+            loadTasks();
+        });
     });
 </script>
 </body>

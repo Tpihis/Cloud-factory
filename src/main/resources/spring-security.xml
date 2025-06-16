@@ -11,11 +11,15 @@
         <security:intercept-url pattern="/static/**" access="permitAll" />
 
         <!-- 放行静态资源和首页 -->
+        <security:intercept-url pattern="/.well-known/appspecific/com.chrome.devtools.json" access="permitAll" />
         <security:intercept-url pattern="/favicon.ico" access="permitAll" />
+
         <security:intercept-url pattern="/css/**" access="permitAll" />
         <security:intercept-url pattern="/js/**" access="permitAll" />
         <security:intercept-url pattern="/" access="permitAll" />
+        <security:intercept-url pattern="/home" access="permitAll" />
         <security:intercept-url pattern="/api/**" access="permitAll" />
+
 
         <security:intercept-url pattern="/test/**" access="permitAll" />
         <security:intercept-url pattern="/auth/**" access="permitAll" />
@@ -30,6 +34,10 @@
             login-page="/auth/loginPage"
             authentication-failure-url="/auth/loginPage?error=true"
             default-target-url="/"/>
+<!--        退出登陆后跳转到首页-->
+        <security:logout
+            logout-success-url="/"
+            invalidate-session="true"/>
         <security:headers>
             <security:frame-options policy="SAMEORIGIN"/>
         </security:headers>

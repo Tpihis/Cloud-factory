@@ -16,18 +16,20 @@ public class IndexController {
 
    @GetMapping("/")
    public String Index(){
-       return "user/index";
+       return "/user/iframe_top";
 //       return "user/在JSP页面中打印网址";
    }
+   @GetMapping("/home")
+    public String home(){
+       return "/index";
+    }
     @GetMapping("/test/api")
     public String api(){
         return "user/userIndex";
 //       return "user/在JSP页面中打印网址";
     }
-
-    @GetMapping("/test/cj")
-    public String cj(){
-        return "user/成绩查询";
-//       return "user/在JSP页面中打印网址";
+    @GetMapping("/test/index")
+    public String xx(){
+        return "user/index";
     }
 }

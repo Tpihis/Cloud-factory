@@ -13,6 +13,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>云制造资源优化平台 - 资源中心</title>
     <script src="${pageContext.request.contextPath}/static/Custom/js/toast.js"></script>
+    <script src="${pageContext.request.contextPath}/static/Custom/js/modal.js"></script>
     <link href="${pageContext.request.contextPath}/static/Custom/css/toast.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
@@ -24,11 +25,12 @@
         }
 
          :root {
-             --primary-color: #3498db;
+             --primary-color:   #3498db;
              --secondary-color: #2980b9;
              --accent-color: #e74c3c;
              --light-bg: #f8f9fa;
              --dark-bg: #343a40;
+             --primary: #1a56db;
          }
 
         body {
@@ -110,12 +112,65 @@
         /*    字体黑体*/
             font-family: "黑体", sans-serif!important;
         }
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
 
+        .btn {
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-outline {
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            background: transparent;
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            border: 2px solid var(--primary);
+        }
+
+        .btn-primary:hover {
+            background-color: #1646b6;
+            border-color: #1646b6;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        .userImage {
+            width: 50px;
+            height: 50px;
+        }
     </style>
 
 </head>
 <body>
 <!-- 导航栏 -->
+<header>
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
     <div class="container">
         <a class="navbar-brand" href="#">
@@ -127,10 +182,10 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="#" onclick="loadPage('/home',this)">首页</a>
+                    <a class="nav-link active" href="#" onclick="loadPage('/home',this)">首页</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="#" onclick="loadPage('/user/resource/display',this)">资源中心</a>
+                    <a class="nav-link " href="#" onclick="loadPage('/user/resource/display',this)">资源中心</a>
                 </li>
                 <%--<li class="nav-item">
                     <a class="nav-link" href="#" onclick="loadPage('/manufacturing/services',this)">制造服务</a>
@@ -144,16 +199,23 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#" onclick="loadPage('/user/orderList',this)">我的订单</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="loadPage('/user/task/matchResources',this)">分配资源</a>
+                </li>
             </ul>
+
+
             <div class="d-flex align-items-center">
-                <div class="dropdown me-3">
+                <div class="auth-buttons" id="authButtons">
+                    <a href="/auth/loginPage" class="btn btn-outline">登录</a>
+                    <a href="/auth/loginPage" class="btn btn-primary">免费注册</a>
+                </div>
+                <div class="dropdown me-3" id="userDropdownContainer">
                     <a href="#" class="d-flex align-items-center
                      text-decoration-none dropdown-toggle" id="userDropdown">
 <%--                       data-bs-toggle="dropdown">--%>
-                        <img src="https://via.placeholder.com/40" alt="用户头像" class="rounded-circle me-2">
-                        <sec:authentication property="principal.username" var="username"/>
-<%--                        <p>用户名: ${username}</p>--%>
-                        <span>${username}</span>
+                        <img src="/system/userImage" alt="用户头像"  class="userImage rounded-circle me-2">
+                        <span id="username"></span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li><a class="dropdown-item" href="#" onclick="loadPage('/user/personalCenter',this)">个人中心</a></li>
@@ -168,13 +230,20 @@
         </div>
     </div>
 </nav>
-<iframe id="iframe" src="/user/resource/display" width="100%" height="100%" style="overflow: hidden;scrollbar-width: none;"></iframe>
+</header>
+<iframe id="iframe" src="/home" width="100%" height="100%" style="overflow: hidden;scrollbar-width: none;"></iframe>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 <script>
     function loadPage(url, activeElement) {
-        setActive(activeElement);
-        document.getElementById('iframe').src = url;
+        //如果当前未登录,直接将父页面转向登录页面loginPage
+        /*if (document.getElementById('authButtons').style.display === 'block' ) {
+                window.location.href = '/auth/loginPage';
+        }else{*/
+            setActive(activeElement);
+            document.getElementById('iframe').src = url;
+        /*}*/
+
 
     }
     //设置当前活动菜单项
@@ -192,12 +261,35 @@
         url: "${pageContext.request.contextPath}/auth/getCurrentUser",
         type: "GET",
         success: function (response) {
-            const userRole = response.obj.role;
-            if (userRole === 1) {
-                document.getElementById('admin').innerHTML = '<a class="dropdown-item" href="/admin/index">管理员中心</a>';
+            if (response.code === 0) {
+                // 已登录，显示用户下拉菜单
+                document.getElementById('authButtons').style.display = 'none';
+                document.getElementById('userDropdownContainer').style.display = 'block';
+                document.getElementById('username').innerText = response.obj.username;
+                // 如果是管理员，添加管理员中心链接
+                if (response.obj.role === 1) {
+                    document.getElementById('admin').innerHTML = '<a class="dropdown-item" href="/admin/index">管理员中心</a>';
+                }
+            } else {
+                // 未登录，显示登录/注册按钮
+                document.getElementById('authButtons').style.display = 'block';
+                document.getElementById('userDropdownContainer').style.display = 'none';
             }
+        },
+        error: function() {
+            // 发生错误时默认显示登录/注册按钮
+            document.getElementById('authButtons').style.display = 'block';
+            document.getElementById('userDropdownContainer').style.display = 'none';
         }
     })
+    //浏览器刷新时只刷新子页面,而不刷新父页面
+    // 监听浏览器刷新事件
+    // window.addEventListener('beforeunload', function (event) {
+    //     // 阻止浏览器刷新
+    //     event.preventDefault();
+    //     // 刷新当前页面
+    //     window.location.reload();
+    // });
 </script>
 </html>
 

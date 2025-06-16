@@ -512,7 +512,8 @@
             '<div class="d-flex justify-content-between align-items-center">' +
             '<div>' +
             '<span class="fw-bold me-2">合计: </span>' +
-            '<span class="text-danger fw-bold">¥' + order.totalprice.toFixed(2) + '</span>' +
+            //     order.totalprice === null ? '--' : order.totalprice.toFixed(2)
+            '<span class="text-danger fw-bold">¥' + (order.totalprice === null ? '--' : order.totalprice.toFixed(2)) + '</span>' +
             '</div>' +
             '<div>' +
             '<button class="btn btn-sm btn-outline-primary action-btn me-2" onclick="contactSupplier(' + order.orderid + ')">' +
